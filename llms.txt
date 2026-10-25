@@ -7,7 +7,7 @@
 - Over 400 everyday Modern Standard Arabic words in 16 groups: basics, people, places, home and school, food and drink, nature and animals, body, colours, describing words, actions (past-tense verbs), numbers, time and days, greetings, clothes, toys and play, feelings.
 - Every word is written with full harakat (vowel marks) and has an English meaning.
 - Words are spoken aloud using the device's text-to-speech voice, at normal or slow speed.
-- Most nouns show their plural, labelled as a sound plural or broken plural.
+- Most nouns and describing words show their plural, labelled as a sound plural or broken plural.
 - Games: a multiple-choice reading quiz, "say it from memory", and "say the plural from memory".
 - Progress tracking: mark the words you are learning, then mark them as known well.
 - Learners can add their own words, with plurals and groups.

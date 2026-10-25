@@ -6,7 +6,7 @@ A free Arabic vocabulary trainer for beginners. Live at https://kalimat.ummahapp
 
 ## Features
 - Tap any word to hear it, at normal or slow speed (uses the device's Arabic text-to-speech voice)
-- Sound and broken plurals for most nouns
+- Sound and broken plurals for most nouns and describing words
 - Games: read it, say it from memory, say the plural from memory
 - Mark the words you are learning, then mark them as known well
 - Add your own words
