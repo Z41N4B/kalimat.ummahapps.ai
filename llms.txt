@@ -9,7 +9,7 @@
 - Words are spoken aloud using the device's text-to-speech voice, at normal or slow speed.
 - Most nouns show their plural, labelled as a sound plural or broken plural.
 - Games: a multiple-choice reading quiz, "say it from memory", and "say the plural from memory".
-- Progress tracking: mark words as learned, then as known well.
+- Progress tracking: mark the words you are learning, then mark them as known well.
 - Learners can add their own words, with plurals and groups.
 - Free, no account, no ads. Progress is stored only in the learner's browser.
 

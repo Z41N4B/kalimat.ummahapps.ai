@@ -8,7 +8,7 @@ A free Arabic vocabulary trainer for beginners. Live at https://kalimat.ummahapp
 - Tap any word to hear it, at normal or slow speed (uses the device's Arabic text-to-speech voice)
 - Sound and broken plurals for most nouns
 - Games: read it, say it from memory, say the plural from memory
-- Mark words as learned, then as known well
+- Mark the words you are learning, then mark them as known well
 - Add your own words
 
 ## SEO and GEO
