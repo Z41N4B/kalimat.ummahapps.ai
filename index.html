@@ -82,7 +82,8 @@
         "Multiple-choice reading quiz",
         "Say-it-from-memory and say-the-plural games",
         "Learning and known-well progress tracking",
-        "Add your own words"
+        "Add your own words",
+        "Up to 3 learners on one device"
       ],
       "image": "https://kalimat.ummahapps.ai/og-image.png",
       "publisher": {"@id": "https://ummahapps.ai/#org"}
@@ -93,7 +94,7 @@
         {"@type": "Question", "name": "Is Kalimat free?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Kalimat is free, needs no account and runs in your web browser."}},
         {"@type": "Question", "name": "How does Kalimat pronounce the Arabic words?", "acceptedAnswer": {"@type": "Answer", "text": "It uses your device's built-in text-to-speech voice. For the best pronunciation, add an Arabic voice in your phone or computer's speech or language settings, then choose it in the Voice menu."}},
         {"@type": "Question", "name": "Does Kalimat teach Arabic plurals?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Most nouns show their plural and say whether it is a sound plural or a broken plural, and there is a game for saying the plural from memory."}},
-        {"@type": "Question", "name": "Where is my progress saved?", "acceptedAnswer": {"@type": "Answer", "text": "Your Learning and Known well lists and your own words are saved in your browser on your device. Nothing is sent to a server."}},
+        {"@type": "Question", "name": "Where is my progress saved?", "acceptedAnswer": {"@type": "Answer", "text": "Your Learning and Known well lists and your own words are saved in your browser on your device. Nothing is sent to a server. Up to three learners can share one device, each with their own progress."}},
         {"@type": "Question", "name": "Who is Kalimat for?", "acceptedAnswer": {"@type": "Answer", "text": "Beginners of any age learning Modern Standard Arabic, including children, home-schoolers and adults studying for Quranic or Madinah-style Arabic classes."}}
       ]
     }
@@ -147,6 +148,11 @@ img{max-width:100%}
 .brand-ar{font-family:var(--font-ar);font-size:2.6rem;font-weight:700;line-height:1.2}
 .brand-en{font-size:.8rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2)}
 .tag{margin:0;color:var(--ink-2);flex-basis:100%}
+.who{display:flex;flex-wrap:wrap;align-items:center;gap:8px;flex-basis:100%;margin-top:4px}
+.who .label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
+.who-form{display:flex;flex-wrap:wrap;gap:8px;flex-basis:100%}
+.who-form input{flex:1 1 160px;width:auto}
+.linkbtn{font:inherit;font-size:.85rem;font-weight:700;min-height:38px;padding:4px 6px;border:0;background:none;color:var(--accent);text-decoration:underline;cursor:pointer}
 
 .tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin-bottom:20px}
 .tab{font-size:.9rem;line-height:1.2}
@@ -3644,6 +3650,12 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
     <h1><span class="brand-ar" lang="ar" dir="rtl">كَلِمَات</span>
     <span class="brand-en">Kalimat · Learn Arabic words</span></h1>
     <p class="tag">Arabic vocabulary with a computer voice, a quiz, and your own words.</p>
+    <div class="who" id="who" role="group" aria-label="Learner"></div>
+    <form class="who-form" id="who-form" hidden autocomplete="off">
+      <input type="text" id="who-name" maxlength="20" placeholder="Learner's name" aria-label="Learner's name">
+      <button class="btn small primary" type="submit">Save</button>
+      <button class="btn small" type="button" id="who-cancel">Cancel</button>
+    </form>
   </header>
 
   <nav class="tabs" aria-label="Sections">
@@ -3770,7 +3782,7 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
     <details><summary>Is Kalimat free?</summary><p>Yes. Kalimat is free, needs no account and runs in your web browser.</p></details>
     <details><summary>How does Kalimat pronounce the Arabic words?</summary><p>It uses your device's built-in text-to-speech voice. For the best pronunciation, add an Arabic voice in your phone or computer's speech or language settings, then choose it in the Voice menu.</p></details>
     <details><summary>Does Kalimat teach Arabic plurals?</summary><p>Yes. Most nouns show their plural and say whether it is a sound plural or a broken plural, and there is a game for saying the plural from memory.</p></details>
-    <details><summary>Where is my progress saved?</summary><p>Your Learning and Known well lists and your own words are saved in your browser on your device. Nothing is sent to a server.</p></details>
+    <details><summary>Where is my progress saved?</summary><p>Your Learning and Known well lists and your own words are saved in your browser on your device. Nothing is sent to a server. Up to three learners can share one device, each with their own progress.</p></details>
     <details><summary>Who is Kalimat for?</summary><p>Beginners of any age learning Modern Standard Arabic, including children, home-schoolers and adults studying for Quranic or Madinah-style Arabic classes.</p></details>
     <p class="small">Kalimat is part of <a href="https://ummahapps.ai/">Ummah Apps</a>.</p>
   </footer>
@@ -3783,7 +3795,7 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
   var DATA={
     basics:[['أَنَا','I','me'],['أَنْتَ','you (m.)','youm'],['أَنْتِ','you (f.)','youf'],['هُوَ','he','he'],['هِيَ','she','she'],['نَحْنُ','we','we'],['هَذَا','this (m.)','thism'],['هَذِهِ','this (f.)','thisf'],['ذَلِكَ','that (m.)','thatm'],['تِلْكَ','that (f.)','thatf'],['مَا','what','what'],['مَنْ','who','who'],['أَيْنَ','where','where'],['هَلْ','is it? (yes/no question)','isit'],['مِنْ','from','from'],['فِي','in','in'],['عَلَى','on','on'],['إِلَى','to','to'],['مَعَ','with','with'],['نَعَمْ','yes','yes'],['لَا','no','no'],['هُنَا','here','here'],['هُنَاكَ','there','there'],['كَيْفَ','how','how'],['لِمَاذَا','why','why'],['مَتَى','when','when'],['كَمْ','how many / how much','howmany'],['أَيْضًا','also','also'],['جِدًّا','very','very'],['تَحْتَ','under','under'],['فَوْقَ','above / on top of','above'],['أَمَامَ','in front of','front'],['خَلْفَ','behind','behind'],['بَيْنَ','between','between'],['دَاخِل','inside','inside'],['خَارِج','outside','outside'],['يَمِين','right','right'],['يَسَار','left','left']],
     people:[['رَجُل','man','man'],['اِمْرَأَة','woman','woman'],['وَلَد','boy','boy'],['بِنْت','girl','girl'],['طِفْل','child','child'],['طَالِب','student (m.)','studentm'],['طَالِبَة','student (f.)','studentf'],['مُدَرِّس','teacher (m.)','teacher'],['مُدَرِّسَة','teacher (f.)','teacherf'],['أَب','father','father'],['أُمّ','mother','mother'],['أَخ','brother','brother'],['أُخْت','sister','sister'],['اِبْن','son','son'],['صَدِيق','friend','friend'],['جَار','neighbour','neighbour'],['طَبِيب','doctor','doctor'],['مُهَنْدِس','engineer','engineer'],['مُدِير','director','director'],['عَامِل','worker','worker'],['أُسْتَاذ','professor','professor'],['جَدّ','grandfather','grandpa'],['جَدَّة','grandmother','grandma'],['عَمّ','uncle (father\'s brother)','unclef'],['خَال','uncle (mother\'s brother)','unclem'],['عَمَّة','aunt (father\'s sister)','auntf'],['خَالَة','aunt (mother\'s sister)','auntm'],['عَائِلَة','family','family'],['ضَيْف','guest','guest'],['رَضِيع','baby','baby']],
-    places:[['مَسْجِد','mosque','mosque'],['بَيْت','house','house'],['مَدْرَسَة','school','school'],['جَامِعَة','university','university'],['مَكْتَب','office','office'],['مَكْتَبَة','library','library'],['مَطْبَخ','kitchen','kitchen'],['غُرْفَة','room','room'],['حَدِيقَة','garden','garden'],['سُوق','market','market'],['مَدِينَة','city','city'],['قَرْيَة','village','village'],['شَارِع','street','street'],['مَطَار','airport','airport'],['مُسْتَشْفَى','hospital','hospital'],['مَطْعَم','restaurant','restaurant'],['حَمَّام','bathroom','bathroom'],['صَالَة','living room','livingroom'],['غُرْفَة النَّوْمِ','bedroom','bedroom'],['مَلْعَب','playground','playground'],['مَتْجَر','shop','shop'],['مَزْرَعَة','farm','farm'],['شَاطِئ','beach','beach']],
+    places:[['مَسْجِد','mosque','mosque'],['بَيْت','house','house'],['مَدْرَسَة','school','school'],['جَامِعَة','university','university'],['مَكْتَب','office','office'],['مَكْتَبَة','library','library'],['مَطْبَخ','kitchen','kitchen'],['غُرْفَة','room','room'],['حَدِيقَة','garden','garden'],['سُوق','market','market'],['مَدِينَة','city','city'],['قَرْيَة','village','village'],['شَارِع','street','street'],['مَطَار','airport','airport'],['مُسْتَشْفَى','hospital','hospital'],['مَطْعَم','restaurant','restaurant'],['حَمَّام','bathroom','bathroom'],['صَالَة','living room','livingroom'],['غُرْفَة النَّوْمِ','bedroom','bedroom'],['مَلْعَب','playground','playground'],['دُكَّان','shop','shop'],['مَزْرَعَة','farm','farm'],['شَاطِئ','beach','beach']],
     home:[['كِتَاب','book','book'],['قَلَم','pen','pen'],['كُرَّاسَة','notebook','notebook'],['حَقِيبَة','bag','bag'],['بَاب','door','door'],['نَافِذَة','window','window'],['مِفْتَاح','key','key'],['كُرْسِي','chair','chair'],['طَاوِلَة','table','table'],['سَرِير','bed','bed'],['سَاعَة','clock / watch','clock'],['مِصْبَاح','lamp','lamp'],['مِرْآة','mirror','mirror'],['تِلْفَاز','television','tv'],['هَاتِف','telephone','phone'],['حَاسُوب','computer','computer'],['سَيَّارَة','car','car'],['جَرِيدَة','newspaper','newspaper'],['مَجَلَّة','magazine','magazine'],['وَرَقَة','sheet of paper','paper'],['كُوب','cup','cup'],['صَحْن','plate','plate'],['مِلْعَقَة','spoon','spoon'],['سِكِّين','knife','knife'],['نَظَّارَة','glasses','glasses'],['مِسْطَرَة','ruler','ruler'],['وِسَادَة','pillow','pillow'],['بَطَّانِيَّة','blanket','blanket'],['سَجَّادَة','rug / carpet','rug'],['سِتَارَة','curtain','curtain'],['أَرِيكَة','sofa','sofa'],['خِزَانَة','cupboard','cupboard'],['ثَلَّاجَة','fridge','fridge'],['فُرْن','oven','oven'],['غَسَّالَة','washing machine','washer'],['مِنْشَفَة','towel','towel'],['فُرْشَاة','brush','brush'],['صَابُون','soap','soap'],['سَقْف','ceiling','ceiling'],['جِدَار','wall','wall'],['دَرَج','stairs','stairs'],['صُنْدُوق','box','box'],['سَلَّة','basket','basket'],['زُجَاجَة','bottle','bottle'],['قِدْر','cooking pot','pot'],['مِكْنَسَة','broom','broom'],['شَمْعَة','candle','candle'],['صُورَة','picture / photo','picture']],
     food:[['مَاء','water','water'],['حَلِيب','milk','milk'],['شَاي','tea','tea'],['قَهْوَة','coffee','coffee'],['عَصِير','juice','juice'],['خُبْز','bread','bread'],['أَرُزّ','rice','rice'],['بَيْض','egg','egg'],['لَحْم','meat','meat'],['دَجَاج','chicken','chicken'],['سَمَكَة','fish','fish'],['تُفَّاحَة','apple','apple'],['مَوْزَة','banana','banana'],['بُرْتُقَالَة','orange','orange'],['فَاكِهَة','fruit','fruit'],['خُضَار','vegetables','veg'],['سُكَّر','sugar','sugar'],['مِلْح','salt','salt'],['إِفْطَار','breakfast','breakfast'],['غَدَاء','lunch','lunch'],['عَشَاء','dinner','dinner'],['وَجْبَة','meal','meal'],['جُبْن','cheese','cheese'],['زُبْدَة','butter','butter'],['عَسَل','honey','honey'],['شُورْبَة','soup','soup'],['بَطَاطِس','potatoes','potatoes'],['طَمَاطِم','tomatoes','tomatoes'],['خِيَار','cucumber','cucumber'],['جَزَر','carrots','carrots'],['عِنَب','grapes','grapes'],['فَرَاوْلَة','strawberry','strawberry'],['تَمْر','dates','dates'],['حَلْوَى','sweets','sweets'],['بَسْكُوت','biscuit','biscuit'],['كَعْكَة','cake','cake'],['شُوكُولَاتَة','chocolate','chocolate']],
     nature:[['شَمْس','sun','sun'],['قَمَر','moon','moon'],['شَجَرَة','tree','tree'],['نَهْر','river','river'],['بَحْر','sea','sea'],['جَبَل','mountain','mountain'],['سَمَاء','sky','sky'],['أَرْض','earth / ground','earth'],['مَطَر','rain','rain'],['زَهْرَة','flower','flower'],['نَجْم','star','star'],['سَحَابَة','cloud','cloud'],['قِطَّة','cat','cat'],['كَلْب','dog','dog'],['حِصَان','horse','horse'],['أَسَد','lion','lion'],['جَمَل','camel','camel'],['طَائِر','bird','bird'],['بَقَرَة','cow','cow'],['حِمَار','donkey','donkey'],['ثَلْج','snow','snow'],['رِيح','wind','wind'],['حَشَرَة','insect','insect'],['فَرَاشَة','butterfly','butterfly'],['خَرُوف','sheep','sheep'],['أَرْنَب','rabbit','rabbit'],['فِيل','elephant','elephant'],['قِرْد','monkey','monkey'],['عُصْفُور','sparrow','sparrow'],['حَيَوَان','animal','paw'],['نَبَات','plant','plant'],['نَار','fire','fire'],['ضَوْء','light','light']],
@@ -3798,7 +3810,7 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
     toys:[['لُعْبَة','toy / game','toy'],['دُمْيَة','doll','doll'],['كُرَة','ball','ball'],['دَرَّاجَة','bicycle','bicycle'],['قِصَّة','story','story'],['رَسْم','drawing','easel'],['لَوْن','colour','palette'],['أُرْجُوحَة','swing','swing'],['قِطَار','train','train'],['حَافِلَة','bus','bus'],['طَائِرَة','aeroplane','plane'],['بَالُون','balloon','balloon'],['أُغْنِيَة','song','song']],
     feelings:[['حَزِين','sad','sad'],['غَاضِب','angry','angry'],['خَائِف','scared','scared'],['مُتْعَب','tired','tired'],['جَائِع','hungry','hungry'],['عَطْشَان','thirsty','thirsty'],['نَعْسَان','sleepy','sleepy'],['مَرِيض','ill','ill'],['خَجُول','shy','shy']]
   };
-  var PLUR={'رَجُل':['رِجَال','b'],'اِمْرَأَة':['نِسَاء','b'],'وَلَد':['أَوْلَاد','b'],'بِنْت':['بَنَات','b'],'طِفْل':['أَطْفَال','b'],'طَالِب':['طُلَّاب','b'],'طَالِبَة':['طَالِبَات','s'],'مُدَرِّس':['مُدَرِّسُونَ','s'],'مُدَرِّسَة':['مُدَرِّسَات','s'],'أَب':['آبَاء','b'],'أُمّ':['أُمَّهَات','b'],'أَخ':['إِخْوَة','b'],'أُخْت':['أَخَوَات','s'],'اِبْن':['أَبْنَاء','b'],'صَدِيق':['أَصْدِقَاء','b'],'جَار':['جِيرَان','b'],'طَبِيب':['أَطِبَّاء','b'],'مُهَنْدِس':['مُهَنْدِسُونَ','s'],'مُدِير':['مُدِيرُونَ','s'],'عَامِل':['عُمَّال','b'],'أُسْتَاذ':['أَسَاتِذَة','b'],'مَسْجِد':['مَسَاجِد','b'],'بَيْت':['بُيُوت','b'],'مَدْرَسَة':['مَدَارِس','b'],'جَامِعَة':['جَامِعَات','s'],'مَكْتَب':['مَكَاتِب','b'],'مَكْتَبَة':['مَكْتَبَات','s'],'مَطْبَخ':['مَطَابِخ','b'],'غُرْفَة':['غُرَف','b'],'حَدِيقَة':['حَدَائِق','b'],'سُوق':['أَسْوَاق','b'],'مَدِينَة':['مُدُن','b'],'قَرْيَة':['قُرًى','b'],'شَارِع':['شَوَارِع','b'],'مَطَار':['مَطَارَات','s'],'مُسْتَشْفَى':['مُسْتَشْفَيَات','s'],'مَطْعَم':['مَطَاعِم','b'],'كِتَاب':['كُتُب','b'],'قَلَم':['أَقْلَام','b'],'كُرَّاسَة':['كُرَّاسَات','s'],'حَقِيبَة':['حَقَائِب','b'],'بَاب':['أَبْوَاب','b'],'نَافِذَة':['نَوَافِذ','b'],'مِفْتَاح':['مَفَاتِيح','b'],'كُرْسِي':['كَرَاسِي','b'],'طَاوِلَة':['طَاوِلَات','s'],'سَرِير':['أَسِرَّة','b'],'سَاعَة':['سَاعَات','s'],'مِصْبَاح':['مَصَابِيح','b'],'مِرْآة':['مَرَايَا','b'],'تِلْفَاز':['تِلْفَازَات','s'],'هَاتِف':['هَوَاتِف','b'],'حَاسُوب':['حَوَاسِيب','b'],'سَيَّارَة':['سَيَّارَات','s'],'جَرِيدَة':['جَرَائِد','b'],'مَجَلَّة':['مَجَلَّات','s'],'وَرَقَة':['أَوْرَاق','b'],'كُوب':['أَكْوَاب','b'],'صَحْن':['صُحُون','b'],'مِلْعَقَة':['مَلَاعِق','b'],'سِكِّين':['سَكَاكِين','b'],'نَظَّارَة':['نَظَّارَات','s'],'مِسْطَرَة':['مَسَاطِر','b'],'مَاء':['مِيَاه','b'],'عَصِير':['عَصَائِر','b'],'لَحْم':['لُحُوم','b'],'سَمَكَة':['أَسْمَاك','b'],'تُفَّاحَة':['تُفَّاحَات','s'],'مَوْزَة':['مَوْزَات','s'],'بُرْتُقَالَة':['بُرْتُقَالَات','s'],'فَاكِهَة':['فَوَاكِه','b'],'مِلْح':['أَمْلَاح','b'],'شَمْس':['شُمُوس','b'],'قَمَر':['أَقْمَار','b'],'شَجَرَة':['أَشْجَار','b'],'نَهْر':['أَنْهَار','b'],'بَحْر':['بِحَار','b'],'جَبَل':['جِبَال','b'],'سَمَاء':['سَمَاوَات','s'],'أَرْض':['أَرَاضِي','b'],'مَطَر':['أَمْطَار','b'],'زَهْرَة':['أَزْهَار','b'],'نَجْم':['نُجُوم','b'],'سَحَابَة':['سُحُب','b'],'قِطَّة':['قِطَط','b'],'كَلْب':['كِلَاب','b'],'حِصَان':['أَحْصِنَة','b'],'أَسَد':['أُسُود','b'],'جَمَل':['جِمَال','b'],'طَائِر':['طُيُور','b'],'بَقَرَة':['بَقَرَات','s'],'حِمَار':['حَمِير','b'],'رَأْس':['رُؤُوس','b'],'عَيْن':['عُيُون','b'],'أُذُن':['آذَان','b'],'أَنْف':['أُنُوف','b'],'فَم':['أَفْوَاه','b'],'يَد':['أَيْدٍ','b'],'رِجْل':['أَرْجُل','b'],'قَلْب':['قُلُوب','b'],'وَجْه':['وُجُوه','b'],'سِنّ':['أَسْنَان','b'],'لَيْل':['لَيَالٍ','b'],'أُسْبُوع':['أَسَابِيع','b'],'شَهْر':['أَشْهُر','b'],'سَنَة':['سَنَوَات','s'],'وَقْت':['أَوْقَات','b'],'وِسَادَة':['وَسَائِد','b'],'سَجَّادَة':['سَجَاجِيد','b'],'سِتَارَة':['سَتَائِر','b'],'أَرِيكَة':['أَرَائِك','b'],'خِزَانَة':['خَزَائِن','b'],'ثَلَّاجَة':['ثَلَّاجَات','s'],'غَسَّالَة':['غَسَّالَات','s'],'مِنْشَفَة':['مَنَاشِف','b'],'فُرْشَاة':['فُرَش','b'],'سَقْف':['سُقُوف','b'],'جِدَار':['جُدْرَان','b'],'دَرَج':['أَدْرَاج','b'],'صُنْدُوق':['صَنَادِيق','b'],'سَلَّة':['سِلَال','b'],'زُجَاجَة':['زُجَاجَات','s'],'قِدْر':['قُدُور','b'],'مِكْنَسَة':['مَكَانِس','b'],'شَمْعَة':['شُمُوع','b'],'صُورَة':['صُوَر','b'],'بَطَّانِيَّة':['بَطَاطِين','b'],'فُرْن':['أَفْرَان','b'],'جَدّ':['أَجْدَاد','b'],'جَدَّة':['جَدَّات','s'],'عَمّ':['أَعْمَام','b'],'خَال':['أَخْوَال','b'],'عَمَّة':['عَمَّات','s'],'خَالَة':['خَالَات','s'],'عَائِلَة':['عَائِلَات','s'],'ضَيْف':['ضُيُوف','b'],'حَمَّام':['حَمَّامَات','s'],'صَالَة':['صَالَات','s'],'مَلْعَب':['مَلَاعِب','b'],'مَتْجَر':['مَتَاجِر','b'],'مَزْرَعَة':['مَزَارِع','b'],'شَاطِئ':['شَوَاطِئ','b'],'وَجْبَة':['وَجْبَات','s'],'كَعْكَة':['كَعْكَات','s'],'حَشَرَة':['حَشَرَات','s'],'فَرَاشَة':['فَرَاشَات','s'],'خَرُوف':['خِرَاف','b'],'أَرْنَب':['أَرَانِب','b'],'فِيل':['أَفْيَال','b'],'قِرْد':['قُرُود','b'],'عُصْفُور':['عَصَافِير','b'],'حَيَوَان':['حَيَوَانَات','s'],'نَبَات':['نَبَاتَات','s'],'نَار':['نِيرَان','b'],'ضَوْء':['أَضْوَاء','b'],'رِيح':['رِيَاح','b'],'إِصْبَع':['أَصَابِع','b'],'ظَهْر':['ظُهُور','b'],'بَطْن':['بُطُون','b'],'كَتِف':['أَكْتَاف','b'],'رُكْبَة':['رُكَب','b'],'قَدَم':['أَقْدَام','b'],'ذِرَاع':['أَذْرُع','b'],'لِسَان':['أَلْسِنَة','b'],'رَقَبَة':['رِقَاب','b'],'ظُفْر':['أَظَافِر','b'],'جِلْد':['جُلُود','b'],'خَدّ':['خُدُود','b'],'جَبْهَة':['جِبَاه','b'],'شَفَة':['شِفَاه','b'],'يَوْم':['أَيَّام','b'],'قَمِيص':['قُمْصَان','b'],'بِنْطَال':['بَنَاطِيل','b'],'فُسْتَان':['فَسَاتِين','b'],'تَنُّورَة':['تَنَانِير','b'],'حِذَاء':['أَحْذِيَة','b'],'جَوْرَب':['جَوَارِب','b'],'قُبَّعَة':['قُبَّعَات','s'],'مِعْطَف':['مَعَاطِف','b'],'وِشَاح':['أَوْشِحَة','b'],'قُفَّاز':['قُفَّازَات','s'],'حِزَام':['أَحْزِمَة','b'],'لُعْبَة':['أَلْعَاب','b'],'دُمْيَة':['دُمًى','b'],'كُرَة':['كُرَات','s'],'دَرَّاجَة':['دَرَّاجَات','s'],'قِصَّة':['قِصَص','b'],'رَسْم':['رُسُوم','b'],'لَوْن':['أَلْوَان','b'],'أُرْجُوحَة':['أَرَاجِيح','b'],'قِطَار':['قِطَارَات','s'],'حَافِلَة':['حَافِلَات','s'],'طَائِرَة':['طَائِرَات','s'],'بَالُون':['بَالُونَات','s'],'أُغْنِيَة':['أَغَانِي','b']};
+  var PLUR={'رَجُل':['رِجَال','b'],'اِمْرَأَة':['نِسَاء','b'],'وَلَد':['أَوْلَاد','b'],'بِنْت':['بَنَات','b'],'طِفْل':['أَطْفَال','b'],'طَالِب':['طُلَّاب','b'],'طَالِبَة':['طَالِبَات','s'],'مُدَرِّس':['مُدَرِّسُونَ','s'],'مُدَرِّسَة':['مُدَرِّسَات','s'],'أَب':['آبَاء','b'],'أُمّ':['أُمَّهَات','b'],'أَخ':['إِخْوَة','b'],'أُخْت':['أَخَوَات','s'],'اِبْن':['أَبْنَاء','b'],'صَدِيق':['أَصْدِقَاء','b'],'جَار':['جِيرَان','b'],'طَبِيب':['أَطِبَّاء','b'],'مُهَنْدِس':['مُهَنْدِسُونَ','s'],'مُدِير':['مُدِيرُونَ','s'],'عَامِل':['عُمَّال','b'],'أُسْتَاذ':['أَسَاتِذَة','b'],'مَسْجِد':['مَسَاجِد','b'],'بَيْت':['بُيُوت','b'],'مَدْرَسَة':['مَدَارِس','b'],'جَامِعَة':['جَامِعَات','s'],'مَكْتَب':['مَكَاتِب','b'],'مَكْتَبَة':['مَكْتَبَات','s'],'مَطْبَخ':['مَطَابِخ','b'],'غُرْفَة':['غُرَف','b'],'حَدِيقَة':['حَدَائِق','b'],'سُوق':['أَسْوَاق','b'],'مَدِينَة':['مُدُن','b'],'قَرْيَة':['قُرًى','b'],'شَارِع':['شَوَارِع','b'],'مَطَار':['مَطَارَات','s'],'مُسْتَشْفَى':['مُسْتَشْفَيَات','s'],'مَطْعَم':['مَطَاعِم','b'],'كِتَاب':['كُتُب','b'],'قَلَم':['أَقْلَام','b'],'كُرَّاسَة':['كُرَّاسَات','s'],'حَقِيبَة':['حَقَائِب','b'],'بَاب':['أَبْوَاب','b'],'نَافِذَة':['نَوَافِذ','b'],'مِفْتَاح':['مَفَاتِيح','b'],'كُرْسِي':['كَرَاسِي','b'],'طَاوِلَة':['طَاوِلَات','s'],'سَرِير':['أَسِرَّة','b'],'سَاعَة':['سَاعَات','s'],'مِصْبَاح':['مَصَابِيح','b'],'مِرْآة':['مَرَايَا','b'],'تِلْفَاز':['تِلْفَازَات','s'],'هَاتِف':['هَوَاتِف','b'],'حَاسُوب':['حَوَاسِيب','b'],'سَيَّارَة':['سَيَّارَات','s'],'جَرِيدَة':['جَرَائِد','b'],'مَجَلَّة':['مَجَلَّات','s'],'وَرَقَة':['أَوْرَاق','b'],'كُوب':['أَكْوَاب','b'],'صَحْن':['صُحُون','b'],'مِلْعَقَة':['مَلَاعِق','b'],'سِكِّين':['سَكَاكِين','b'],'نَظَّارَة':['نَظَّارَات','s'],'مِسْطَرَة':['مَسَاطِر','b'],'مَاء':['مِيَاه','b'],'عَصِير':['عَصَائِر','b'],'لَحْم':['لُحُوم','b'],'سَمَكَة':['أَسْمَاك','b'],'تُفَّاحَة':['تُفَّاحَات','s'],'مَوْزَة':['مَوْزَات','s'],'بُرْتُقَالَة':['بُرْتُقَالَات','s'],'فَاكِهَة':['فَوَاكِه','b'],'مِلْح':['أَمْلَاح','b'],'شَمْس':['شُمُوس','b'],'قَمَر':['أَقْمَار','b'],'شَجَرَة':['أَشْجَار','b'],'نَهْر':['أَنْهَار','b'],'بَحْر':['بِحَار','b'],'جَبَل':['جِبَال','b'],'سَمَاء':['سَمَاوَات','s'],'أَرْض':['أَرَاضِي','b'],'مَطَر':['أَمْطَار','b'],'زَهْرَة':['أَزْهَار','b'],'نَجْم':['نُجُوم','b'],'سَحَابَة':['سُحُب','b'],'قِطَّة':['قِطَط','b'],'كَلْب':['كِلَاب','b'],'حِصَان':['أَحْصِنَة','b'],'أَسَد':['أُسُود','b'],'جَمَل':['جِمَال','b'],'طَائِر':['طُيُور','b'],'بَقَرَة':['بَقَرَات','s'],'حِمَار':['حَمِير','b'],'رَأْس':['رُؤُوس','b'],'عَيْن':['عُيُون','b'],'أُذُن':['آذَان','b'],'أَنْف':['أُنُوف','b'],'فَم':['أَفْوَاه','b'],'يَد':['أَيْدٍ','b'],'رِجْل':['أَرْجُل','b'],'قَلْب':['قُلُوب','b'],'وَجْه':['وُجُوه','b'],'سِنّ':['أَسْنَان','b'],'لَيْل':['لَيَالٍ','b'],'أُسْبُوع':['أَسَابِيع','b'],'شَهْر':['أَشْهُر','b'],'سَنَة':['سَنَوَات','s'],'وَقْت':['أَوْقَات','b'],'وِسَادَة':['وَسَائِد','b'],'سَجَّادَة':['سَجَاجِيد','b'],'سِتَارَة':['سَتَائِر','b'],'أَرِيكَة':['أَرَائِك','b'],'خِزَانَة':['خَزَائِن','b'],'ثَلَّاجَة':['ثَلَّاجَات','s'],'غَسَّالَة':['غَسَّالَات','s'],'مِنْشَفَة':['مَنَاشِف','b'],'فُرْشَاة':['فُرَش','b'],'سَقْف':['سُقُوف','b'],'جِدَار':['جُدْرَان','b'],'دَرَج':['أَدْرَاج','b'],'صُنْدُوق':['صَنَادِيق','b'],'سَلَّة':['سِلَال','b'],'زُجَاجَة':['زُجَاجَات','s'],'قِدْر':['قُدُور','b'],'مِكْنَسَة':['مَكَانِس','b'],'شَمْعَة':['شُمُوع','b'],'صُورَة':['صُوَر','b'],'بَطَّانِيَّة':['بَطَاطِين','b'],'فُرْن':['أَفْرَان','b'],'جَدّ':['أَجْدَاد','b'],'جَدَّة':['جَدَّات','s'],'عَمّ':['أَعْمَام','b'],'خَال':['أَخْوَال','b'],'عَمَّة':['عَمَّات','s'],'خَالَة':['خَالَات','s'],'عَائِلَة':['عَائِلَات','s'],'ضَيْف':['ضُيُوف','b'],'حَمَّام':['حَمَّامَات','s'],'صَالَة':['صَالَات','s'],'مَلْعَب':['مَلَاعِب','b'],'دُكَّان':['دَكَاكِين','b'],'مَزْرَعَة':['مَزَارِع','b'],'شَاطِئ':['شَوَاطِئ','b'],'وَجْبَة':['وَجْبَات','s'],'كَعْكَة':['كَعْكَات','s'],'حَشَرَة':['حَشَرَات','s'],'فَرَاشَة':['فَرَاشَات','s'],'خَرُوف':['خِرَاف','b'],'أَرْنَب':['أَرَانِب','b'],'فِيل':['أَفْيَال','b'],'قِرْد':['قُرُود','b'],'عُصْفُور':['عَصَافِير','b'],'حَيَوَان':['حَيَوَانَات','s'],'نَبَات':['نَبَاتَات','s'],'نَار':['نِيرَان','b'],'ضَوْء':['أَضْوَاء','b'],'رِيح':['رِيَاح','b'],'إِصْبَع':['أَصَابِع','b'],'ظَهْر':['ظُهُور','b'],'بَطْن':['بُطُون','b'],'كَتِف':['أَكْتَاف','b'],'رُكْبَة':['رُكَب','b'],'قَدَم':['أَقْدَام','b'],'ذِرَاع':['أَذْرُع','b'],'لِسَان':['أَلْسِنَة','b'],'رَقَبَة':['رِقَاب','b'],'ظُفْر':['أَظَافِر','b'],'جِلْد':['جُلُود','b'],'خَدّ':['خُدُود','b'],'جَبْهَة':['جِبَاه','b'],'شَفَة':['شِفَاه','b'],'يَوْم':['أَيَّام','b'],'قَمِيص':['قُمْصَان','b'],'بِنْطَال':['بَنَاطِيل','b'],'فُسْتَان':['فَسَاتِين','b'],'تَنُّورَة':['تَنَانِير','b'],'حِذَاء':['أَحْذِيَة','b'],'جَوْرَب':['جَوَارِب','b'],'قُبَّعَة':['قُبَّعَات','s'],'مِعْطَف':['مَعَاطِف','b'],'وِشَاح':['أَوْشِحَة','b'],'قُفَّاز':['قُفَّازَات','s'],'حِزَام':['أَحْزِمَة','b'],'لُعْبَة':['أَلْعَاب','b'],'دُمْيَة':['دُمًى','b'],'كُرَة':['كُرَات','s'],'دَرَّاجَة':['دَرَّاجَات','s'],'قِصَّة':['قِصَص','b'],'رَسْم':['رُسُوم','b'],'لَوْن':['أَلْوَان','b'],'أُرْجُوحَة':['أَرَاجِيح','b'],'قِطَار':['قِطَارَات','s'],'حَافِلَة':['حَافِلَات','s'],'طَائِرَة':['طَائِرَات','s'],'بَالُون':['بَالُونَات','s'],'أُغْنِيَة':['أَغَانِي','b']};
   var CATCOL={basics:1,people:2,places:3,home:4,food:5,nature:3,body:2,colours:4,describe:1,actions:5,numbers:3,time:1,greet:2,clothes:2,toys:5,feelings:1};
   function colOf(k){return CATCOL[k]||4}
   var BUILTIN=[];
@@ -3819,10 +3831,20 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
   function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
   function sketch(id,cls){return '<svg class="sk '+(cls||'')+'" viewBox="0 0 200 200" aria-hidden="true"><use href="#s-'+id+'"/><use href="#s-'+id+'" class="ghost" transform="translate(1.6 -1.2)"/></svg>'}
 
-  var learned=lsGet('kp-learned',{});
-  var known=lsGet('kp-known',{});
-  var custom=lsGet('kp-custom',[]).filter(function(w){return w&&w.id&&w.ar&&w.en});
-  custom.forEach(function(w){w.custom=true;w.sk='';w.pl=w.pl||'';w.pt=w.pt||''});
+  // Up to 3 learners share a device. Learner p1 keeps the original storage keys so earlier progress carries over.
+  var MAXP=3;
+  var profiles=lsGet('kp-profiles',null);
+  if(!profiles||!profiles.list||!profiles.list.length)profiles={list:[{id:'p1',name:'Learner 1'}],cur:'p1'};
+  if(!profiles.list.some(function(p){return p.id===profiles.cur}))profiles.cur=profiles.list[0].id;
+  function pkey(n,id){id=id||profiles.cur;return id==='p1'?'kp-'+n:'kp-'+id+'-'+n}
+  var learned,known,custom;
+  function loadProfile(){
+    learned=lsGet(pkey('learned'),{});
+    known=lsGet(pkey('known'),{});
+    custom=lsGet(pkey('custom'),[]).filter(function(w){return w&&w.id&&w.ar&&w.en});
+    custom.forEach(function(w){w.custom=true;w.sk='';w.pl=w.pl||'';w.pt=w.pt||''});
+  }
+  loadProfile();
   var voice=lsGet('kp-voice',{name:'',rate:0.85});
   var filter={cat:'all',show:'all',q:'',pl:''};
 
@@ -3832,7 +3854,7 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
   function catName(k){for(var i=0;i<CATS.length;i++)if(CATS[i][0]===k)return CATS[i][1];return 'My words'}
 
   var toastTimer;
-  function toast(t){var el=$('#toast');el.textContent=t;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(function(){el.classList.remove('show')},3200)}
+  function toast(t,ms){var el=$('#toast');el.textContent=t;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(function(){el.classList.remove('show')},ms||3200)}
 
   function refreshVoices(){
     var all=[];try{all=speechSynthesis.getVoices()||[]}catch(e){}
@@ -3843,14 +3865,21 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
       if(!voice.name||!ar.some(function(v){return v.name===voice.name}))voice.name=ar[0].name;
       sel.value=voice.name;
     }
-    $('#voice-note').hidden=ar.length>0;
+    $('#voice-note').hidden=ar.length>0&&!inApp;
+  }
+  // Shown once per visit when a phone gives no sound
+  var soundHelped=false;
+  function soundHelp(){
+    if(soundHelped)return;soundHelped=true;
+    toast('No sound? Turn off silent mode, turn the volume up, and add an Arabic voice in your phone\'s speech settings.',9000);
   }
   function stopSpeech(){
-    try{window.speechSynthesis&&speechSynthesis.cancel()}catch(e){}
+    // Only cancel when something is playing: cancelling an idle queue can swallow the next word on some phones
+    try{var s=window.speechSynthesis;if(s&&(s.speaking||s.pending))s.cancel()}catch(e){}
     document.querySelectorAll('.playing').forEach(function(e){e.classList.remove('playing')});
   }
   function speak(text,el){
-    if(!('speechSynthesis' in window)){toast('This browser cannot speak. Try Chrome or Safari.');return}
+    if(!('speechSynthesis' in window)){toast('This browser cannot speak. Open the site in Chrome or Safari.',6000);return}
     stopSpeech();
     var u=new SpeechSynthesisUtterance(text);
     var vs=[];try{vs=speechSynthesis.getVoices()||[]}catch(e){}
@@ -3858,9 +3887,14 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
     if(v){u.voice=v;u.lang=v.lang}else{u.lang='ar-SA'}
     u.rate=voice.rate;
     if(el)el.classList.add('playing');
+    var started=false;
     function done(){if(el)el.classList.remove('playing')}
-    u.onend=done;u.onerror=done;
-    setTimeout(function(){try{speechSynthesis.speak(u)}catch(e){done()}},60);
+    u.onstart=function(){started=true};
+    u.onend=done;
+    u.onerror=function(e){done();if(!e||(e.error!=='interrupted'&&e.error!=='canceled'))soundHelp()};
+    // Speak straight away, inside the tap: iPhones and some Android browsers block speech started later
+    try{speechSynthesis.resume();speechSynthesis.speak(u)}catch(e){done();soundHelp()}
+    setTimeout(function(){if(!started&&!speechSynthesis.speaking)soundHelp()},2500);
     setTimeout(done,8000);
   }
 
@@ -3939,15 +3973,15 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
     if(kb){
       var kid=kb.dataset.known;
       if(known[kid])delete known[kid];else known[kid]=1;
-      lsSet('kp-known',known);Q.last=null;
+      lsSet(pkey('known'),known);Q.last=null;
       renderWords();
       return;
     }
     var l=e.target.closest('[data-learn]');
     if(l){
       var id=l.dataset.learn;
-      if(learned[id]){delete learned[id];delete known[id];lsSet('kp-known',known)}else learned[id]=1;
-      lsSet('kp-learned',learned);Q.last=null;
+      if(learned[id]){delete learned[id];delete known[id];lsSet(pkey('known'),known)}else learned[id]=1;
+      lsSet(pkey('learned'),learned);Q.last=null;
       renderWords();
       return;
     }
@@ -4124,7 +4158,7 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
     if(ar.length>60||en.length>60){err.textContent='Keep each entry under 60 characters.';err.hidden=false;return}
     err.hidden=true;
     var w={id:'c'+Date.now().toString(36)+Math.floor(Math.random()*1000),ar:ar,en:en,cat:cat==='mine'?'mine':cat,custom:true,sk:'',pl:pl,pt:pl?$('#add-pt').value:''};
-    custom.push(w);lsSet('kp-custom',custom);
+    custom.push(w);lsSet(pkey('custom'),custom);
     $('#add-ar').value='';$('#add-en').value='';$('#add-pl').value='';
     renderMine();renderWords();
     toast('Added '+en+'.');
@@ -4141,7 +4175,7 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
         setTimeout(function(){if(b.isConnected){b.dataset.arm='';b.querySelector('span').textContent='Remove'}},3000);
       }else{
         custom=custom.filter(function(x){return x.id!==id});delete learned[id];delete known[id];
-        lsSet('kp-custom',custom);lsSet('kp-learned',learned);lsSet('kp-known',known);
+        lsSet(pkey('custom'),custom);lsSet(pkey('learned'),learned);lsSet(pkey('known'),known);
         renderMine();renderWords();
         toast('Removed.');
       }
@@ -4168,8 +4202,72 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
     var b=e.target.closest('button[data-act]');if(!b)return;
     var id=b.closest('.row').dataset.id,w=byId(id);
     if(b.dataset.act==='play'){if(w)speak(w.ar,b)}
-    else{delete known[id];lsSet('kp-known',known);Q.last=null;renderKnown();renderWords();toast('Moved back to practice.')}
+    else{delete known[id];lsSet(pkey('known'),known);Q.last=null;renderKnown();renderWords();toast('Moved back to practice.')}
   });
+
+  var whoMode='';
+  function curProfile(){return profiles.list.filter(function(p){return p.id===profiles.cur})[0]}
+  function saveProfiles(){lsSet('kp-profiles',profiles)}
+  function renderWho(){
+    var html='<span class="label">Learner</span>'+profiles.list.map(function(p){
+      return '<button class="chip-btn" type="button" data-pid="'+esc(p.id)+'" aria-pressed="'+(p.id===profiles.cur)+'">'+esc(p.name)+'</button>';
+    }).join('');
+    if(profiles.list.length<MAXP)html+='<button class="chip-btn" type="button" data-who="add">+ Add learner</button>';
+    html+='<button class="linkbtn" type="button" data-who="rename">Rename</button>';
+    if(profiles.list.length>1)html+='<button class="linkbtn" type="button" data-who="remove">Remove</button>';
+    $('#who').innerHTML=html;
+  }
+  function refreshAll(){
+    Q.right=0;Q.total=0;Q.last=null;R.queue=[];R.cur=null;
+    renderWho();renderWords();renderMine();
+    if(!$('#view-known').hidden)renderKnown();
+    if(!$('#view-quiz').hidden)newQ();
+  }
+  function openWhoForm(mode){
+    whoMode=mode;
+    $('#who-name').value=mode==='rename'?curProfile().name:'';
+    $('#who-form').hidden=false;$('#who-name').focus();
+  }
+  $('#who').addEventListener('click',function(e){
+    var p=e.target.closest('[data-pid]');
+    if(p){
+      if(p.dataset.pid===profiles.cur)return;
+      stopSpeech();profiles.cur=p.dataset.pid;saveProfiles();loadProfile();refreshAll();
+      toast('Now learning as '+curProfile().name+'.');
+      return;
+    }
+    var b=e.target.closest('[data-who]');if(!b)return;
+    var act=b.dataset.who;
+    if(act==='add'||act==='rename'){openWhoForm(act);return}
+    if(act==='remove'){
+      if(b.dataset.arm!=='1'){
+        b.dataset.arm='1';b.textContent='Tap again to remove '+curProfile().name;
+        setTimeout(function(){if(b.isConnected){b.dataset.arm='';b.textContent='Remove'}},3000);
+        return;
+      }
+      var gone=curProfile();
+      ['learned','known','custom'].forEach(function(n){try{localStorage.removeItem(pkey(n,gone.id))}catch(err){}});
+      profiles.list=profiles.list.filter(function(x){return x.id!==gone.id});
+      profiles.cur=profiles.list[0].id;saveProfiles();loadProfile();refreshAll();
+      toast('Removed '+gone.name+'.');
+    }
+  });
+  $('#who-form').addEventListener('submit',function(e){
+    e.preventDefault();
+    var name=$('#who-name').value.trim().slice(0,20);
+    if(!name){$('#who-name').focus();return}
+    if(whoMode==='add'){
+      if(profiles.list.length>=MAXP)return;
+      var id='p'+Date.now().toString(36);
+      profiles.list.push({id:id,name:name});profiles.cur=id;
+      saveProfiles();loadProfile();refreshAll();
+      toast('Added '+name+'.');
+    }else{
+      curProfile().name=name;saveProfiles();renderWho();
+    }
+    $('#who-form').hidden=true;
+  });
+  $('#who-cancel').addEventListener('click',function(){$('#who-form').hidden=true});
 
   var tabs=document.querySelectorAll('.tab');
   function show(name){
@@ -4181,9 +4279,17 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
   }
   tabs.forEach(function(t){t.addEventListener('click',function(){show(t.dataset.tab)})});
 
-  renderChips();renderWords();renderAddCats();renderMine();paintRate();
-  if('speechSynthesis' in window){refreshVoices();speechSynthesis.onvoiceschanged=refreshVoices}
-  else{$('#voice-note').textContent='This browser cannot speak Arabic aloud. Try Chrome or Safari.';$('#voice-note').hidden=false}
+  renderWho();renderChips();renderWords();renderAddCats();renderMine();paintRate();
+  // In-app browsers (WhatsApp, Instagram, Facebook and similar) often have no speech at all
+  var inApp=/FBAN|FBAV|Instagram|WhatsApp|Snapchat|TikTok|Line\/|; wv\)/i.test(navigator.userAgent||'');
+  if('speechSynthesis' in window){
+    refreshVoices();
+    if(speechSynthesis.addEventListener)speechSynthesis.addEventListener('voiceschanged',refreshVoices);else speechSynthesis.onvoiceschanged=refreshVoices;
+  }
+  if(!('speechSynthesis' in window)||inApp){
+    $('#voice-note').textContent='This app may not be able to play sound here. Open kalimat.ummahapps.ai in Chrome or Safari.';
+    $('#voice-note').hidden=false;
+  }
 })();
 </script>
 

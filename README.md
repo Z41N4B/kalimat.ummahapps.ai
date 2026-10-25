@@ -10,6 +10,7 @@ A free Arabic vocabulary trainer for beginners. Live at https://kalimat.ummahapp
 - Games: read it, say it from memory, say the plural from memory
 - Mark the words you are learning, then mark them as known well
 - Add your own words
+- Up to 3 learners on one device, each with their own progress
 
 ## SEO and GEO
 `index.html` has meta tags, Open Graph and JSON-LD (WebApplication + FAQPage). `robots.txt`, `sitemap.xml` and `llms.txt` sit at the root.

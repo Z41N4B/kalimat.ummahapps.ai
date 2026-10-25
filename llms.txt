@@ -11,6 +11,7 @@
 - Games: a multiple-choice reading quiz, "say it from memory", and "say the plural from memory".
 - Progress tracking: mark the words you are learning, then mark them as known well.
 - Learners can add their own words, with plurals and groups.
+- Up to three learners can share one device, each with their own progress.
 - Free, no account, no ads. Progress is stored only in the learner's browser.
 
 ## Who it is for
