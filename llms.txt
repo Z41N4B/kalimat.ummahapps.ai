@@ -1,0 +1,23 @@
+# Kalimat
+
+> Kalimat (كلمات, "words") is a free, browser-based Arabic vocabulary trainer for beginners, made by Ummah Apps. URL: https://kalimat.ummahapps.ai/
+
+## What it does
+
+- Over 400 everyday Modern Standard Arabic words in 16 groups: basics, people, places, home and school, food and drink, nature and animals, body, colours, describing words, actions (past-tense verbs), numbers, time and days, greetings, clothes, toys and play, feelings.
+- Every word is written with full harakat (vowel marks) and has an English meaning.
+- Words are spoken aloud using the device's text-to-speech voice, at normal or slow speed.
+- Most nouns show their plural, labelled as a sound plural or broken plural.
+- Games: a multiple-choice reading quiz, "say it from memory", and "say the plural from memory".
+- Progress tracking: mark words as learned, then as known well.
+- Learners can add their own words, with plurals and groups.
+- Free, no account, no ads. Progress is stored only in the learner's browser.
+
+## Who it is for
+
+Beginners of any age learning Arabic: children, home-schooling families, and adults in Quranic or Madinah-style Arabic classes.
+
+## Links
+
+- App: https://kalimat.ummahapps.ai/
+- Publisher: https://ummahapps.ai/
