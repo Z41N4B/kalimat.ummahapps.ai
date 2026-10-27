@@ -8,7 +8,7 @@
 - Every word is written with full harakat (vowel marks) and has an English meaning.
 - Words are spoken aloud using the device's text-to-speech voice, at normal or slow speed.
 - Most nouns and describing words show their plural, labelled as a sound plural or broken plural.
-- Games: a multiple-choice reading quiz, "say it from memory", and "say the plural from memory".
+- Games: a multiple-choice reading quiz, "say it from memory", "say the plural from memory", and "revise known words", which quizzes Known well words in both directions.
 - Progress tracking: mark the words you are learning, then mark them as known well.
 - Learners can add their own words, with plurals and groups.
 - Up to three learners can share one device, each with their own progress.

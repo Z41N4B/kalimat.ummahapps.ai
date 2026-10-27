@@ -80,6 +80,7 @@
         "Sound and broken plurals for nouns",
         "Multiple-choice reading quiz",
         "Say-it-from-memory and say-the-plural games",
+        "Revision game for words you know well",
         "Learning and known-well progress tracking",
         "Add your own words",
         "Up to 3 learners on one device"
@@ -3711,6 +3712,7 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
           <button class="chip-btn" type="button" data-mode="read" aria-pressed="true">Read it</button>
           <button class="chip-btn" type="button" data-mode="recall" aria-pressed="false">Say it from memory</button>
           <button class="chip-btn" type="button" data-mode="pl" aria-pressed="false">Say the plural from memory</button>
+          <button class="chip-btn" type="button" data-mode="revise" aria-pressed="false">Revise known words</button>
         </div>
       </div>
       <div id="q-empty" hidden><p class="lead" id="q-empty-text"></p><button class="btn primary" id="q-go" type="button">Go to Words</button></div>
@@ -3738,12 +3740,13 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
 
     <section id="view-known" hidden aria-labelledby="h-known">
       <h2 id="h-known">Known well</h2>
-      <p class="lead">Words you know really well. They no longer come up in the game.</p>
+      <p class="lead">Words you know really well. They no longer come up in the main game. Tap Revise these words now and then to check you still remember them.</p>
       <div class="chips">
         <div class="seg" id="k-mode" role="group" aria-label="Show">
           <button type="button" data-k="ar" aria-pressed="true">Arabic only</button>
           <button type="button" data-k="en" aria-pressed="false">English only</button>
         </div>
+        <button class="btn primary small" id="k-revise" type="button" hidden>Revise these words</button>
       </div>
       <p class="count" id="k-count"></p>
       <ul class="rows" id="k-list"></ul>
@@ -3776,7 +3779,7 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
   <footer class="about" aria-labelledby="h-about">
     <h2 id="h-about">About Kalimat</h2>
     <p>Kalimat (<span lang="ar" dir="rtl">كَلِمَات</span>, "words") is a free Arabic vocabulary trainer for beginners. It has over 400 everyday Modern Standard Arabic words in 16 groups: basics, people, places, home and school, food and drink, nature and animals, the body, colours, describing words, actions, numbers, time, greetings, clothes, toys and play, and feelings.</p>
-    <p>Every word is written with full harakat (vowel marks) and can be heard aloud at normal or slow speed. Most nouns and describing words show their plural, marked as a sound plural or a broken plural. Mark the words you are learning, practise them in the reading quiz or by saying them from memory, and move them to Known well when you have mastered them. You can also add words from your own lessons.</p>
+    <p>Every word is written with full harakat (vowel marks) and can be heard aloud at normal or slow speed. Most nouns and describing words show their plural, marked as a sound plural or a broken plural. Mark the words you are learning, practise them in the reading quiz or by saying them from memory, and move them to Known well when you have mastered them, then revise them now and then so they stay fresh. You can also add words from your own lessons.</p>
     <details><summary>Is Kalimat free?</summary><p>Yes. Kalimat is free, needs no account and runs in your web browser.</p></details>
     <details><summary>How does Kalimat pronounce the Arabic words?</summary><p>It uses your device's built-in text-to-speech voice. For the best pronunciation, add an Arabic voice in your phone or computer's speech or language settings, then choose it in the Voice menu.</p></details>
     <details><summary>Does Kalimat teach Arabic plurals?</summary><p>Yes. Most nouns and describing words show their plural and say whether it is a sound plural or a broken plural, and there is a game for saying the plural from memory.</p></details>
@@ -3869,7 +3872,7 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
   var soundHelped=false;
   function soundHelp(){
     if(soundHelped)return;soundHelped=true;
-    toast('No sound? Turn off silent mode, turn the volume up, and add an Arabic voice in your phone\'s speech settings.',9000);
+    toast('No sound? Turn off silent mode and turn the volume up. Add an Arabic voice in your phone\'s text-to-speech settings, then restart the phone.',10000);
   }
   function stopSpeech(){
     // Only cancel when something is playing: cancelling an idle queue can swallow the next word on some phones
@@ -4005,15 +4008,19 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
   function quizPool(){return allWords().filter(function(w){return learned[w.id]&&!known[w.id]})}
   function renderScore(){$('#q-score').textContent='Right first time: '+Q.right+' of '+Q.total}
   function newQ(){
-    var pool=quizPool();
+    // Revise quizzes Known well words; wrong answers are drawn from every word so one known word is enough
+    var revise=(Q.mode==='revise');
+    var pool=revise?allWords().filter(function(w){return known[w.id]}):quizPool();
     var plMode=(Q.mode==='pl');
     if(plMode)pool=pool.filter(function(w){return w.pl});
     var recall=(Q.mode==='recall'||Q.mode==='pl');
-    var ok=pool.length>=(recall?1:4);
+    var ok=pool.length>=(recall||revise?1:4);
     $('#q-play').hidden=!ok;$('#q-empty').hidden=ok;
     if(!ok){
       var n=pool.length;
-      $('#q-empty-text').textContent=plMode
+      $('#q-empty-text').textContent=revise
+        ?'Revise uses the words in your Known well list, and you have none yet. On the Words tab, tap Known well on a word you know really well.'
+        :plMode
         ?'Saying plurals uses nouns you are still practising that have a plural. You have '+n+'. Mark at least 1 such word as Learning on the Words tab to start.'
         :recall
         ?'Say it from memory uses words you are still practising. You have '+n+'. Mark at least 1 word as Learning on the Words tab to start.'
@@ -4026,22 +4033,27 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
     var cands=pool.filter(function(w){return w.id!==Q.last});
     if(!cands.length)cands=pool;
     var t=cands[Math.floor(Math.random()*cands.length)];
+    var dpool=revise?allWords():pool;
     var d;
-      var same=shuffle(pool.filter(function(w){return w.cat===t.cat&&w.id!==t.id&&w.en!==t.en&&w.ar!==t.ar}));
+      var same=shuffle(dpool.filter(function(w){return w.cat===t.cat&&w.id!==t.id&&w.en!==t.en&&w.ar!==t.ar}));
       d=same.slice(0,3);
       if(d.length<3){
         var ids=d.map(function(w){return w.id});
-        d=d.concat(shuffle(pool.filter(function(w){return w.id!==t.id&&w.en!==t.en&&w.ar!==t.ar&&ids.indexOf(w.id)<0})).slice(0,3-d.length));
+        d=d.concat(shuffle(dpool.filter(function(w){return w.id!==t.id&&w.en!==t.en&&w.ar!==t.ar&&ids.indexOf(w.id)<0})).slice(0,3-d.length));
       }
-    Q.target=t;Q.last=t.id;Q.opts=shuffle([t].concat(d));Q.locked=false;Q.answered=false;
+    Q.target=t;Q.last=t.id;Q.opts=shuffle([t].concat(d));Q.locked=false;Q.answered=false;Q.firstWrong=false;
+    // Revise asks both ways round: Arabic to English, or English to Arabic
+    Q.dir=revise&&Math.random()<.5?'en':'ar';
     var p=$('#q-prompt');
     var hearBtn='<button class="btn small" id="q-listen" type="button">'+ICON.speaker+'<span>Hear it</span></button>';
-    if(Q.mode==='read'){
+    if(Q.dir==='en'){
+      p.innerHTML='<span class="en-big">'+esc(t.en)+'</span><span class="meta">Which Arabic word is it?</span>';
+    }else{
       p.innerHTML='<span class="ar" lang="ar" dir="rtl">'+esc(t.ar)+'</span>'+hearBtn+'<span class="meta">What does it mean?</span>';
     }
     $('#q-opts').classList.remove('done');
     $('#q-opts').innerHTML=Q.opts.map(function(w){
-      var label='<span>'+esc(w.en)+'</span>';
+      var label=Q.dir==='en'?'<span class="ar" lang="ar" dir="rtl">'+esc(w.ar)+'</span>':'<span>'+esc(w.en)+'</span>';
       return '<button class="qopt" type="button" data-id="'+esc(w.id)+'">'+label+'<span class="mark" aria-hidden="true"></span></button>';
     }).join('');
     $('#q-msg').textContent='';
@@ -4101,23 +4113,32 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
   $('#r-no').addEventListener('click',function(){judgeRecall(false)});
 
   $('#q-next').addEventListener('click',newQ);
+  $('#q-msg').addEventListener('click',function(e){
+    var b=e.target.closest('#q-back');if(!b||!Q.target)return;
+    delete known[Q.target.id];lsSet(pkey('known'),known);renderWords();
+    b.remove();toast('Moved back to Learning.');
+  });
+  function setMode(mode){
+    Q.mode=mode;
+    document.querySelectorAll('#q-mode button').forEach(function(x){x.setAttribute('aria-pressed',String(x.dataset.mode===mode))});
+  }
   $('#q-go').addEventListener('click',function(){show('words')});
   $('#q-mode').addEventListener('click',function(e){
     var b=e.target.closest('button[data-mode]');if(!b)return;
-    Q.mode=b.dataset.mode;
-    document.querySelectorAll('#q-mode button').forEach(function(x){x.setAttribute('aria-pressed',String(x===b))});
+    setMode(b.dataset.mode);
     newQ();
   });
   $('#q-opts').addEventListener('click',function(e){
     var b=e.target.closest('.qopt');if(!b||Q.locked||!Q.target)return;
     var good=b.dataset.id===Q.target.id;
-    if(!Q.answered){Q.answered=true;Q.total++;if(good)Q.right++;renderScore()}
+    if(!Q.answered){Q.answered=true;Q.firstWrong=!good;Q.total++;if(good)Q.right++;renderScore()}
     if(good){
       Q.locked=true;b.classList.add('hit');
       var m=b.querySelector('.mark');m.className='mark ok';m.innerHTML=ICON.check;
       $('#q-opts').classList.add('done');
       tone(true);
-      $('#q-msg').innerHTML='Yes! <span class="ar-s" lang="ar" dir="rtl">'+esc(Q.target.ar)+'</span> means '+esc(Q.target.en)+'.';
+      $('#q-msg').innerHTML='Yes! <span class="ar-s" lang="ar" dir="rtl">'+esc(Q.target.ar)+'</span> means '+esc(Q.target.en)+'.'+
+        (Q.mode==='revise'&&Q.firstWrong&&known[Q.target.id]?' <button class="btn small" id="q-back" type="button">Practise this word again</button>':'');
       (function(t){setTimeout(function(){if(Q.target&&Q.target.id===t.id)speak(t.ar,null)},600)})(Q.target);
       $('#q-next').hidden=false;$('#q-next').focus();
     }else{
@@ -4185,6 +4206,7 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
     var list=allWords().filter(function(w){return known[w.id]});
     document.querySelectorAll('#k-mode button').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.k===kmode))});
     $('#k-count').textContent=list.length+(list.length===1?' word':' words')+' known well';
+    $('#k-revise').hidden=!list.length;
     $('#k-list').innerHTML=list.length?list.map(function(w){
       var main=kmode==='ar'?'<span class="ar-s" lang="ar" dir="rtl">'+esc(w.ar)+'</span>':'<span class="en-k">'+esc(w.en)+'</span>';
       return '<li class="row" data-id="'+esc(w.id)+'" style="--c:var(--h'+colOf(w.cat)+')"><div class="info">'+main+'</div>'+
@@ -4192,6 +4214,7 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
         '<button class="btn small" type="button" data-act="back">Practise again</button></li>';
     }).join(''):'<li class="lead">Nothing here yet. On the Words tab, mark a word as Learning, then tap Known well when you know it really well.</li>';
   }
+  $('#k-revise').addEventListener('click',function(){setMode('revise');show('quiz')});
   $('#k-mode').addEventListener('click',function(e){
     var b=e.target.closest('button[data-k]');if(!b)return;
     kmode=b.dataset.k;lsSet('kp-kmode',kmode);renderKnown();
