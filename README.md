@@ -8,7 +8,8 @@ A free Arabic vocabulary trainer for beginners. Live at https://kalimat.ummahapp
 - Tap any word to hear it, at normal or slow speed (uses the device's Arabic text-to-speech voice)
 - Sound and broken plurals for most nouns and describing words
 - Games: read it, pick the picture, say it from memory, say the plural from memory, revise known words, with an optional 10 or 20 second timer
-- Mark the words you are learning, then mark them as known well
+- Mark the words you are learning, then mark them as known well (or get a word right first time 5 times in a row and it moves there by itself)
+- Spaced checks on Known well words: after 3 days, 1 week, 2 weeks, 1 month and 2 months
 - Add your own words
 - Up to 3 learners on one device, each with their own progress
 

@@ -203,6 +203,7 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
 .chip-btn[data-cat][aria-pressed="true"]::before{background:var(--on-accent)}
 .note{padding:10px 14px;border:1.5px solid var(--bad);border-radius:12px;color:var(--bad);margin:0 0 14px;font-weight:700}
 .count{font-weight:800;margin:0 0 12px}
+.due{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;padding:10px 14px;border:1.5px solid var(--accent);border-radius:12px;margin:0 0 14px;font-weight:700}
 
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px}
 .cell{display:flex;flex-direction:column;gap:6px;min-width:0}
@@ -3676,7 +3677,7 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
   <main>
     <section id="view-words" aria-labelledby="h-words">
       <h2 id="h-words">Tap a word to hear it</h2>
-      <p class="lead">Tap Learning on the words you are working on. The game only uses words marked Learning. Tap Plural on a card to see and hear its plural. When you know a word really well, tap Known well: it leaves the game and moves to the Known well tab. Tap My Learning words to see only the words you are practising. Use the groups, search and filter to focus on what you are working on.</p>
+      <p class="lead">Tap Learning on the words you are working on. The game only uses words marked Learning. Tap Plural on a card to see and hear its plural. When you know a word really well, tap Known well: it leaves the game and moves to the Known well tab. A word also moves there by itself when you get it right first time 5 times in a row in the games. Tap My Learning words to see only the words you are practising. Use the groups, search and filter to focus on what you are working on.</p>
 
       <div class="voice-row">
         <label for="voice-sel">Voice</label>
@@ -3688,6 +3689,7 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
       </div>
       <p class="note" id="voice-note" hidden><span id="voice-note-text">If the words do not sound like Arabic, add an Arabic voice in your device's text-to-speech settings, then restart the device.</span> <button class="linkbtn" id="voice-note-hide" type="button">Hide</button></p>
 
+      <p class="due" id="due-note" hidden><span id="due-text"></span> <button class="btn primary small" id="due-go" type="button">Check them</button></p>
       <div class="actions" style="margin:0 0 14px"><button class="btn" id="only-learning" type="button" aria-pressed="false">My Learning words</button></div>
       <div class="chips" id="chips"></div>
       <div class="toolbar">
@@ -3752,7 +3754,7 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
 
     <section id="view-known" hidden aria-labelledby="h-known">
       <h2 id="h-known">Known well</h2>
-      <p class="lead">Words you know really well. They no longer come up in the main game. Tap Revise these words now and then to check you still remember them.</p>
+      <p class="lead">Words you know really well. They no longer come up in the main game. Instead, each word comes back for a quick check after 3 days, then 1 week, 2 weeks, 1 month and 2 months. If you get one wrong, it comes back the next day.</p>
       <div class="chips">
         <div class="seg" id="k-mode" role="group" aria-label="Show">
           <button type="button" data-k="ar" aria-pressed="true">Arabic only</button>
@@ -3850,10 +3852,11 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
   if(!profiles||!profiles.list||!profiles.list.length)profiles={list:[{id:'p1',name:'Learner 1'}],cur:'p1'};
   if(!profiles.list.some(function(p){return p.id===profiles.cur}))profiles.cur=profiles.list[0].id;
   function pkey(n,id){id=id||profiles.cur;return id==='p1'?'kp-'+n:'kp-'+id+'-'+n}
-  var learned,known,custom;
+  var learned,known,custom,stats;
   function loadProfile(){
     learned=lsGet(pkey('learned'),{});
     known=lsGet(pkey('known'),{});
+    stats=lsGet(pkey('stats'),{});
     custom=lsGet(pkey('custom'),[]).filter(function(w){return w&&w.id&&w.ar&&w.en});
     custom.forEach(function(w){w.custom=true;w.sk='';w.pl=w.pl||'';w.pt=w.pt||''});
   }
@@ -3862,6 +3865,42 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
   var filter={cat:'all',show:'all',q:'',pl:''};
 
   function allWords(){return BUILTIN.concat(custom)}
+
+  // Word progress per learner: s = right first time in a row (Learning words),
+  // d = when a Known well word is next due a check, v = how far along the check gaps it is
+  var STREAK=5,GAPS=[3,7,14,30,60],DAY=864e5;
+  function st(id){return stats[id]||(stats[id]={s:0})}
+  function saveStats(){lsSet(pkey('stats'),stats)}
+  function setKnown(id,on){
+    var s=st(id);s.s=0;
+    if(on){known[id]=1;s.v=0;s.d=Date.now()+GAPS[0]*DAY}else{delete known[id];delete s.v;delete s.d}
+    lsSet(pkey('known'),known);saveStats();Q.last=null;
+  }
+  // Words marked Known well before checks existed have no date, so they are due straight away
+  function isDue(id){var s=stats[id];return !s||!s.d||s.d<=Date.now()}
+  function dueWords(){return allWords().filter(function(w){return known[w.id]&&isDue(w.id)})}
+  function gapText(days){return days<=1?'tomorrow':days<14?'in '+days+' days':days<30?'in '+Math.round(days/7)+' weeks':days<60?'in 1 month':'in '+Math.round(days/30)+' months'}
+  // A first answer in a practice game; returns true when the word has just moved to Known well
+  function countRight(id,ok){
+    if(!learned[id]||known[id])return false;
+    var s=st(id);s.s=ok?(s.s||0)+1:0;
+    if(s.s>=STREAK){setKnown(id,true);renderWords();return true}
+    saveStats();return false;
+  }
+  // A first answer in Revise: right pushes the next check further away, wrong brings it back tomorrow
+  function checked(id,ok){
+    if(!known[id])return;
+    var wasDue=dueWords().length,s=st(id);
+    s.v=ok?Math.min((s.v||0)+1,GAPS.length-1):0;
+    s.d=Date.now()+(ok?GAPS[s.v]:1)*DAY;
+    saveStats();renderDue();
+    if(wasDue&&!dueWords().length)toast('All checks done. Masha Allah!');
+  }
+  function renderDue(){
+    var n=dueWords().length;
+    $('#due-note').hidden=!n;
+    $('#due-text').textContent=n+(n===1?' Known well word is':' Known well words are')+' due for a check.';
+  }
   function byId(id){return allWords().filter(function(w){return w.id===id})[0]}
   function inCat(w,c){return c==='all'||(c==='mine'?!!w.custom:w.cat===c)}
   function catName(k){for(var i=0;i<CATS.length;i++)if(CATS[i][0]===k)return CATS[i][1];return 'My words'}
@@ -3955,6 +3994,7 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
   function renderCount(){
     var all=allWords(),n=all.filter(function(w){return learned[w.id]}).length,k=all.filter(function(w){return known[w.id]}).length;
     $('#count').textContent=all.length+' words · '+n+' learning · '+k+' known well';
+    renderDue();
     var only=filter.show==='learned';
     $('#only-learning').textContent=only?'Show all words':'My Learning words ('+n+')';
     $('#only-learning').setAttribute('aria-pressed',String(only));
@@ -3998,15 +4038,14 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
     var kb=e.target.closest('[data-known]');
     if(kb){
       var kid=kb.dataset.known;
-      if(known[kid])delete known[kid];else known[kid]=1;
-      lsSet(pkey('known'),known);Q.last=null;
+      setKnown(kid,!known[kid]);
       renderWords();
       return;
     }
     var l=e.target.closest('[data-learn]');
     if(l){
       var id=l.dataset.learn;
-      if(learned[id]){delete learned[id];delete known[id];lsSet(pkey('known'),known)}else learned[id]=1;
+      if(learned[id]){delete learned[id];delete known[id];delete stats[id];lsSet(pkey('known'),known);saveStats()}else learned[id]=1;
       lsSet(pkey('learned'),learned);Q.last=null;
       renderWords();
       return;
@@ -4052,7 +4091,10 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
   function timeUp(){
     if(Q.locked||!Q.target)return;
     Q.locked=true;
-    if(!Q.answered){Q.answered=true;Q.total++;renderScore()}
+    if(!Q.answered){
+      Q.answered=true;Q.total++;renderScore();
+      if(Q.mode==='revise')checked(Q.target.id,false);else countRight(Q.target.id,false);
+    }
     var b=$('#q-opts .qopt[data-id="'+Q.target.id+'"]');
     if(b){b.classList.add('hit');var m=b.querySelector('.mark');m.className='mark ok';m.innerHTML=ICON.check}
     $('#q-opts').classList.add('done');
@@ -4072,7 +4114,9 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
     // Revise quizzes Known well words; wrong answers are drawn from every word so one known word is enough
     var revise=(Q.mode==='revise');
     var pic=(Q.mode==='pic');
-    var pool=revise?allWords().filter(function(w){return known[w.id]}):quizPool();
+    // Revise asks the words due for a check first, then any Known well word
+    var due=revise?dueWords():[];
+    var pool=revise?(due.length?due:allWords().filter(function(w){return known[w.id]})):quizPool();
     var plMode=(Q.mode==='pl');
     if(plMode)pool=pool.filter(function(w){return w.pl});
     if(pic)pool=pool.filter(function(w){return w.sk});
@@ -4175,6 +4219,8 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
     R.stage='done';
     var id=R.cur;
     Q.total++;if(ok)Q.right++;
+    var w=byId(id);
+    if(countRight(id,ok)&&w)toast('Masha Allah! '+w.en+' was right 5 times in a row, so it has moved to Known well.');
     if(ok){tone(true);R.queue.push(id)}
     else{tone(false);R.queue.splice(Math.min(2,R.queue.length),0,id)}
     renderScore();
@@ -4186,7 +4232,7 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
   $('#q-next').addEventListener('click',newQ);
   $('#q-msg').addEventListener('click',function(e){
     var b=e.target.closest('#q-back');if(!b||!Q.target)return;
-    delete known[Q.target.id];lsSet(pkey('known'),known);renderWords();
+    setKnown(Q.target.id,false);renderWords();
     b.remove();toast('Moved back to Learning.');
   });
   function setMode(mode){
@@ -4202,15 +4248,24 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
   $('#q-opts').addEventListener('click',function(e){
     var b=e.target.closest('.qopt');if(!b||Q.locked||!Q.target)return;
     var good=b.dataset.id===Q.target.id;
-    if(!Q.answered){Q.answered=true;Q.firstWrong=!good;Q.total++;if(good)Q.right++;renderScore()}
+    var promoted=false,first=!Q.answered;
+    if(first){
+      Q.answered=true;Q.firstWrong=!good;Q.total++;if(good)Q.right++;renderScore();
+      if(Q.mode==='revise')checked(Q.target.id,good);else promoted=countRight(Q.target.id,good);
+    }
     if(good){
+      // Progress towards Known well, or the date of the next check in Revise
+      var s=stats[Q.target.id],extra='';
+      if(promoted)extra=' Masha Allah! That is 5 times in a row, so it has moved to Known well.';
+      else if(Q.mode==='revise'&&first&&s&&s.d)extra=' Next check '+gapText(GAPS[s.v||0])+'.';
+      else if(Q.mode!=='revise'&&first&&s&&s.s)extra=' Right first time '+s.s+' of '+STREAK+' in a row.';
       stopTimer();
       Q.locked=true;b.classList.add('hit');
       var m=b.querySelector('.mark');m.className='mark ok';m.innerHTML=ICON.check;
       $('#q-opts').classList.add('done');
       tone(true);
       // After a correct answer, show the picture too (unless the choices were pictures already)
-      $('#q-msg').innerHTML=(Q.target.sk&&Q.mode!=='pic'&&Q.dir!=='en'?sketch(Q.target.sk,'thumb'):'')+'Yes! <span class="ar-s" lang="ar" dir="rtl">'+esc(Q.target.ar)+'</span> means '+esc(Q.target.en)+'.'+
+      $('#q-msg').innerHTML=(Q.target.sk&&Q.mode!=='pic'&&Q.dir!=='en'?sketch(Q.target.sk,'thumb'):'')+'Yes! <span class="ar-s" lang="ar" dir="rtl">'+esc(Q.target.ar)+'</span> means '+esc(Q.target.en)+'.'+esc(extra)+
         (Q.mode==='revise'&&Q.firstWrong&&known[Q.target.id]?' <button class="btn small" id="q-back" type="button">Practise this word again</button>':'');
       (function(t){setTimeout(function(){if(Q.target&&Q.target.id===t.id)speak(t.ar,null)},600)})(Q.target);
       $('#q-next').hidden=false;$('#q-next').focus();
@@ -4266,8 +4321,8 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
         b.dataset.arm='1';b.querySelector('span').textContent='Tap again';
         setTimeout(function(){if(b.isConnected){b.dataset.arm='';b.querySelector('span').textContent='Remove'}},3000);
       }else{
-        custom=custom.filter(function(x){return x.id!==id});delete learned[id];delete known[id];
-        lsSet(pkey('custom'),custom);lsSet(pkey('learned'),learned);lsSet(pkey('known'),known);
+        custom=custom.filter(function(x){return x.id!==id});delete learned[id];delete known[id];delete stats[id];
+        lsSet(pkey('custom'),custom);lsSet(pkey('learned'),learned);lsSet(pkey('known'),known);saveStats();
         renderMine();renderWords();
         toast('Removed.');
       }
@@ -4276,13 +4331,18 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
 
   var kmode=lsGet('kp-kmode','ar');if(kmode!=='ar'&&kmode!=='en')kmode='ar';
   function renderKnown(){
+    // Words due for a check come first
     var list=allWords().filter(function(w){return known[w.id]});
+    var due=list.filter(function(w){return isDue(w.id)});
+    list=due.concat(list.filter(function(w){return !isDue(w.id)}));
     document.querySelectorAll('#k-mode button').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.k===kmode))});
-    $('#k-count').textContent=list.length+(list.length===1?' word':' words')+' known well';
+    $('#k-count').textContent=list.length+(list.length===1?' word':' words')+' known well'+(due.length?' · '+due.length+' due for a check':'');
     $('#k-revise').hidden=!list.length;
+    $('#k-revise').textContent=due.length?'Check '+due.length+(due.length===1?' due word':' due words'):'Revise these words';
     $('#k-list').innerHTML=list.length?list.map(function(w){
       var main=kmode==='ar'?'<span class="ar-s" lang="ar" dir="rtl">'+esc(w.ar)+'</span>':'<span class="en-k">'+esc(w.en)+'</span>';
-      return '<li class="row" data-id="'+esc(w.id)+'" style="--c:var(--h'+colOf(w.cat)+')"><div class="info">'+main+'</div>'+
+      var when=isDue(w.id)?'Due for a check':'Next check '+gapText(Math.ceil((stats[w.id].d-Date.now())/DAY));
+      return '<li class="row" data-id="'+esc(w.id)+'" style="--c:var(--h'+colOf(w.cat)+')"><div class="info">'+main+'<span class="en-s">'+when+'</span></div>'+
         '<button class="btn small" type="button" data-act="play">'+ICON.speaker+'<span>Hear it</span></button>'+
         '<button class="btn small" type="button" data-act="back">Practise again</button></li>';
     }).join(''):'<li class="lead">Nothing here yet. On the Words tab, mark a word as Learning, then tap Known well when you know it really well.</li>';
@@ -4296,8 +4356,9 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
     var b=e.target.closest('button[data-act]');if(!b)return;
     var id=b.closest('.row').dataset.id,w=byId(id);
     if(b.dataset.act==='play'){if(w)speak(w.ar,b)}
-    else{delete known[id];lsSet(pkey('known'),known);Q.last=null;renderKnown();renderWords();toast('Moved back to practice.')}
+    else{setKnown(id,false);renderKnown();renderWords();toast('Moved back to practice.')}
   });
+  $('#due-go').addEventListener('click',function(){setMode('revise');show('quiz')});
 
   var whoMode='';
   function curProfile(){return profiles.list.filter(function(p){return p.id===profiles.cur})[0]}
@@ -4340,7 +4401,7 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
         return;
       }
       var gone=curProfile();
-      ['learned','known','custom'].forEach(function(n){try{localStorage.removeItem(pkey(n,gone.id))}catch(err){}});
+      ['learned','known','custom','stats'].forEach(function(n){try{localStorage.removeItem(pkey(n,gone.id))}catch(err){}});
       profiles.list=profiles.list.filter(function(x){return x.id!==gone.id});
       profiles.cur=profiles.list[0].id;saveProfiles();loadProfile();refreshAll();
       toast('Removed '+gone.name+'.');

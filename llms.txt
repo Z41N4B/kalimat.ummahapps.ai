@@ -11,7 +11,7 @@
 - Games: a multiple-choice reading quiz, "pick the picture" (match the Arabic word to its sketch), "say it from memory", "say the plural from memory", and "revise known words", which quizzes Known well words in both directions. An optional timer (10 or 20 seconds) can be switched on.
 - Every word has a pencil sketch, shown on the cards and in the games.
 - A "My Learning words" button shows only the words being practised.
-- Progress tracking: mark the words you are learning, then mark them as known well.
+- Progress tracking: mark the words you are learning, then mark them as known well. A word moves to Known well by itself after 5 right-first-time answers in a row in the games. Known well words come back for spaced checks (after 3 days, 1 week, 2 weeks, 1 month, then 2 months; a wrong answer brings the word back the next day).
 - Learners can add their own words, with plurals and groups.
 - Up to three learners can share one device, each with their own progress.
 - Free, no account, no ads. Progress is stored only in the learner's browser.
