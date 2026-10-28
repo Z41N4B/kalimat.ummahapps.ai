@@ -8,7 +8,9 @@
 - Every word is written with full harakat (vowel marks) and has an English meaning.
 - Words are spoken aloud using the device's text-to-speech voice, at normal or slow speed.
 - Most nouns and describing words show their plural, labelled as a sound plural or broken plural.
-- Games: a multiple-choice reading quiz, "say it from memory", "say the plural from memory", and "revise known words", which quizzes Known well words in both directions.
+- Games: a multiple-choice reading quiz, "pick the picture" (match the Arabic word to its sketch), "say it from memory", "say the plural from memory", and "revise known words", which quizzes Known well words in both directions. An optional timer (10 or 20 seconds) can be switched on.
+- Every word has a pencil sketch, shown on the cards and in the games.
+- A "My Learning words" button shows only the words being practised.
 - Progress tracking: mark the words you are learning, then mark them as known well.
 - Learners can add their own words, with plurals and groups.
 - Up to three learners can share one device, each with their own progress.

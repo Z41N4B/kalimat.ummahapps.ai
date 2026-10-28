@@ -81,6 +81,8 @@
         "Multiple-choice reading quiz",
         "Say-it-from-memory and say-the-plural games",
         "Revision game for words you know well",
+        "Pick-the-picture game with a pencil sketch for every word",
+        "Optional gentle timer for the games",
         "Learning and known-well progress tracking",
         "Add your own words",
         "Up to 3 learners on one device"
@@ -175,6 +177,13 @@ h2{font-size:1.25rem;margin:0 0 4px;font-weight:800}
 .btn.small{min-height:38px;padding:6px 12px;font-size:.9rem}
 .btn.big{min-height:56px;padding:10px 26px;font-size:1.1rem}
 .btn.playing,.card.playing{border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-soft)}
+.btn[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+.qopt.picopt{min-height:104px;padding:6px 48px 6px 6px}
+.qopt.picopt .sk{max-width:84px}
+.msg .sk.thumb{margin:0 0 4px}
+.gb-right{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.tbar{height:4px;max-width:320px;margin:-8px auto 14px;background:var(--line);border-radius:4px;overflow:hidden}
+.tbar i{display:block;height:100%;background:var(--accent);opacity:.6;transform-origin:left center}
 
 input[type="text"],select{font:inherit;min-height:44px;padding:8px 12px;border:1.5px solid var(--line);border-radius:12px;background:var(--card);color:var(--ink);width:100%;min-width:0}
 input.arin{font-family:var(--font-ar);font-size:1.5rem}
@@ -276,7 +285,7 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
 @media (max-width:640px){.row2{grid-template-columns:1fr 1fr}.row2 input{grid-column:1/-1}}
 #toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);max-width:min(92vw,420px);background:var(--ink);color:var(--paper);padding:10px 18px;border-radius:999px;font-weight:700;font-size:.95rem;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:20;text-align:center}
 #toast.show{opacity:1;transform:translate(-50%,0)}
-@media (max-width:420px){.qopts{grid-template-columns:1fr}.row2{grid-template-columns:1fr}}
+@media (max-width:420px){.qopts{grid-template-columns:1fr}.qopts.pics{grid-template-columns:repeat(2,minmax(0,1fr))}.row2{grid-template-columns:1fr}}
 @media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -3667,7 +3676,7 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
   <main>
     <section id="view-words" aria-labelledby="h-words">
       <h2 id="h-words">Tap a word to hear it</h2>
-      <p class="lead">Tap Learning on the words you are working on. The game only uses words marked Learning. Tap Plural on a card to see and hear its plural. When you know a word really well, tap Known well: it leaves the game and moves to the Known well tab. Use the groups, search and filter to focus on what you are working on.</p>
+      <p class="lead">Tap Learning on the words you are working on. The game only uses words marked Learning. Tap Plural on a card to see and hear its plural. When you know a word really well, tap Known well: it leaves the game and moves to the Known well tab. Tap My Learning words to see only the words you are practising. Use the groups, search and filter to focus on what you are working on.</p>
 
       <div class="voice-row">
         <label for="voice-sel">Voice</label>
@@ -3679,6 +3688,7 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
       </div>
       <p class="note" id="voice-note" hidden>No Arabic voice was found on this device, so the default voice is used and may sound wrong. Add an Arabic voice in your device's speech or language settings for better results.</p>
 
+      <div class="actions" style="margin:0 0 14px"><button class="btn" id="only-learning" type="button" aria-pressed="false">My Learning words</button></div>
       <div class="chips" id="chips"></div>
       <div class="toolbar">
         <div class="row2">
@@ -3705,11 +3715,12 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
     <section id="view-quiz" hidden aria-labelledby="h-quiz">
       <div class="game-bar">
         <h2 id="h-quiz">Game</h2>
-        <span class="score" id="q-score"></span>
+        <span class="gb-right"><span class="score" id="q-score"></span><button class="linkbtn" id="q-timer" type="button" aria-pressed="false">Timer: off</button></span>
       </div>
       <div class="toolbar">
         <div class="chips" id="q-mode" role="group" aria-label="Game type" style="margin-bottom:0">
           <button class="chip-btn" type="button" data-mode="read" aria-pressed="true">Read it</button>
+          <button class="chip-btn" type="button" data-mode="pic" aria-pressed="false">Pick the picture</button>
           <button class="chip-btn" type="button" data-mode="recall" aria-pressed="false">Say it from memory</button>
           <button class="chip-btn" type="button" data-mode="pl" aria-pressed="false">Say the plural from memory</button>
           <button class="chip-btn" type="button" data-mode="revise" aria-pressed="false">Revise known words</button>
@@ -3718,6 +3729,7 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
       <div id="q-empty" hidden><p class="lead" id="q-empty-text"></p><button class="btn primary" id="q-go" type="button">Go to Words</button></div>
       <div id="q-play">
         <div class="prompt" id="q-prompt"></div>
+        <div class="tbar" id="q-tbar" hidden aria-hidden="true"><i></i></div>
         <div class="qopts" id="q-opts"></div>
         <p class="msg" id="q-msg" aria-live="polite"></p>
         <button class="btn primary" id="q-next" type="button" hidden>Next word</button>
@@ -3941,6 +3953,9 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
   function renderCount(){
     var all=allWords(),n=all.filter(function(w){return learned[w.id]}).length,k=all.filter(function(w){return known[w.id]}).length;
     $('#count').textContent=all.length+' words · '+n+' learning · '+k+' known well';
+    var only=filter.show==='learned';
+    $('#only-learning').textContent=only?'Show all words':'My Learning words ('+n+')';
+    $('#only-learning').setAttribute('aria-pressed',String(only));
   }
   function renderWords(){
     var list=visible();
@@ -3957,7 +3972,7 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
         '<button class="learn'+(learned[w.id]?' on':'')+'" type="button" data-learn="'+esc(w.id)+'" aria-pressed="'+(learned[w.id]?'true':'false')+'" aria-label="'+esc(w.en)+': learning">'+learnLabel(w.id)+'</button>'+
         (learned[w.id]?'<button class="learn kw'+(known[w.id]?' on':'')+'" type="button" data-known="'+esc(w.id)+'" aria-pressed="'+(known[w.id]?'true':'false')+'" aria-label="'+esc(w.en)+': known well">'+(known[w.id]?ICON.check+'Known well':'Known well')+'</button>':'')+
       '</div>';
-    }).join(''):'<p class="lead">No words match. Try another group or clear the search.</p>';
+    }).join(''):'<p class="lead">'+(filter.show==='learned'&&filter.cat==='all'&&!filter.q?'You have no Learning words yet. Tap Show all words, then tap Learning on the words you want to practise.':'No words match. Try another group or clear the search.')+'</p>';
     renderCount();
   }
 
@@ -3967,6 +3982,14 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
   });
   $('#search').addEventListener('input',function(){filter.q=this.value;renderWords()});
   $('#show').addEventListener('change',function(){filter.show=this.value;renderWords()});
+  // One tap shows only the Learning words (all groups, no search); another tap shows everything again
+  $('#only-learning').addEventListener('click',function(){
+    var on=filter.show!=='learned';
+    filter.show=on?'learned':'all';$('#show').value=filter.show;
+    if(on){filter.cat='all';filter.q='';$('#search').value='';renderChips()}
+    renderWords();
+    if(on)$('#count').scrollIntoView({block:'start',behavior:'smooth'});
+  });
   $('#plsel').addEventListener('change',function(){filter.pl=this.value;renderWords()});
   $('#show-pl').addEventListener('change',function(){$('#grid').classList.toggle('show-pl',this.checked)});
   $('#grid').addEventListener('click',function(e){
@@ -4007,19 +4030,60 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
   var Q={mode:'read',target:null,opts:[],last:null,locked:false,answered:false,right:0,total:0};
   function quizPool(){return allWords().filter(function(w){return learned[w.id]&&!known[w.id]})}
   function renderScore(){$('#q-score').textContent='Right first time: '+Q.right+' of '+Q.total}
+
+  // Optional timer: a thin bar that empties quietly; when it runs out the answer is shown
+  var TIMES=[0,10,20];
+  var timerSec=lsGet('kp-timer',0);if(TIMES.indexOf(timerSec)<0)timerSec=0;
+  var tHandle=null;
+  function paintTimer(){
+    $('#q-timer').textContent='Timer: '+(timerSec?timerSec+' s':'off');
+    $('#q-timer').setAttribute('aria-pressed',String(!!timerSec));
+  }
+  function stopTimer(){clearTimeout(tHandle);tHandle=null;$('#q-tbar').hidden=true}
+  function startTimer(onEnd){
+    stopTimer();if(!timerSec)return;
+    var bar=$('#q-tbar'),fill=bar.firstElementChild;
+    bar.hidden=false;fill.style.transition='none';fill.style.transform='scaleX(1)';void fill.offsetWidth;
+    fill.style.transition='transform '+timerSec+'s linear';fill.style.transform='scaleX(0)';
+    tHandle=setTimeout(function(){tHandle=null;bar.hidden=true;onEnd()},timerSec*1000);
+  }
+  function timeUp(){
+    if(Q.locked||!Q.target)return;
+    Q.locked=true;
+    if(!Q.answered){Q.answered=true;Q.total++;renderScore()}
+    var b=$('#q-opts .qopt[data-id="'+Q.target.id+'"]');
+    if(b){b.classList.add('hit');var m=b.querySelector('.mark');m.className='mark ok';m.innerHTML=ICON.check}
+    $('#q-opts').classList.add('done');
+    $('#q-msg').innerHTML='Time is up. <span class="ar-s" lang="ar" dir="rtl">'+esc(Q.target.ar)+'</span> means '+esc(Q.target.en)+'.';
+    speak(Q.target.ar,null);
+    $('#q-next').hidden=false;
+  }
+  $('#q-timer').addEventListener('click',function(){
+    timerSec=TIMES[(TIMES.indexOf(timerSec)+1)%TIMES.length];
+    lsSet('kp-timer',timerSec);paintTimer();
+    if(timerSec)toast('Timer on: '+timerSec+' seconds a word.');
+    if(!$('#view-quiz').hidden)newQ();else stopTimer();
+  });
+  paintTimer();
+
   function newQ(){
     // Revise quizzes Known well words; wrong answers are drawn from every word so one known word is enough
     var revise=(Q.mode==='revise');
+    var pic=(Q.mode==='pic');
     var pool=revise?allWords().filter(function(w){return known[w.id]}):quizPool();
     var plMode=(Q.mode==='pl');
     if(plMode)pool=pool.filter(function(w){return w.pl});
+    if(pic)pool=pool.filter(function(w){return w.sk});
     var recall=(Q.mode==='recall'||Q.mode==='pl');
-    var ok=pool.length>=(recall||revise?1:4);
+    var ok=pool.length>=(recall||revise||pic?1:4);
     $('#q-play').hidden=!ok;$('#q-empty').hidden=ok;
     if(!ok){
+      stopTimer();
       var n=pool.length;
       $('#q-empty-text').textContent=revise
         ?'Revise uses the words in your Known well list, and you have none yet. On the Words tab, tap Known well on a word you know really well.'
+        :pic
+        ?'Pick the picture uses words you are still practising. You have '+n+'. Mark at least 1 word as Learning on the Words tab to start.'
         :plMode
         ?'Saying plurals uses nouns you are still practising that have a plural. You have '+n+'. Mark at least 1 such word as Learning on the Words tab to start.'
         :recall
@@ -4033,7 +4097,7 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
     var cands=pool.filter(function(w){return w.id!==Q.last});
     if(!cands.length)cands=pool;
     var t=cands[Math.floor(Math.random()*cands.length)];
-    var dpool=revise?allWords():pool;
+    var dpool=revise?allWords():pic?allWords().filter(function(w){return w.sk}):pool;
     var d;
       var same=shuffle(dpool.filter(function(w){return w.cat===t.cat&&w.id!==t.id&&w.en!==t.en&&w.ar!==t.ar}));
       d=same.slice(0,3);
@@ -4047,18 +4111,21 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
     var p=$('#q-prompt');
     var hearBtn='<button class="btn small" id="q-listen" type="button">'+ICON.speaker+'<span>Hear it</span></button>';
     if(Q.dir==='en'){
-      p.innerHTML='<span class="en-big">'+esc(t.en)+'</span><span class="meta">Which Arabic word is it?</span>';
+      p.innerHTML=(t.sk?sketch(t.sk):'')+'<span class="en-big">'+esc(t.en)+'</span><span class="meta">Which Arabic word is it?</span>';
     }else{
-      p.innerHTML='<span class="ar" lang="ar" dir="rtl">'+esc(t.ar)+'</span>'+hearBtn+'<span class="meta">What does it mean?</span>';
+      p.innerHTML='<span class="ar" lang="ar" dir="rtl">'+esc(t.ar)+'</span>'+hearBtn+'<span class="meta">'+(pic?'Which picture is it?':'What does it mean?')+'</span>';
     }
     $('#q-opts').classList.remove('done');
+    $('#q-opts').classList.toggle('pics',pic);
     $('#q-opts').innerHTML=Q.opts.map(function(w){
+      if(pic)return '<button class="qopt picopt" type="button" data-id="'+esc(w.id)+'" aria-label="'+esc(w.en)+'">'+sketch(w.sk)+'<span class="mark" aria-hidden="true"></span></button>';
       var label=Q.dir==='en'?'<span class="ar" lang="ar" dir="rtl">'+esc(w.ar)+'</span>':'<span>'+esc(w.en)+'</span>';
       return '<button class="qopt" type="button" data-id="'+esc(w.id)+'">'+label+'<span class="mark" aria-hidden="true"></span></button>';
     }).join('');
     $('#q-msg').textContent='';
     $('#q-next').hidden=true;
     renderScore();
+    startTimer(timeUp);
   }
   $('#q-prompt').addEventListener('click',function(e){
     var b=e.target.closest('#q-listen');if(b&&Q.target)speak(Q.target.ar,b);
@@ -4078,18 +4145,20 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
     R.stage='prompt';
     var w=byId(R.cur);
     if(Q.mode==='pl'){
-      $('#q-prompt').innerHTML='<span class="ar" lang="ar" dir="rtl">'+esc(w.ar)+'</span><span class="meta">'+esc(w.en)+'. Say the plural out loud, then tap the eye to check.</span>';
+      $('#q-prompt').innerHTML=(w.sk?sketch(w.sk):'')+'<span class="ar" lang="ar" dir="rtl">'+esc(w.ar)+'</span><span class="meta">'+esc(w.en)+'. Say the plural out loud, then tap the eye to check.</span>';
     }else{
-      $('#q-prompt').innerHTML='<span class="en-big">'+esc(w.en)+'</span><span class="meta">Say the Arabic word out loud, then tap the eye to check.</span>';
+      $('#q-prompt').innerHTML=(w.sk?sketch(w.sk):'')+'<span class="en-big">'+esc(w.en)+'</span><span class="meta">Say the Arabic word out loud, then tap the eye to check.</span>';
     }
     $('#r-tag').hidden=true;
     $('#r-word').hidden=true;$('#r-judge').hidden=true;$('#r-show').hidden=false;
     $('#r-word').style.setProperty('--c','var(--h'+colOf(w.cat)+')');
     $('#q-next').hidden=true;
     renderScore();
+    startTimer(function(){if(R.stage==='prompt')$('#r-show').click()});
   }
   $('#r-show').addEventListener('click',function(){
     if(R.stage!=='prompt')return;
+    stopTimer();
     R.stage='reveal';
     var w=byId(R.cur);
     var say=Q.mode==='pl'?w.pl:w.ar;
@@ -4133,11 +4202,13 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
     var good=b.dataset.id===Q.target.id;
     if(!Q.answered){Q.answered=true;Q.firstWrong=!good;Q.total++;if(good)Q.right++;renderScore()}
     if(good){
+      stopTimer();
       Q.locked=true;b.classList.add('hit');
       var m=b.querySelector('.mark');m.className='mark ok';m.innerHTML=ICON.check;
       $('#q-opts').classList.add('done');
       tone(true);
-      $('#q-msg').innerHTML='Yes! <span class="ar-s" lang="ar" dir="rtl">'+esc(Q.target.ar)+'</span> means '+esc(Q.target.en)+'.'+
+      // After a correct answer, show the picture too (unless the choices were pictures already)
+      $('#q-msg').innerHTML=(Q.target.sk&&Q.mode!=='pic'&&Q.dir!=='en'?sketch(Q.target.sk,'thumb'):'')+'Yes! <span class="ar-s" lang="ar" dir="rtl">'+esc(Q.target.ar)+'</span> means '+esc(Q.target.en)+'.'+
         (Q.mode==='revise'&&Q.firstWrong&&known[Q.target.id]?' <button class="btn small" id="q-back" type="button">Practise this word again</button>':'');
       (function(t){setTimeout(function(){if(Q.target&&Q.target.id===t.id)speak(t.ar,null)},600)})(Q.target);
       $('#q-next').hidden=false;$('#q-next').focus();
@@ -4292,7 +4363,7 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
 
   var tabs=document.querySelectorAll('.tab');
   function show(name){
-    stopSpeech();
+    stopSpeech();stopTimer();
     tabs.forEach(function(t){if(t.dataset.tab===name)t.setAttribute('aria-current','page');else t.removeAttribute('aria-current')});
     ['words','quiz','known','mine'].forEach(function(n){$('#view-'+n).hidden=(n!==name)});
     if(name==='known')renderKnown();
