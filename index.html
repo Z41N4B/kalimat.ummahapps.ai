@@ -3980,7 +3980,7 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
     var q=norm(filter.q.trim());
     return allWords().filter(function(w){
       if(!inCat(w,filter.cat))return false;
-      if(filter.show==='learned'&&!learned[w.id])return false;
+      if(filter.show==='learned'&&(!learned[w.id]||known[w.id]))return false;
       if(filter.show==='todo'&&learned[w.id])return false;
       if(filter.show==='known'&&!known[w.id])return false;
       if(filter.pl==='has'&&!w.pl)return false;
@@ -3992,7 +3992,7 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
   }
   function learnLabel(id){return learned[id]?ICON.check+'Learning':'Learning'}
   function renderCount(){
-    var all=allWords(),n=all.filter(function(w){return learned[w.id]}).length,k=all.filter(function(w){return known[w.id]}).length;
+    var all=allWords(),n=all.filter(function(w){return learned[w.id]&&!known[w.id]}).length,k=all.filter(function(w){return known[w.id]}).length;
     $('#count').textContent=all.length+' words · '+n+' learning · '+k+' known well';
     renderDue();
     var only=filter.show==='learned';
