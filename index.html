@@ -192,6 +192,16 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
 .toolbar{display:grid;gap:10px;margin-bottom:14px}
 .row2{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr) minmax(0,1fr);gap:10px}
 .voice-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:14px}
+.vg{border:1.5px solid var(--line);background:var(--card);border-radius:14px;padding:14px 16px;margin:0 0 16px}
+.vg h3{margin:0 0 4px;font-size:1.05rem}
+.vg p{margin:0 0 10px;color:var(--ink-2);font-size:.92rem}
+.vg-devs{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 12px}
+.vg-devs button{font:inherit;font-size:.88rem;font-weight:800;min-height:38px;padding:6px 14px;border:1.5px solid var(--line);background:transparent;color:var(--ink);border-radius:999px;cursor:pointer}
+.vg-devs button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.vg ol{margin:0 0 10px;padding-left:22px}
+.vg li{margin:5px 0}
+.vg-actions{display:flex;flex-wrap:wrap;gap:8px}
+.vg-show{font:inherit;font-weight:800;font-size:.92rem;background:none;border:0;color:var(--accent);padding:4px 0;margin:0 0 14px;cursor:pointer;text-decoration:underline}
 .voice-row select{flex:1 1 200px;width:auto}
 .seg{display:flex;border:1.5px solid var(--line);border-radius:999px;overflow:hidden;background:var(--card)}
 .seg button{font:inherit;font-weight:800;font-size:.9rem;flex:1;min-height:40px;padding:4px 14px;border:0;background:transparent;color:var(--ink);cursor:pointer}
@@ -3688,6 +3698,7 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
         </div>
       </div>
       <p class="note" id="voice-note" hidden><span id="voice-note-text">If the words do not sound like Arabic, add an Arabic voice in your device's text-to-speech settings, then restart the device.</span> <button class="linkbtn" id="voice-note-hide" type="button">Hide</button></p>
+      <div id="vg"></div>
 
       <p class="due" id="due-note" hidden><span id="due-text"></span> <button class="btn primary small" id="due-go" type="button">Check them</button></p>
       <div class="actions" style="margin:0 0 14px"><button class="btn" id="only-learning" type="button" aria-pressed="false">My Learning words</button></div>
@@ -4060,6 +4071,48 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
     if(c){var w=byId(c.dataset.id);if(w)speak(w.ar,c)}
   });
   $('#voice-sel').addEventListener('change',function(){voice.name=this.value;lsSet('kp-voice',voice)});
+
+  // Step-by-step help for adding an Arabic voice, per device. The learner can hide it.
+  var VG=[
+    {id:'ios',label:'iPhone / iPad',steps:['Open the <b>Settings</b> app.','Tap <b>Accessibility</b>, then <b>Spoken Content</b>, then <b>Voices</b>.','Tap <b>Arabic</b> and choose a voice.','Tap the download button next to it and wait for it to finish.','Come back to this page and reload it.'],
+     tip:'Still no sound? Turn off silent mode and turn the volume up.'},
+    {id:'android',label:'Android',steps:['Open <b>Settings</b> and search for <b>text-to-speech</b>. On most phones it is under Accessibility, or System and then Languages.','Set the preferred engine to <b>Speech Services by Google</b>. If it is not there, install it from the Play Store.','Tap the gear icon next to it, then <b>Install voice data</b>.','Choose <b>Arabic</b> and download a voice. Wi-Fi is best.','Close Chrome completely, open it again, and reload this page.'],
+     tip:'Still no sound? Turn the media volume up.'},
+    {id:'win',label:'Windows',pre:'Using Microsoft Edge? It already has Arabic voices, so you may not need these steps.',steps:['Open <b>Settings</b>, then <b>Time &amp; language</b>, then <b>Speech</b>.','Next to <b>Manage voices</b>, select <b>Add voices</b>.','Search for <b>Arabic</b>, tick a voice such as Arabic (Saudi Arabia), and select <b>Add</b>.','Wait for it to download and install.','Close your browser completely, open it again, and reload this page. If the voice still does not appear, restart the computer.']},
+    {id:'mac',label:'Mac',steps:['Open <b>System Settings</b> (System Preferences on older Macs).','Go to <b>Accessibility</b>, then <b>Spoken Content</b>.','Open the <b>System voice</b> menu and choose <b>Manage Voices</b>.','Find <b>Arabic</b>, tick a voice and wait for it to download.','Quit your browser completely (⌘Q), open it again, and reload this page.']},
+    {id:'cros',label:'Chromebook',steps:['Open <b>Settings</b> and search for <b>text-to-speech</b>.','Open the text-to-speech voice settings.','Choose or download an <b>Arabic</b> voice if one is offered.','Close Chrome completely, open it again, and reload this page.']}
+  ];
+  function vgDevice(){
+    var u=navigator.userAgent||'';
+    if(/iPhone|iPad|iPod/.test(u)||(/Macintosh/.test(u)&&navigator.maxTouchPoints>1))return 'ios';
+    if(/Android/.test(u))return 'android';
+    if(/CrOS/.test(u))return 'cros';
+    if(/Mac/.test(u))return 'mac';
+    return 'win';
+  }
+  var vg={hidden:lsGet('kp-vg-hidden',false),dev:vgDevice()};
+  function renderVG(){
+    var el=$('#vg');
+    if(vg.hidden){el.className='';el.innerHTML='<button type="button" class="vg-show" data-vg="show">How to add an Arabic voice</button>';return}
+    var d=VG.filter(function(x){return x.id===vg.dev})[0];
+    el.className='vg';
+    el.innerHTML='<h3>How to add an Arabic voice</h3>'+
+      '<p>The words are spoken by your device’s own voice. If they do not sound like Arabic, or there is no sound, add an Arabic voice. Choose your device:</p>'+
+      '<div class="vg-devs" role="group" aria-label="Your device">'+VG.map(function(x){return '<button type="button" data-vg="dev" data-dev="'+x.id+'" aria-pressed="'+(x.id===vg.dev)+'">'+x.label+'</button>'}).join('')+'</div>'+
+      (d.pre?'<p>'+d.pre+'</p>':'')+
+      '<ol>'+d.steps.map(function(s){return '<li>'+s+'</li>'}).join('')+'</ol>'+
+      '<p>Then choose the Arabic voice from the <b>Voice</b> menu above and tap <b>Test the voice</b>.'+(d.tip?' '+d.tip:'')+'</p>'+
+      '<p>Opened this page from WhatsApp, Instagram or another app? Open it in Safari or Chrome instead, because in-app browsers often cannot speak.</p>'+
+      '<div class="vg-actions"><button type="button" class="btn small primary" data-vg="test">Test the voice</button><button type="button" class="btn small" data-vg="hide">Hide these steps</button></div>';
+  }
+  $('#vg').addEventListener('click',function(e){
+    var b=e.target.closest('[data-vg]');if(!b)return;
+    var a=b.dataset.vg;
+    if(a==='dev'){vg.dev=b.dataset.dev;renderVG();$('#vg [data-dev="'+vg.dev+'"]').focus()}
+    else if(a==='test')speak('مَرْحَبًا، كَيْفَ حَالُكَ؟',b);
+    else{vg.hidden=a==='hide';lsSet('kp-vg-hidden',vg.hidden);renderVG();$(vg.hidden?'#vg .vg-show':'#vg [data-vg="hide"]').focus()}
+  });
+  renderVG();
   $('#rate-seg').addEventListener('click',function(e){
     var b=e.target.closest('button[data-rate]');if(!b)return;
     voice.rate=parseFloat(b.dataset.rate);lsSet('kp-voice',voice);paintRate();
