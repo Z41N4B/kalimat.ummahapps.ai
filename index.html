@@ -78,7 +78,8 @@
         "Full harakat on every word",
         "Text-to-speech audio at normal or slow speed",
         "Sound and broken plurals for nouns",
-        "Multiple-choice reading quiz",
+        "Pick the plural game",
+        "Words sorted from beginner to advanced",
         "Say-it-from-memory and say-the-plural games",
         "Revision game for words you know well",
         "Pick-the-picture game with a pencil sketch for every word",
@@ -213,6 +214,9 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
 .chip-btn[data-cat][aria-pressed="true"]::before{background:var(--on-accent)}
 .note{padding:10px 14px;border:1.5px solid var(--bad);border-radius:12px;color:var(--bad);margin:0 0 14px;font-weight:700}
 .count{font-weight:800;margin:0 0 12px}
+.lvseg{margin:0 0 14px}
+.lvseg button{padding:4px 8px}
+.lv{font-size:.7rem;font-weight:800;letter-spacing:.04em;color:var(--ink-2);text-transform:uppercase}
 .due{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;padding:10px 14px;border:1.5px solid var(--accent);border-radius:12px;margin:0 0 14px;font-weight:700}
 
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px}
@@ -3457,9 +3461,12 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
       <circle cx="176" cy="40" r="8" style="fill:#d4a017"/><circle cx="26" cy="168" r="6" style="fill:#d4a017"/><circle cx="168" cy="172" r="4" style="fill:#d4a017"/>
     </g>
 
+    <linearGradient id="g-silver" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fbfcfd"/><stop offset=".3" stop-color="#aeb5bc"/><stop offset=".5" stop-color="#f3f5f7"/><stop offset=".75" stop-color="#8a929a"/><stop offset="1" stop-color="#dfe3e7"/></linearGradient>
     <g id="s-silver">
-      <path d="M100 40C112 40 112 58 124 56C136 54 140 40 150 48C160 56 146 70 154 80C162 90 176 88 176 100C176 112 160 110 156 122C152 134 166 146 156 154C146 162 136 148 124 152C112 156 112 172 100 172C88 172 88 156 76 152C64 148 54 162 44 154C34 146 48 134 44 122C40 110 24 112 24 100C24 88 38 90 46 80C54 70 40 56 50 48C60 40 64 54 76 56C88 58 88 40 100 40Z" style="fill:#c0c4c8"/>
-      <circle cx="176" cy="40" r="8" style="fill:#c0c4c8"/><circle cx="26" cy="168" r="6" style="fill:#c0c4c8"/><circle cx="168" cy="172" r="4" style="fill:#c0c4c8"/>
+      <path d="M100 40C112 40 112 58 124 56C136 54 140 40 150 48C160 56 146 70 154 80C162 90 176 88 176 100C176 112 160 110 156 122C152 134 166 146 156 154C146 162 136 148 124 152C112 156 112 172 100 172C88 172 88 156 76 152C64 148 54 162 44 154C34 146 48 134 44 122C40 110 24 112 24 100C24 88 38 90 46 80C54 70 40 56 50 48C60 40 64 54 76 56C88 58 88 40 100 40Z" style="fill:url(#g-silver)"/>
+      <circle cx="176" cy="40" r="8" style="fill:url(#g-silver)"/><circle cx="26" cy="168" r="6" style="fill:url(#g-silver)"/><circle cx="168" cy="172" r="4" style="fill:url(#g-silver)"/>
+      <path d="M66 74C80 62 98 60 112 64M60 96C66 88 74 82 84 80" style="stroke:#fff;stroke-width:6"/>
+      <path d="M38 30L42 42L54 46L42 50L38 62L34 50L22 46L34 42Z" style="fill:#fff"/><path d="M156 122L159 131L168 134L159 137L156 146L153 137L144 134L153 131Z" style="fill:#fff"/>
     </g>
 
     <g id="s-alot">
@@ -3702,6 +3709,12 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
 
       <p class="due" id="due-note" hidden><span id="due-text"></span> <button class="btn primary small" id="due-go" type="button">Check them</button></p>
       <div class="actions" style="margin:0 0 14px"><button class="btn" id="only-learning" type="button" aria-pressed="false">My Learning words</button></div>
+      <div class="seg lvseg" id="lv-seg" role="group" aria-label="Level">
+        <button type="button" data-lv="0" aria-pressed="true">All</button>
+        <button type="button" data-lv="1" aria-pressed="false">Beginner</button>
+        <button type="button" data-lv="2" aria-pressed="false">Intermediate</button>
+        <button type="button" data-lv="3" aria-pressed="false">Advanced</button>
+      </div>
       <div class="chips" id="chips"></div>
       <div class="toolbar">
         <div class="row2">
@@ -3732,8 +3745,8 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
       </div>
       <div class="toolbar">
         <div class="chips" id="q-mode" role="group" aria-label="Game type" style="margin-bottom:0">
-          <button class="chip-btn" type="button" data-mode="read" aria-pressed="true">Read it</button>
-          <button class="chip-btn" type="button" data-mode="pic" aria-pressed="false">Pick the picture</button>
+          <button class="chip-btn" type="button" data-mode="pic" aria-pressed="true">Pick the picture</button>
+          <button class="chip-btn" type="button" data-mode="plc" aria-pressed="false">Pick the plural</button>
           <button class="chip-btn" type="button" data-mode="recall" aria-pressed="false">Say it from memory</button>
           <button class="chip-btn" type="button" data-mode="pl" aria-pressed="false">Say the plural from memory</button>
           <button class="chip-btn" type="button" data-mode="revise" aria-pressed="false">Revise known words</button>
@@ -3804,7 +3817,7 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
   <footer class="about" aria-labelledby="h-about">
     <h2 id="h-about">About Kalimat</h2>
     <p>Kalimat (<span lang="ar" dir="rtl">كَلِمَات</span>, "words") is a free Arabic vocabulary trainer for beginners. It has over 400 everyday Modern Standard Arabic words in 16 groups: basics, people, places, home and school, food and drink, nature and animals, the body, colours, describing words, actions, numbers, time, greetings, clothes, toys and play, and feelings.</p>
-    <p>Every word is written with full harakat (vowel marks) and can be heard aloud at normal or slow speed. Most nouns and describing words show their plural, marked as a sound plural or a broken plural. Mark the words you are learning, practise them in the reading quiz or by saying them from memory, and move them to Known well when you have mastered them, then revise them now and then so they stay fresh. You can also add words from your own lessons.</p>
+    <p>Every word is written with full harakat (vowel marks) and can be heard aloud at normal or slow speed. Most nouns and describing words show their plural, marked as a sound plural or a broken plural. Words are sorted from beginner to advanced. Mark the words you are learning, practise them by picking the picture, picking the plural or saying them from memory, and move them to Known well when you have mastered them, then revise them now and then so they stay fresh. You can also add words from your own lessons.</p>
     <details><summary>Is Kalimat free?</summary><p>Yes. Kalimat is free, needs no account and runs in your web browser.</p></details>
     <details><summary>How does Kalimat pronounce the Arabic words?</summary><p>It uses your device's built-in text-to-speech voice. For the best pronunciation, add an Arabic voice in your phone or computer's speech or language settings, then choose it in the Voice menu.</p></details>
     <details><summary>Does Kalimat teach Arabic plurals?</summary><p>Yes. Most nouns and describing words show their plural and say whether it is a sound plural or a broken plural, and there is a game for saying the plural from memory.</p></details>
@@ -3840,7 +3853,19 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
   var CATCOL={basics:1,people:2,places:3,home:4,food:5,nature:3,body:2,colours:4,describe:1,actions:5,numbers:3,time:1,greet:2,clothes:2,toys:5,feelings:1};
   function colOf(k){return CATCOL[k]||4}
   var BUILTIN=[];
-  CATS.forEach(function(c){DATA[c[0]].forEach(function(r,i){var pp=PLUR[r[0]];BUILTIN.push({id:c[0]+'-'+i,ar:r[0],en:r[1],cat:c[0],sk:r[2]||'',pl:pp?pp[0]:'',pt:pp?pp[1]:''})})});
+  // Levels, keyed by sketch id: 1 Beginner (everyday words a young child knows), 3 Advanced, anything else 2 Intermediate
+  var LV1=('me youm youf he she we yes no here in on under man woman boy girl child father mother brother sister baby friend grandpa grandma family teacher teacherf '+
+    'house school mosque garden kitchen room bathroom bedroom playground shop farm beach book pen bag door window chair table bed clock tv phone car cup plate spoon pillow soap box picture sofa fridge towel '+
+    'water milk juice bread rice egg chicken fish apple banana orange cheese honey cake chocolate sweets biscuit grapes strawberry carrots breakfast lunch dinner '+
+    'sun moon tree sea sky rain flower star cloud cat dog horse lion camel bird cow snow butterfly sheep rabbit elephant monkey fire '+
+    'head eye ear nose mouth hand leg heart face hair tooth finger tummy foot arm knee red blue green yellow white black brown orangec pink purple '+
+    'big small hot cold happy new old clean dirty fast slow good bad tall short yummy full empty eat drink sleep sit run play laugh cry wash draw go come stand look hear sing '+
+    'one two three four five six seven eight nine ten zero today morning night day salam wasalam thanks hello goodbye bismillah goodnight please sorry alhamdulillah '+
+    'shirt dress shoe sock hat coat pyjamas trousers toy doll ball bicycle story easel swing train bus plane balloon song sad angry scared tired hungry thirsty sleepy ill').split(' ');
+  var LV3=('isit also very between howmany engineer director professor worker neighbour guest university office airport newspaper magazine ceiling meal earth insect sparrow forehead '+
+    'rich weak busy enter return understand knew study hundred daytime month time noon always sometimes sunday monday tuesday wednesday thursday friday saturday hereyouare').split(' ');
+  var LVNAME=['','Beginner','Intermediate','Advanced'];
+  CATS.forEach(function(c){DATA[c[0]].forEach(function(r,i){var pp=PLUR[r[0]],sk=r[2]||'';BUILTIN.push({id:c[0]+'-'+i,ar:r[0],en:r[1],cat:c[0],sk:sk,pl:pp?pp[0]:'',pt:pp?pp[1]:'',lv:LV1.indexOf(sk)>=0?1:LV3.indexOf(sk)>=0?3:2})})});
 
   var ICON={
     speaker:'<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16.5 9a4.5 4.5 0 0 1 0 6"/><path d="M19 6.5a8 8 0 0 1 0 11"/></svg>',
@@ -3873,7 +3898,8 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
   }
   loadProfile();
   var voice=lsGet('kp-voice',{name:'',rate:0.85});
-  var filter={cat:'all',show:'all',q:'',pl:''};
+  // The level choice is remembered for each learner
+  var filter={cat:'all',show:'all',q:'',pl:'',lv:lsGet(pkey('level'),0)};
 
   function allWords(){return BUILTIN.concat(custom)}
 
@@ -3989,8 +4015,11 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
   }
   function visible(){
     var q=norm(filter.q.trim());
+    // Easiest words first; the learner's own words (no level) come last
+    var lv=filter.show==='learned'?0:filter.lv;
     return allWords().filter(function(w){
       if(!inCat(w,filter.cat))return false;
+      if(lv&&w.lv!==lv)return false;
       if(filter.show==='learned'&&(!learned[w.id]||known[w.id]))return false;
       if(filter.show==='todo'&&learned[w.id])return false;
       if(filter.show==='known'&&!known[w.id])return false;
@@ -3999,13 +4028,17 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
       if(filter.pl==='b'&&!(w.pl&&w.pt==='b'))return false;
       if(q&&norm(w.ar).indexOf(q)<0&&norm(w.en).indexOf(q)<0)return false;
       return true;
-    });
+    }).map(function(w,i){return [w,i]}).sort(function(a,b){return ((a[0].lv||9)-(b[0].lv||9))||(a[1]-b[1])}).map(function(x){return x[0]});
+  }
+  function paintLevel(){
+    var lv=filter.show==='learned'?0:filter.lv;
+    document.querySelectorAll('#lv-seg button').forEach(function(b){b.setAttribute('aria-pressed',String(+b.dataset.lv===lv))});
   }
   function learnLabel(id){return learned[id]?ICON.check+'Learning':'Learning'}
   function renderCount(){
     var all=allWords(),n=all.filter(function(w){return learned[w.id]&&!known[w.id]}).length,k=all.filter(function(w){return known[w.id]}).length;
     $('#count').textContent=all.length+' words · '+n+' learning · '+k+' known well';
-    renderDue();
+    renderDue();paintLevel();
     var only=filter.show==='learned';
     $('#only-learning').textContent=only?'Show all words':'My Learning words ('+n+')';
     $('#only-learning').setAttribute('aria-pressed',String(only));
@@ -4019,6 +4052,7 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
           (w.sk?sketch(w.sk):'')+
           '<span class="ar'+long+'" lang="ar" dir="rtl">'+esc(w.ar)+'</span>'+
           '<span class="meta">'+esc(w.en)+'</span>'+
+          (w.lv?'<span class="lv">'+LVNAME[w.lv]+'</span>':'')+
           (w.pl?'<span class="pl"><span class="ar" lang="ar" dir="rtl">'+esc(w.pl)+'</span><span class="tag">'+(w.pt==='s'?'sound plural':'broken plural')+'</span></span>':'')+
         '</button>'+
         (w.pl?'<button class="plbtn" type="button" data-pl="'+esc(w.id)+'" aria-label="'+esc(w.en)+': hear the plural">Plural</button>':'')+
@@ -4035,6 +4069,12 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
   });
   $('#search').addEventListener('input',function(){filter.q=this.value;renderWords()});
   $('#show').addEventListener('change',function(){filter.show=this.value;renderWords()});
+  $('#lv-seg').addEventListener('click',function(e){
+    var b=e.target.closest('button[data-lv]');if(!b)return;
+    filter.lv=+b.dataset.lv;lsSet(pkey('level'),filter.lv);
+    if(filter.show==='learned'){filter.show='all';$('#show').value='all'}
+    renderWords();
+  });
   // One tap shows only the Learning words (all groups, no search); another tap shows everything again
   $('#only-learning').addEventListener('click',function(){
     var on=filter.show!=='learned';
@@ -4121,7 +4161,7 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
     document.querySelectorAll('#rate-seg button').forEach(function(b){b.setAttribute('aria-pressed',String(parseFloat(b.dataset.rate)===voice.rate))});
   }
 
-  var Q={mode:'read',target:null,opts:[],last:null,locked:false,answered:false,right:0,total:0};
+  var Q={mode:'pic',target:null,opts:[],last:null,locked:false,answered:false,right:0,total:0};
   function quizPool(){return allWords().filter(function(w){return learned[w.id]&&!known[w.id]})}
   function renderScore(){$('#q-score').textContent='Right first time: '+Q.right+' of '+Q.total}
 
@@ -4151,8 +4191,13 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
     var b=$('#q-opts .qopt[data-id="'+Q.target.id+'"]');
     if(b){b.classList.add('hit');var m=b.querySelector('.mark');m.className='mark ok';m.innerHTML=ICON.check}
     $('#q-opts').classList.add('done');
-    $('#q-msg').innerHTML='Time is up. <span class="ar-s" lang="ar" dir="rtl">'+esc(Q.target.ar)+'</span> means '+esc(Q.target.en)+'.';
-    speak(Q.target.ar,null);
+    if(Q.mode==='plc'){
+      $('#q-msg').innerHTML='Time is up. '+plText(Q.target);
+      speak(Q.target.ar+'، '+Q.target.pl,null);
+    }else{
+      $('#q-msg').innerHTML='Time is up. <span class="ar-s" lang="ar" dir="rtl">'+esc(Q.target.ar)+'</span> means '+esc(Q.target.en)+'.';
+      speak(Q.target.ar,null);
+    }
     $('#q-next').hidden=false;
   }
   $('#q-timer').addEventListener('click',function(){
@@ -4163,18 +4208,22 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
   });
   paintTimer();
 
+  function plText(w){
+    return 'The plural of <span class="ar-s" lang="ar" dir="rtl">'+esc(w.ar)+'</span> is <span class="ar-s" lang="ar" dir="rtl">'+esc(w.pl)+'</span> ('+(w.pt==='s'?'sound plural: an ending is added':'broken plural: the word changes shape')+').';
+  }
   function newQ(){
     // Revise quizzes Known well words; wrong answers are drawn from every word so one known word is enough
     var revise=(Q.mode==='revise');
     var pic=(Q.mode==='pic');
+    var plc=(Q.mode==='plc');
     // Revise asks the words due for a check first, then any Known well word
     var due=revise?dueWords():[];
     var pool=revise?(due.length?due:allWords().filter(function(w){return known[w.id]})):quizPool();
     var plMode=(Q.mode==='pl');
-    if(plMode)pool=pool.filter(function(w){return w.pl});
+    if(plMode||plc)pool=pool.filter(function(w){return w.pl});
     if(pic)pool=pool.filter(function(w){return w.sk});
     var recall=(Q.mode==='recall'||Q.mode==='pl');
-    var ok=pool.length>=(recall||revise||pic?1:4);
+    var ok=pool.length>=1;
     $('#q-play').hidden=!ok;$('#q-empty').hidden=ok;
     if(!ok){
       stopTimer();
@@ -4183,11 +4232,11 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
         ?'Revise uses the words in your Known well list, and you have none yet. On the Words tab, tap Known well on a word you know really well.'
         :pic
         ?'Pick the picture uses words you are still practising. You have '+n+'. Mark at least 1 word as Learning on the Words tab to start.'
+        :plc
+        ?'Pick the plural uses words you are still practising that have a plural. You have '+n+'. Mark at least 1 such word as Learning on the Words tab to start. Tip: choose Has a plural in the Words filters.'
         :plMode
         ?'Saying plurals uses nouns you are still practising that have a plural. You have '+n+'. Mark at least 1 such word as Learning on the Words tab to start.'
-        :recall
-        ?'Say it from memory uses words you are still practising. You have '+n+'. Mark at least 1 word as Learning on the Words tab to start.'
-        :'The game uses words marked Learning that are not yet known well. You have '+n+(n===1?' word':' words')+'. Mark at least 4 as Learning on the Words tab to play.';
+        :'Say it from memory uses words you are still practising. You have '+n+'. Mark at least 1 word as Learning on the Words tab to start.';
       return;
     }
     $('#r-box').hidden=!recall;
@@ -4196,7 +4245,8 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
     var cands=pool.filter(function(w){return w.id!==Q.last});
     if(!cands.length)cands=pool;
     var t=cands[Math.floor(Math.random()*cands.length)];
-    var dpool=revise?allWords():pic?allWords().filter(function(w){return w.sk}):pool;
+    // Pick the plural offers the real plurals of other words, never made-up ones
+    var dpool=revise?allWords():pic?allWords().filter(function(w){return w.sk}):plc?allWords().filter(function(w){return w.pl&&w.pl!==t.pl}):pool;
     var d;
       var same=shuffle(dpool.filter(function(w){return w.cat===t.cat&&w.id!==t.id&&w.en!==t.en&&w.ar!==t.ar}));
       d=same.slice(0,3);
@@ -4209,7 +4259,9 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
     Q.dir=revise&&Math.random()<.5?'en':'ar';
     var p=$('#q-prompt');
     var hearBtn='<button class="btn small" id="q-listen" type="button">'+ICON.speaker+'<span>Hear it</span></button>';
-    if(Q.dir==='en'){
+    if(plc){
+      p.innerHTML=(t.sk?sketch(t.sk):'')+'<span class="ar" lang="ar" dir="rtl">'+esc(t.ar)+'</span>'+hearBtn+'<span class="meta">'+esc(t.en)+'. Which is the plural?</span>';
+    }else if(Q.dir==='en'){
       p.innerHTML=(t.sk?sketch(t.sk):'')+'<span class="en-big">'+esc(t.en)+'</span><span class="meta">Which Arabic word is it?</span>';
     }else{
       p.innerHTML='<span class="ar" lang="ar" dir="rtl">'+esc(t.ar)+'</span>'+hearBtn+'<span class="meta">'+(pic?'Which picture is it?':'What does it mean?')+'</span>';
@@ -4218,7 +4270,7 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
     $('#q-opts').classList.toggle('pics',pic);
     $('#q-opts').innerHTML=Q.opts.map(function(w){
       if(pic)return '<button class="qopt picopt" type="button" data-id="'+esc(w.id)+'" aria-label="'+esc(w.en)+'">'+sketch(w.sk)+'<span class="mark" aria-hidden="true"></span></button>';
-      var label=Q.dir==='en'?'<span class="ar" lang="ar" dir="rtl">'+esc(w.ar)+'</span>':'<span>'+esc(w.en)+'</span>';
+      var label=plc?'<span class="ar" lang="ar" dir="rtl">'+esc(w.pl)+'</span>':Q.dir==='en'?'<span class="ar" lang="ar" dir="rtl">'+esc(w.ar)+'</span>':'<span>'+esc(w.en)+'</span>';
       return '<button class="qopt" type="button" data-id="'+esc(w.id)+'">'+label+'<span class="mark" aria-hidden="true"></span></button>';
     }).join('');
     $('#q-msg').textContent='';
@@ -4318,15 +4370,19 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
       $('#q-opts').classList.add('done');
       tone(true);
       // After a correct answer, show the picture too (unless the choices were pictures already)
-      $('#q-msg').innerHTML=(Q.target.sk&&Q.mode!=='pic'&&Q.dir!=='en'?sketch(Q.target.sk,'thumb'):'')+'Yes! <span class="ar-s" lang="ar" dir="rtl">'+esc(Q.target.ar)+'</span> means '+esc(Q.target.en)+'.'+esc(extra)+
+      $('#q-msg').innerHTML=(Q.target.sk&&Q.mode!=='pic'&&Q.mode!=='plc'&&Q.dir!=='en'?sketch(Q.target.sk,'thumb'):'')+
+        (Q.mode==='plc'?'Yes! '+plText(Q.target):'Yes! <span class="ar-s" lang="ar" dir="rtl">'+esc(Q.target.ar)+'</span> means '+esc(Q.target.en)+'.')+esc(extra)+
         (Q.mode==='revise'&&Q.firstWrong&&known[Q.target.id]?' <button class="btn small" id="q-back" type="button">Practise this word again</button>':'');
-      (function(t){setTimeout(function(){if(Q.target&&Q.target.id===t.id)speak(t.ar,null)},600)})(Q.target);
+      (function(t,say){setTimeout(function(){if(Q.target&&Q.target.id===t.id)speak(say,null)},600)})(Q.target,Q.mode==='plc'?Q.target.ar+'، '+Q.target.pl:Q.target.ar);
       $('#q-next').hidden=false;$('#q-next').focus();
     }else{
       b.classList.remove('miss');void b.offsetWidth;b.classList.add('miss');
       var x=b.querySelector('.mark');x.className='mark no';x.innerHTML=ICON.cross;
       tone(false);
-      $('#q-msg').textContent='Not that one. Try again.';
+      // In Pick the plural, a wrong answer gives a hint about the kind of plural
+      $('#q-msg').textContent='Not that one. '+(Q.mode!=='plc'?'Try again.':Q.target.pt==='s'
+        ?'Hint: this is a sound plural, so the word stays the same and an ending is added, like ـُونَ, ـِينَ or ـَات.'
+        :'Hint: this is a broken plural, so the inside of the word changes shape.');
     }
   });
 
@@ -4427,6 +4483,7 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
   }
   function refreshAll(){
     Q.right=0;Q.total=0;Q.last=null;R.queue=[];R.cur=null;
+    filter.lv=lsGet(pkey('level'),0);
     renderWho();renderWords();renderMine();
     if(!$('#view-known').hidden)renderKnown();
     if(!$('#view-quiz').hidden)newQ();
@@ -4454,7 +4511,7 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
         return;
       }
       var gone=curProfile();
-      ['learned','known','custom','stats'].forEach(function(n){try{localStorage.removeItem(pkey(n,gone.id))}catch(err){}});
+      ['learned','known','custom','stats','level'].forEach(function(n){try{localStorage.removeItem(pkey(n,gone.id))}catch(err){}});
       profiles.list=profiles.list.filter(function(x){return x.id!==gone.id});
       profiles.cur=profiles.list[0].id;saveProfiles();loadProfile();refreshAll();
       toast('Removed '+gone.name+'.');
