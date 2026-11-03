@@ -216,6 +216,13 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
 .count{font-weight:800;margin:0 0 12px}
 .lvseg{margin:0 0 14px}
 .lvseg button{padding:4px 8px}
+.qnote{font-size:.9rem;color:var(--ink-2);margin:-6px 0 14px}
+.qm,.qn{font-size:.78rem;color:var(--ink-2);font-weight:700}
+.fm{display:none;flex-direction:column;gap:2px;width:100%;margin-top:6px;padding-top:6px;border-top:1.5px dashed var(--line)}
+.fm.on,.grid.show-pl .fm{display:flex}
+.fmr{display:flex;align-items:baseline;justify-content:space-between;gap:6px}
+.fmr .ar{font-size:1.15rem;line-height:1.5}
+.fmr .tag{flex-basis:auto;font-size:.7rem;font-weight:800;color:var(--ink-2)}
 .lv{font-size:.7rem;font-weight:800;letter-spacing:.04em;color:var(--ink-2);text-transform:uppercase}
 .due{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;padding:10px 14px;border:1.5px solid var(--accent);border-radius:12px;margin:0 0 14px;font-weight:700}
 
@@ -3709,6 +3716,11 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
 
       <p class="due" id="due-note" hidden><span id="due-text"></span> <button class="btn primary small" id="due-go" type="button">Check them</button></p>
       <div class="actions" style="margin:0 0 14px"><button class="btn" id="only-learning" type="button" aria-pressed="false">My Learning words</button></div>
+      <div class="seg lvseg" id="set-seg" role="group" aria-label="Word list">
+        <button type="button" data-set="every" aria-pressed="true">Everyday words</button>
+        <button type="button" data-set="quran" aria-pressed="false">Qur'an words</button>
+      </div>
+      <p class="qnote" id="q-note" hidden>The most common words in the Qur'an, from the booklet <i>80% of Qur'anic Words</i> by Dr Abdulazeez Abdulraheem. More words are being added. Levels follow how often a word appears.</p>
       <div class="seg lvseg" id="lv-seg" role="group" aria-label="Level">
         <button type="button" data-lv="0" aria-pressed="true">All</button>
         <button type="button" data-lv="1" aria-pressed="false">Beginner</button>
@@ -3733,7 +3745,7 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
           </select>
         </div>
       </div>
-      <label class="check" for="show-pl"><input type="checkbox" id="show-pl"> Show plurals on every card</label>
+      <label class="check" for="show-pl"><input type="checkbox" id="show-pl"> Show plurals and verb forms on every card</label>
       <p class="count" id="count"></p>
       <div class="grid" id="grid"><noscript><p class="lead">Kalimat needs JavaScript to show the words, play audio and run the games. Please turn JavaScript on.</p></noscript></div>
     </section>
@@ -3747,6 +3759,7 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
         <div class="chips" id="q-mode" role="group" aria-label="Game type" style="margin-bottom:0">
           <button class="chip-btn" type="button" data-mode="pic" aria-pressed="true">Pick the picture</button>
           <button class="chip-btn" type="button" data-mode="plc" aria-pressed="false">Pick the plural</button>
+          <button class="chip-btn" type="button" data-mode="fm" aria-pressed="false">Pick the form</button>
           <button class="chip-btn" type="button" data-mode="recall" aria-pressed="false">Say it from memory</button>
           <button class="chip-btn" type="button" data-mode="pl" aria-pressed="false">Say the plural from memory</button>
           <button class="chip-btn" type="button" data-mode="revise" aria-pressed="false">Revise known words</button>
@@ -3850,7 +3863,38 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
     feelings:[['حَزِين','sad','sad'],['غَاضِب','angry','angry'],['خَائِف','scared','scared'],['مُتْعَب','tired','tired'],['جَائِع','hungry','hungry'],['عَطْشَان','thirsty','thirsty'],['نَعْسَان','sleepy','sleepy'],['مَرِيض','ill','ill'],['خَجُول','shy','shy']]
   };
   var PLUR={'رَجُل':['رِجَال','b'],'اِمْرَأَة':['نِسَاء','b'],'وَلَد':['أَوْلَاد','b'],'بِنْت':['بَنَات','b'],'طِفْل':['أَطْفَال','b'],'طَالِب':['طُلَّاب','b'],'طَالِبَة':['طَالِبَات','s'],'مُدَرِّس':['مُدَرِّسُونَ','s'],'مُدَرِّسَة':['مُدَرِّسَات','s'],'أَب':['آبَاء','b'],'أُمّ':['أُمَّهَات','b'],'أَخ':['إِخْوَة','b'],'أُخْت':['أَخَوَات','s'],'اِبْن':['أَبْنَاء','b'],'صَدِيق':['أَصْدِقَاء','b'],'جَار':['جِيرَان','b'],'طَبِيب':['أَطِبَّاء','b'],'مُهَنْدِس':['مُهَنْدِسُونَ','s'],'مُدِير':['مُدِيرُونَ','s'],'عَامِل':['عُمَّال','b'],'أُسْتَاذ':['أَسَاتِذَة','b'],'مَسْجِد':['مَسَاجِد','b'],'بَيْت':['بُيُوت','b'],'مَدْرَسَة':['مَدَارِس','b'],'جَامِعَة':['جَامِعَات','s'],'مَكْتَب':['مَكَاتِب','b'],'مَكْتَبَة':['مَكْتَبَات','s'],'مَطْبَخ':['مَطَابِخ','b'],'غُرْفَة':['غُرَف','b'],'حَدِيقَة':['حَدَائِق','b'],'سُوق':['أَسْوَاق','b'],'مَدِينَة':['مُدُن','b'],'قَرْيَة':['قُرًى','b'],'شَارِع':['شَوَارِع','b'],'مَطَار':['مَطَارَات','s'],'مُسْتَشْفَى':['مُسْتَشْفَيَات','s'],'مَطْعَم':['مَطَاعِم','b'],'كِتَاب':['كُتُب','b'],'قَلَم':['أَقْلَام','b'],'كُرَّاسَة':['كُرَّاسَات','s'],'حَقِيبَة':['حَقَائِب','b'],'بَاب':['أَبْوَاب','b'],'نَافِذَة':['نَوَافِذ','b'],'مِفْتَاح':['مَفَاتِيح','b'],'كُرْسِي':['كَرَاسِي','b'],'طَاوِلَة':['طَاوِلَات','s'],'سَرِير':['أَسِرَّة','b'],'سَاعَة':['سَاعَات','s'],'مِصْبَاح':['مَصَابِيح','b'],'مِرْآة':['مَرَايَا','b'],'تِلْفَاز':['تِلْفَازَات','s'],'هَاتِف':['هَوَاتِف','b'],'حَاسُوب':['حَوَاسِيب','b'],'سَيَّارَة':['سَيَّارَات','s'],'جَرِيدَة':['جَرَائِد','b'],'مَجَلَّة':['مَجَلَّات','s'],'وَرَقَة':['أَوْرَاق','b'],'كُوب':['أَكْوَاب','b'],'صَحْن':['صُحُون','b'],'مِلْعَقَة':['مَلَاعِق','b'],'سِكِّين':['سَكَاكِين','b'],'نَظَّارَة':['نَظَّارَات','s'],'مِسْطَرَة':['مَسَاطِر','b'],'مَاء':['مِيَاه','b'],'عَصِير':['عَصَائِر','b'],'لَحْم':['لُحُوم','b'],'سَمَكَة':['أَسْمَاك','b'],'تُفَّاحَة':['تُفَّاحَات','s'],'مَوْزَة':['مَوْزَات','s'],'بُرْتُقَالَة':['بُرْتُقَالَات','s'],'فَاكِهَة':['فَوَاكِه','b'],'مِلْح':['أَمْلَاح','b'],'شَمْس':['شُمُوس','b'],'قَمَر':['أَقْمَار','b'],'شَجَرَة':['أَشْجَار','b'],'نَهْر':['أَنْهَار','b'],'بَحْر':['بِحَار','b'],'جَبَل':['جِبَال','b'],'سَمَاء':['سَمَاوَات','s'],'أَرْض':['أَرَاضِي','b'],'مَطَر':['أَمْطَار','b'],'زَهْرَة':['أَزْهَار','b'],'نَجْم':['نُجُوم','b'],'سَحَابَة':['سُحُب','b'],'قِطَّة':['قِطَط','b'],'كَلْب':['كِلَاب','b'],'حِصَان':['أَحْصِنَة','b'],'أَسَد':['أُسُود','b'],'جَمَل':['جِمَال','b'],'طَائِر':['طُيُور','b'],'بَقَرَة':['بَقَرَات','s'],'حِمَار':['حَمِير','b'],'رَأْس':['رُؤُوس','b'],'عَيْن':['عُيُون','b'],'أُذُن':['آذَان','b'],'أَنْف':['أُنُوف','b'],'فَم':['أَفْوَاه','b'],'يَد':['أَيْدٍ','b'],'رِجْل':['أَرْجُل','b'],'قَلْب':['قُلُوب','b'],'وَجْه':['وُجُوه','b'],'سِنّ':['أَسْنَان','b'],'لَيْل':['لَيَالٍ','b'],'أُسْبُوع':['أَسَابِيع','b'],'شَهْر':['أَشْهُر','b'],'سَنَة':['سَنَوَات','s'],'وَقْت':['أَوْقَات','b'],'وِسَادَة':['وَسَائِد','b'],'سَجَّادَة':['سَجَاجِيد','b'],'سِتَارَة':['سَتَائِر','b'],'أَرِيكَة':['أَرَائِك','b'],'خِزَانَة':['خَزَائِن','b'],'ثَلَّاجَة':['ثَلَّاجَات','s'],'غَسَّالَة':['غَسَّالَات','s'],'مِنْشَفَة':['مَنَاشِف','b'],'فُرْشَاة':['فُرَش','b'],'سَقْف':['سُقُوف','b'],'جِدَار':['جُدْرَان','b'],'دَرَج':['أَدْرَاج','b'],'صُنْدُوق':['صَنَادِيق','b'],'سَلَّة':['سِلَال','b'],'زُجَاجَة':['زُجَاجَات','s'],'قِدْر':['قُدُور','b'],'مِكْنَسَة':['مَكَانِس','b'],'شَمْعَة':['شُمُوع','b'],'صُورَة':['صُوَر','b'],'بَطَّانِيَّة':['بَطَاطِين','b'],'فُرْن':['أَفْرَان','b'],'جَدّ':['أَجْدَاد','b'],'جَدَّة':['جَدَّات','s'],'عَمّ':['أَعْمَام','b'],'خَال':['أَخْوَال','b'],'عَمَّة':['عَمَّات','s'],'خَالَة':['خَالَات','s'],'عَائِلَة':['عَائِلَات','s'],'ضَيْف':['ضُيُوف','b'],'حَمَّام':['حَمَّامَات','s'],'صَالَة':['صَالَات','s'],'مَلْعَب':['مَلَاعِب','b'],'دُكَّان':['دَكَاكِين','b'],'مَزْرَعَة':['مَزَارِع','b'],'شَاطِئ':['شَوَاطِئ','b'],'وَجْبَة':['وَجْبَات','s'],'كَعْكَة':['كَعْكَات','s'],'حَشَرَة':['حَشَرَات','s'],'فَرَاشَة':['فَرَاشَات','s'],'خَرُوف':['خِرَاف','b'],'أَرْنَب':['أَرَانِب','b'],'فِيل':['أَفْيَال','b'],'قِرْد':['قُرُود','b'],'عُصْفُور':['عَصَافِير','b'],'حَيَوَان':['حَيَوَانَات','s'],'نَبَات':['نَبَاتَات','s'],'نَار':['نِيرَان','b'],'ضَوْء':['أَضْوَاء','b'],'رِيح':['رِيَاح','b'],'إِصْبَع':['أَصَابِع','b'],'ظَهْر':['ظُهُور','b'],'بَطْن':['بُطُون','b'],'كَتِف':['أَكْتَاف','b'],'رُكْبَة':['رُكَب','b'],'قَدَم':['أَقْدَام','b'],'ذِرَاع':['أَذْرُع','b'],'لِسَان':['أَلْسِنَة','b'],'رَقَبَة':['رِقَاب','b'],'ظُفْر':['أَظَافِر','b'],'جِلْد':['جُلُود','b'],'خَدّ':['خُدُود','b'],'جَبْهَة':['جِبَاه','b'],'شَفَة':['شِفَاه','b'],'يَوْم':['أَيَّام','b'],'قَمِيص':['قُمْصَان','b'],'بِنْطَال':['بَنَاطِيل','b'],'فُسْتَان':['فَسَاتِين','b'],'تَنُّورَة':['تَنَانِير','b'],'حِذَاء':['أَحْذِيَة','b'],'جَوْرَب':['جَوَارِب','b'],'قُبَّعَة':['قُبَّعَات','s'],'مِعْطَف':['مَعَاطِف','b'],'وِشَاح':['أَوْشِحَة','b'],'قُفَّاز':['قُفَّازَات','s'],'حِزَام':['أَحْزِمَة','b'],'لُعْبَة':['أَلْعَاب','b'],'دُمْيَة':['دُمًى','b'],'كُرَة':['كُرَات','s'],'دَرَّاجَة':['دَرَّاجَات','s'],'قِصَّة':['قِصَص','b'],'رَسْم':['رُسُوم','b'],'لَوْن':['أَلْوَان','b'],'أُرْجُوحَة':['أَرَاجِيح','b'],'قِطَار':['قِطَارَات','s'],'حَافِلَة':['حَافِلَات','s'],'طَائِرَة':['طَائِرَات','s'],'بَالُون':['بَالُونَات','s'],'أُغْنِيَة':['أَغَانِي','b'],'كَبِير':['كِبَار','b'],'صَغِير':['صِغَار','b'],'جَدِيد':['جُدُد','b'],'قَدِيم':['قُدَمَاء','b'],'جَمِيل':['جِمَال','b'],'طَوِيل':['طِوَال','b'],'قَصِير':['قِصَار','b'],'سَهْل':['سَهْلُونَ','s'],'صَعْب':['صِعَاب','b'],'جَيِّد':['جِيَاد','b'],'سَيِّئ':['سَيِّئُونَ','s'],'حَارّ':['حَارُّونَ','s'],'بَارِد':['بَارِدُونَ','s'],'نَظِيف':['نُظَفَاء','b'],'مَفْتُوح':['مَفْتُوحُونَ','s'],'مُغْلَق':['مُغْلَقُونَ','s'],'كَثِير':['كَثِيرُونَ','s'],'قَلِيل':['قَلِيلُونَ','s'],'غَنِيّ':['أَغْنِيَاء','b'],'سَعِيد':['سُعَدَاء','b'],'ثَقِيل':['ثِقَال','b'],'خَفِيف':['خِفَاف','b'],'سَرِيع':['سِرَاع','b'],'بَطِيء':['بِطَاء','b'],'نَاعِم':['نَاعِمُونَ','s'],'قَوِيّ':['أَقْوِيَاء','b'],'ضَعِيف':['ضُعَفَاء','b'],'مُتَّسِخ':['مُتَّسِخُونَ','s'],'مُمْتَلِئ':['مُمْتَلِئُونَ','s'],'فَارِغ':['فَارِغُونَ','s'],'قَرِيب':['قَرِيبُونَ','s'],'بَعِيد':['بَعِيدُونَ','s'],'مَشْغُول':['مَشْغُولُونَ','s'],'هَادِئ':['هَادِئُونَ','s'],'أَحْمَر':['حُمْر','b'],'أَزْرَق':['زُرْق','b'],'أَخْضَر':['خُضْر','b'],'أَصْفَر':['صُفْر','b'],'أَبْيَض':['بِيض','b'],'أَسْوَد':['سُود','b'],'حَزِين':['حَزَانَى','b'],'غَاضِب':['غِضَاب','b'],'خَائِف':['خَائِفُونَ','s'],'مُتْعَب':['مُتْعَبُونَ','s'],'جَائِع':['جِيَاع','b'],'عَطْشَان':['عِطَاش','b'],'مَرِيض':['مَرْضَى','b'],'خَجُول':['خَجُولُونَ','s']};
-  var CATCOL={basics:1,people:2,places:3,home:4,food:5,nature:3,body:2,colours:4,describe:1,actions:5,numbers:3,time:1,greet:2,clothes:2,toys:5,feelings:1};
+// Verb forms: past (he did), present (he does), command (do!), doer, action noun
+  var FMQ=['past tense (he did)','present tense (he does)','command (do!)','doer (one who does it)','action noun (the doing)'];
+  var FMTAG=['past','present','command','doer','action noun'];
+  var FORMS={
+    go:'ذَهَبَ يَذْهَبُ اِذْهَبْ ذَاهِب ذَهَاب',sit:'جَلَسَ يَجْلِسُ اِجْلِسْ جَالِس جُلُوس',write:'كَتَبَ يَكْتُبُ اُكْتُبْ كَاتِب كِتَابَة',read:'قَرَأَ يَقْرَأُ اِقْرَأْ قَارِئ قِرَاءَة',
+    opening:'فَتَحَ يَفْتَحُ اِفْتَحْ فَاتِح فَتْح',closing:'أَغْلَقَ يُغْلِقُ أَغْلِقْ مُغْلِق إِغْلَاق',eat:'أَكَلَ يَأْكُلُ كُلْ آكِل أَكْل',drink:'شَرِبَ يَشْرَبُ اِشْرَبْ شَارِب شُرْب',
+    enter:'دَخَلَ يَدْخُلُ اُدْخُلْ دَاخِل دُخُول',exit:'خَرَجَ يَخْرُجُ اُخْرُجْ خَارِج خُرُوج',hear:'سَمِعَ يَسْمَعُ اِسْمَعْ سَامِع سَمْع',look:'نَظَرَ يَنْظُرُ اُنْظُرْ نَاظِر نَظَر',
+    take:'أَخَذَ يَأْخُذُ خُذْ آخِذ أَخْذ',return:'رَجَعَ يَرْجِعُ اِرْجِعْ رَاجِع رُجُوع',sleep:'نَامَ يَنَامُ نَمْ نَائِم نَوْم',understand:'فَهِمَ يَفْهَمُ اِفْهَمْ فَاهِم فَهْم',
+    ask:'سَأَلَ يَسْأَلُ اِسْأَلْ سَائِل سُؤَال',knew:'عَرَفَ يَعْرِفُ اِعْرِفْ عَارِف مَعْرِفَة',play:'لَعِبَ يَلْعَبُ اِلْعَبْ لَاعِب لَعِب',study:'دَرَسَ يَدْرُسُ اُدْرُسْ دَارِس دِرَاسَة',
+    wake:'اِسْتَيْقَظَ يَسْتَيْقِظُ اِسْتَيْقِظْ مُسْتَيْقِظ اِسْتِيقَاظ',wash:'غَسَلَ يَغْسِلُ اِغْسِلْ غَاسِل غَسْل',puton:'لَبِسَ يَلْبَسُ اِلْبَسْ لَابِس لُبْس',draw:'رَسَمَ يَرْسُمُ اُرْسُمْ رَاسِم رَسْم',
+    cook:'طَبَخَ يَطْبُخُ اُطْبُخْ طَابِخ طَبْخ',buy:'اِشْتَرَى يَشْتَرِي اِشْتَرِ مُشْتَرٍ اِشْتِرَاء',give:'أَعْطَى يُعْطِي أَعْطِ مُعْطٍ إِعْطَاء',stand:'وَقَفَ يَقِفُ قِفْ وَاقِف وُقُوف',
+    run:'رَكَضَ يَرْكُضُ اُرْكُضْ رَاكِض رَكْض',laugh:'ضَحِكَ يَضْحَكُ اِضْحَكْ ضَاحِك ضَحِك',cry:'بَكَى يَبْكِي اِبْكِ بَاكٍ بُكَاء',help:'سَاعَدَ يُسَاعِدُ سَاعِدْ مُسَاعِد مُسَاعَدَة',
+    wipe:'نَظَّفَ يُنَظِّفُ نَظِّفْ مُنَظِّف تَنْظِيف',sing:'غَنَّى يُغَنِّي غَنِّ مُغَنٍّ غِنَاء',pray:'صَلَّى يُصَلِّي صَلِّ مُصَلٍّ صَلَاة',watch:'شَاهَدَ يُشَاهِدُ شَاهِدْ مُشَاهِد مُشَاهَدَة',
+    come:'جَاءَ يَجِيءُ جِئْ جَاءٍ مَجِيء'
+  };
+// Qur'an words, in the order of the booklet "80% of Qur'anic Words" by Dr Abdulazeez Abdulraheem.
+  // Row: [Arabic, Qur'an meaning, sketch id or '=id' for a word already in the everyday list, {n: times in the Qur'an, pl, pt, fm}]
+  var QCATS=[['q-this','This and that'],['q-no','No and not'],['q-whose','My, your, his'],['q-who','I, you, he'],['q-where','Where?'],['q-ask','Questions'],['q-misc','Useful little words'],['q-when','When and then'],['q-prep','Prepositions'],['q-prepma','Prepositions with مَا']];
+  var QDATA={
+    'q-this':[['هَذَا','this (m.)','=thism'],['ذَلِكَ','that (m.)','=thatm'],['هَذِهِ','this (f.); these (for things)','=thisf'],['تِلْكَ','that (f.); those (for things)','=thatf'],['هَؤُلَاءِ','these (people)'],['أُولَئِكَ','those (people)'],['الَّذِي','he who, the one who'],['الَّتِي','she who; those which (for things)'],['الَّذِينَ','those who (m.)']],
+    'q-no':[['لَا إِلَهَ','(there is) no god'],['إِلَّا اللَّهُ','except Allah'],['كَلَّا','never! certainly not!'],['لَنْ','will not (future)'],['لَمْ','did not (past)'],['مَا','not'],['لَيْسَ','is not (f. لَيْسَتْ)'],['بَلَى','yes indeed (answering a "not" question)'],['غَيْر','not, other than'],['دُونَ','besides, other than; less than'],['إِلَّا','except; unless'],['نَعَمْ','yes','=yes']],
+    'q-whose':[['كِتَابُهُ','his book (ـهُ = his)'],['كِتَابُهُمْ','their book (ـهُمْ = their, m.)'],['كِتَابُكَ','your book (ـكَ = your, m.)'],['كِتَابُكُمْ','your book (ـكُمْ = your, all of you)'],['كِتَابِي','my book (ـِي = my)'],['كِتَابُنَا','our book (ـنَا = our)'],['كِتَابُهَا','her book (ـهَا = her; also their, for things)'],['كِتَابُهُنَّ','their book (ـهُنَّ = their, f.)'],['كِتَابُكِ','your book (ـكِ = your, f.)'],['كِتَابُهُمَا','their book (ـهُمَا = of those two)'],['كِتَابُكُمَا','your book (ـكُمَا = of you two)']],
+    'q-who':[['هُوَ','he','=he'],['هُمْ','they (m.)'],['أَنْتَ','you (m.)','=youm'],['أَنْتُمْ','you all (m.)'],['أَنَا','I','=me'],['نَحْنُ','we','=we'],['هِيَ','she; they (for things)','=she'],['هُنَّ','they (f.)'],['أَنْتِ','you (f.)','=youf'],['هُمَا','they two'],['أَنْتُمَا','you two']],
+    'q-where':[['فَوْقَ','above, over','=above'],['تَحْتَ','under, beneath','=under'],['بَيْنَ أَيْدِي','in front of (before the hands of)'],['خَلْفَ','behind; after','=behind'],['أَمَامَ','in front of','=front'],['وَرَاءَ','behind, beyond'],['يَمِين','right (side); oath','=right'],['شِمَال','left (side)','',{pl:'شَمَائِل'}],['بَيْنَ','between','=between'],['حَوْلَ','around'],['حَيْثُ','where, wherever'],['أَيْنَمَا','wherever']],
+    'q-ask':[['مَا','what?; that which','=what'],['مَنْ','who?; the one who','=who'],['مَتَى','when?','=when'],['أَيْنَ','where?','=where'],['كَيْفَ','how?','=how'],['كَمْ','how many? how much?','=howmany'],['أَيُّ','which?'],['أَنَّى','from where? how?'],['هَلْ','is it? do...? (yes/no question, also أَ)','=isit'],['مَاذَا','what?'],['لِمَاذَا','why? (also لِمَ)','=why'],['لَوْلَا','if not; why not?']],
+    'q-misc':[['ذُو','owner of, having (m.)'],['ذَاتُ','owner of, having (f.)'],['أُولُو','people of, owners of'],['أَهْل','people of; family'],['آل','family, people (of)'],['أَلَا','lo! surely; do you not?'],['نِعْمَ','how excellent is...'],['بِئْسَ','how evil is...'],['بِئْسَمَا','evil is that which'],['مِثْل','like, something similar'],['مَثَل','example, parable','',{pl:'أَمْثَال'}],['مِمَّنْ','than the one who; from those who']],
+    'q-when':[['قَبْلَ','before','=before'],['بَعْدَ','after','=after'],['حِين','time, period; when'],['إِذْ','when (in the past)'],['إِذَا','when, if (in the future)'],['ثُمَّ','then, after that'],['فَـ','so, then, therefore'],['بَلْ','no, rather; but'],['عِنْدَ','near, with, at (also لَدَى، لَدُنْ)'],['إِنْ ... إِلَّا','nothing but... (إِنْ = not)'],['مَا ... إِلَّا','nothing but...'],['أَلَّا','that... not; so as not to']],
+    'q-prep':[['بِـ','with, by, in'],['عَنْ','about, from'],['فِي','in','=in'],['كَـ','like, as'],['لِـ','for, to'],['مِنْ','from, of','=from'],['إِلَى','to, towards','=to'],['تَـ','by (in an oath, as in تَاللَّهِ)'],['حَتَّى','until, even'],['عَلَى','on, upon','=on'],['مَعَ','with','=with'],['وَ','and; by (in an oath)']],
+    'q-prepma':[['بِمَا','with what; because'],['عَمَّا','about what'],['فِيمَا','in what'],['كَمَا','as, just as'],['لِمَا','for what; for that which'],['مِمَّا','from what, out of what'],['أَمَّا','as for'],['إِمَّا','either... or; if'],['أَنَّمَا','that (only)'],['إِنَّمَا','only; truly'],['كَأَنَّمَا','as if'],['كُلَّمَا','whenever']]
+  };
+  var QLVNOTE='Beginner: 100 times or more, or one of the most common little words. Intermediate: 30 to 99 times. Advanced: fewer than 30.';
+  var CATCOL={'q-this':1,'q-no':2,'q-whose':3,'q-who':4,'q-where':5,'q-ask':1,'q-misc':2,'q-when':3,'q-prep':4,'q-prepma':5,basics:1,people:2,places:3,home:4,food:5,nature:3,body:2,colours:4,describe:1,actions:5,numbers:3,time:1,greet:2,clothes:2,toys:5,feelings:1};
   function colOf(k){return CATCOL[k]||4}
   var BUILTIN=[];
   // Levels, keyed by sketch id: 1 Beginner (everyday words a young child knows), 3 Advanced, anything else 2 Intermediate
@@ -3865,7 +3909,16 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
   var LV3=('isit also very between howmany engineer director professor worker neighbour guest university office airport newspaper magazine ceiling meal earth insect sparrow forehead '+
     'rich weak busy enter return understand knew study hundred daytime month time noon always sometimes sunday monday tuesday wednesday thursday friday saturday hereyouare').split(' ');
   var LVNAME=['','Beginner','Intermediate','Advanced'];
-  CATS.forEach(function(c){DATA[c[0]].forEach(function(r,i){var pp=PLUR[r[0]],sk=r[2]||'';BUILTIN.push({id:c[0]+'-'+i,ar:r[0],en:r[1],cat:c[0],sk:sk,pl:pp?pp[0]:'',pt:pp?pp[1]:'',lv:LV1.indexOf(sk)>=0?1:LV3.indexOf(sk)>=0?3:2})})});
+  CATS.forEach(function(c){DATA[c[0]].forEach(function(r,i){var pp=PLUR[r[0]],sk=r[2]||'';BUILTIN.push({id:c[0]+'-'+i,ar:r[0],en:r[1],cat:c[0],sk:sk,pl:pp?pp[0]:'',pt:pp?pp[1]:'',fm:FORMS[sk]?FORMS[sk].split(' '):null,lv:LV1.indexOf(sk)>=0?1:LV3.indexOf(sk)>=0?3:2})})});
+  // A Qur'an word already in the everyday list is the same word (same progress) with its Qur'an meaning added.
+  // Levels come from how often the word is used; the booklet's first pages give no counts because they are the most common words.
+  var QWORDS=[],QI=0;
+  QCATS.forEach(function(c){QDATA[c[0]].forEach(function(r,i){
+    var x=r[3]||{},sk=r[2]||'',w=null;
+    if(sk.charAt(0)==='=')w=BUILTIN.filter(function(b){return b.sk===sk.slice(1)})[0];
+    if(!w){w={id:c[0]+'-'+i,ar:r[0],en:r[1],cat:c[0],sk:sk.charAt(0)==='='?'':sk,pl:x.pl||'',pt:x.pl?(x.pt||'b'):'',fm:x.fm?x.fm.split(' '):null};QWORDS.push(w)}
+    w.qen=r[1];w.qcat=c[0];w.qi=QI++;w.qlv=!x.n||x.n>=100?1:x.n>=30?2:3;if(x.n)w.qn=x.n;
+  })});
 
   var ICON={
     speaker:'<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16.5 9a4.5 4.5 0 0 1 0 6"/><path d="M19 6.5a8 8 0 0 1 0 11"/></svg>',
@@ -3899,9 +3952,9 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
   loadProfile();
   var voice=lsGet('kp-voice',{name:'',rate:0.85});
   // The level choice is remembered for each learner
-  var filter={cat:'all',show:'all',q:'',pl:'',lv:lsGet(pkey('level'),0)};
+  var filter={cat:'all',show:'all',q:'',pl:'',lv:lsGet(pkey('level'),0),set:lsGet(pkey('set'),'every')};
 
-  function allWords(){return BUILTIN.concat(custom)}
+  function allWords(){return BUILTIN.concat(QWORDS,custom)}
 
   // Word progress per learner: s = right first time in a row (Learning words),
   // d = when a Known well word is next due a check, v = how far along the check gaps it is
@@ -3939,8 +3992,10 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
     $('#due-text').textContent=n+(n===1?' Known well word is':' Known well words are')+' due for a check.';
   }
   function byId(id){return allWords().filter(function(w){return w.id===id})[0]}
-  function inCat(w,c){return c==='all'||(c==='mine'?!!w.custom:w.cat===c)}
-  function catName(k){for(var i=0;i<CATS.length;i++)if(CATS[i][0]===k)return CATS[i][1];return 'My words'}
+  function inCat(w,c){return c==='all'||(c==='mine'?!!w.custom:c.indexOf('q-')===0?w.qcat===c:w.cat===c)}
+  function inSet(w){return filter.set==='quran'?!!w.qcat:w.cat.indexOf('q-')!==0}
+  function lvOf(w){return filter.set==='quran'&&w.qcat?w.qlv:(w.lv||w.qlv||0)}
+  function catName(k){var all=CATS.concat(QCATS);for(var i=0;i<all.length;i++)if(all[i][0]===k)return all[i][1];return 'My words'}
 
   var toastTimer;
   function toast(t,ms){var el=$('#toast');el.textContent=t;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(function(){el.classList.remove('show')},ms||3200)}
@@ -4011,7 +4066,7 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
   }
 
   function renderChips(){
-    var list=[['all','All']].concat(CATS).concat([['mine','My words']]);
+    var list=filter.set==='quran'?[['all','All']].concat(QCATS):[['all','All']].concat(CATS).concat([['mine','My words']]);
     $('#chips').innerHTML=list.map(function(c){
       return '<button class="chip-btn" type="button" data-cat="'+c[0]+'"'+(c[0]==='all'?'':' style="--c:var(--h'+colOf(c[0])+')"')+' aria-pressed="'+(filter.cat===c[0])+'">'+esc(c[1])+'</button>';
     }).join('');
@@ -4019,10 +4074,12 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
   function visible(){
     var q=norm(filter.q.trim());
     // Easiest words first; the learner's own words (no level) come last
-    var lv=filter.show==='learned'?0:filter.lv;
+    // My Learning words shows every word being learnt, from both lists and all levels
+    var learning=filter.show==='learned',lv=learning?0:filter.lv;
     return allWords().filter(function(w){
+      if(!learning&&!inSet(w))return false;
       if(!inCat(w,filter.cat))return false;
-      if(lv&&w.lv!==lv)return false;
+      if(lv&&lvOf(w)!==lv)return false;
       if(filter.show==='learned'&&(!learned[w.id]||known[w.id]))return false;
       if(filter.show==='todo'&&learned[w.id])return false;
       if(filter.show==='known'&&!known[w.id])return false;
@@ -4031,15 +4088,17 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
       if(filter.pl==='b'&&!(w.pl&&w.pt==='b'))return false;
       if(q&&norm(w.ar).indexOf(q)<0&&norm(w.en).indexOf(q)<0)return false;
       return true;
-    }).map(function(w,i){return [w,i]}).sort(function(a,b){return ((a[0].lv||9)-(b[0].lv||9))||(a[1]-b[1])}).map(function(x){return x[0]});
+    }).map(function(w,i){return [w,i]}).sort(function(a,b){return ((lvOf(a[0])||9)-(lvOf(b[0])||9))||(filter.set==='quran'&&a[0].qcat&&b[0].qcat?a[0].qi-b[0].qi:a[1]-b[1])}).map(function(x){return x[0]});
   }
   function paintLevel(){
+    document.querySelectorAll('#set-seg button').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.set===filter.set))});
+    $('#q-note').hidden=filter.set!=='quran';
     var lv=filter.show==='learned'?0:filter.lv;
     document.querySelectorAll('#lv-seg button').forEach(function(b){b.setAttribute('aria-pressed',String(+b.dataset.lv===lv))});
   }
   function learnLabel(id){return learned[id]?ICON.check+'Learning':'Learning'}
   function renderCount(){
-    var all=allWords(),n=all.filter(function(w){return learned[w.id]&&!known[w.id]}).length,k=all.filter(function(w){return known[w.id]}).length;
+    var all=allWords().filter(inSet),n=all.filter(function(w){return learned[w.id]&&!known[w.id]}).length,k=all.filter(function(w){return known[w.id]}).length;
     $('#count').textContent=all.length+' words · '+n+' learning · '+k+' known well';
     renderDue();paintLevel();
     var only=filter.show==='learned';
@@ -4047,18 +4106,23 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
     $('#only-learning').setAttribute('aria-pressed',String(only));
   }
   function renderWords(){
-    var list=visible();
+    var list=visible(),qset=filter.set==='quran';
     $('#grid').innerHTML=list.length?list.map(function(w){
       var long=w.ar.length>12?' long':'';
       return '<div class="cell'+(learned[w.id]?' done':'')+'" style="--c:var(--h'+colOf(w.cat)+')">'+
         '<button class="card" type="button" data-id="'+esc(w.id)+'" aria-label="'+esc(w.en)+', tap to hear">'+
           (w.sk?sketch(w.sk):'')+
           '<span class="ar'+long+'" lang="ar" dir="rtl">'+esc(w.ar)+'</span>'+
-          '<span class="meta">'+esc(w.en)+'</span>'+
-          (w.lv?'<span class="lv">'+LVNAME[w.lv]+'</span>':'')+
+          // A word in both lists shows both meanings; the list being viewed decides which comes first
+          '<span class="meta">'+esc(qset&&w.qen?w.qen:w.en)+'</span>'+
+          (w.qen&&w.qen!==w.en?'<span class="qm">'+(qset?'Everyday: '+esc(w.en):'In the Qur\'an: '+esc(w.qen))+'</span>':'')+
+          (w.qn?'<span class="qn">In the Qur\'an '+w.qn+' times</span>':'')+
+          (lvOf(w)?'<span class="lv">'+LVNAME[lvOf(w)]+'</span>':'')+
+          (w.fm?'<span class="fm">'+w.fm.map(function(x,k){return '<span class="fmr"><span class="ar" lang="ar" dir="rtl">'+esc(x)+'</span><span class="tag">'+FMTAG[k]+'</span></span>'}).join('')+'</span>':'')+
           (w.pl?'<span class="pl"><span class="ar" lang="ar" dir="rtl">'+esc(w.pl)+'</span><span class="tag">'+(w.pt==='s'?'sound plural':'broken plural')+'</span></span>':'')+
         '</button>'+
         (w.pl?'<button class="plbtn" type="button" data-pl="'+esc(w.id)+'" aria-label="'+esc(w.en)+': hear the plural">Plural</button>':'')+
+        (w.fm?'<button class="plbtn fmbtn" type="button" data-fm="'+esc(w.id)+'" aria-label="'+esc(w.en)+': see and hear the verb forms">Forms</button>':'')+
         '<button class="learn'+(learned[w.id]?' on':'')+'" type="button" data-learn="'+esc(w.id)+'" aria-pressed="'+(learned[w.id]?'true':'false')+'" aria-label="'+esc(w.en)+': learning">'+learnLabel(w.id)+'</button>'+
         (learned[w.id]?'<button class="learn kw'+(known[w.id]?' on':'')+'" type="button" data-known="'+esc(w.id)+'" aria-pressed="'+(known[w.id]?'true':'false')+'" aria-label="'+esc(w.en)+': known well">'+(known[w.id]?ICON.check+'Known well':'Known well')+'</button>':'')+
       '</div>';
@@ -4072,6 +4136,12 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
   });
   $('#search').addEventListener('input',function(){filter.q=this.value;renderWords()});
   $('#show').addEventListener('change',function(){filter.show=this.value;renderWords()});
+  $('#set-seg').addEventListener('click',function(e){
+    var b=e.target.closest('button[data-set]');if(!b||b.dataset.set===filter.set)return;
+    filter.set=b.dataset.set;lsSet(pkey('set'),filter.set);filter.cat='all';
+    if(filter.show==='learned'){filter.show='all';$('#show').value='all'}
+    renderChips();renderWords();
+  });
   $('#lv-seg').addEventListener('click',function(e){
     var b=e.target.closest('button[data-lv]');if(!b)return;
     filter.lv=+b.dataset.lv;lsSet(pkey('level'),filter.lv);
@@ -4102,6 +4172,12 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
       if(learned[id]){delete learned[id];delete known[id];delete stats[id];lsSet(pkey('known'),known);saveStats()}else learned[id]=1;
       lsSet(pkey('learned'),learned);Q.last=null;
       renderWords();
+      return;
+    }
+    var fb=e.target.closest('.fmbtn');
+    if(fb){
+      var fw=byId(fb.dataset.fm);
+      if(fw){fb.closest('.cell').querySelector('.fm').classList.add('on');speak(fw.fm.join('، '),fb)}
       return;
     }
     var pb=e.target.closest('.plbtn');
@@ -4194,7 +4270,10 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
     var b=$('#q-opts .qopt[data-id="'+Q.target.id+'"]');
     if(b){b.classList.add('hit');var m=b.querySelector('.mark');m.className='mark ok';m.innerHTML=ICON.check}
     $('#q-opts').classList.add('done');
-    if(Q.mode==='plc'){
+    if(Q.mode==='fm'){
+      $('#q-msg').innerHTML='Time is up. '+fmText(Q.target,Q.form);
+      speak(Q.target.fm[0]+'، '+Q.target.fm[Q.form],null);
+    }else if(Q.mode==='plc'){
       $('#q-msg').innerHTML='Time is up. '+plText(Q.target);
       speak(Q.target.ar+'، '+Q.target.pl,null);
     }else{
@@ -4211,6 +4290,10 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
   });
   paintTimer();
 
+  var FMHINT=['','Hint: the present tense starts with يَـ or يُـ.','Hint: the command is short, like an order. It often starts with اِ or اُ.','Hint: the doer often has ا after the first letter, like فَاعِل, or starts with مُـ.','Hint: the action noun names the action itself, like كِتَابَة (writing).'];
+  function fmText(w,k){
+    return 'The '+FMQ[k]+' of <span class="ar-s" lang="ar" dir="rtl">'+esc(w.fm[0])+'</span> is <span class="ar-s" lang="ar" dir="rtl">'+esc(w.fm[k])+'</span>.';
+  }
   function plText(w){
     return 'The plural of <span class="ar-s" lang="ar" dir="rtl">'+esc(w.ar)+'</span> is <span class="ar-s" lang="ar" dir="rtl">'+esc(w.pl)+'</span> ('+(w.pt==='s'?'sound plural: an ending is added':'broken plural: the word changes shape')+').';
   }
@@ -4219,11 +4302,13 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
     var revise=(Q.mode==='revise');
     var pic=(Q.mode==='pic');
     var plc=(Q.mode==='plc');
+    var fmMode=(Q.mode==='fm');
     // Revise asks the words due for a check first, then any Known well word
     var due=revise?dueWords():[];
     var pool=revise?(due.length?due:allWords().filter(function(w){return known[w.id]})):quizPool();
     var plMode=(Q.mode==='pl');
     if(plMode||plc)pool=pool.filter(function(w){return w.pl});
+    if(fmMode)pool=pool.filter(function(w){return w.fm});
     if(pic)pool=pool.filter(function(w){return w.sk});
     var recall=(Q.mode==='recall'||Q.mode==='pl');
     var ok=pool.length>=1;
@@ -4235,6 +4320,8 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
         ?'Revise uses the words in your Known well list, and you have none yet. On the Words tab, tap Known well on a word you know really well.'
         :pic
         ?'Pick the picture uses words you are still practising. You have '+n+'. Mark at least 1 word as Learning on the Words tab to start.'
+        :fmMode
+        ?'Pick the form uses verbs you are still practising. You have '+n+'. Mark at least 1 verb as Learning on the Words tab to start. Verbs have a Forms button, for example he went (Actions group).'
         :plc
         ?'Pick the plural uses words you are still practising that have a plural. You have '+n+'. Mark at least 1 such word as Learning on the Words tab to start. Tip: choose Has a plural in the Words filters.'
         :plMode
@@ -4260,9 +4347,13 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
     Q.target=t;Q.last=t.id;Q.opts=shuffle([t].concat(d));Q.locked=false;Q.answered=false;Q.firstWrong=false;
     // Revise asks both ways round: Arabic to English, or English to Arabic
     Q.dir=revise&&Math.random()<.5?'en':'ar';
+    // Pick the form shows the past tense and asks for one of the other four forms; those four are the choices
+    if(fmMode){Q.form=1+Math.floor(Math.random()*4);Q.opts=shuffle([1,2,3,4]).map(function(k){return {k:k}})}
     var p=$('#q-prompt');
     var hearBtn='<button class="btn small" id="q-listen" type="button">'+ICON.speaker+'<span>Hear it</span></button>';
-    if(plc){
+    if(fmMode){
+      p.innerHTML=(t.sk?sketch(t.sk):'')+'<span class="ar" lang="ar" dir="rtl">'+esc(t.fm[0])+'</span>'+hearBtn+'<span class="meta">'+esc(t.en)+'. Which is the '+FMQ[Q.form]+'?</span>';
+    }else if(plc){
       p.innerHTML=(t.sk?sketch(t.sk):'')+'<span class="ar" lang="ar" dir="rtl">'+esc(t.ar)+'</span>'+hearBtn+'<span class="meta">'+esc(t.en)+'. Which is the plural?</span>';
     }else if(Q.dir==='en'){
       p.innerHTML=(t.sk?sketch(t.sk):'')+'<span class="en-big">'+esc(t.en)+'</span><span class="meta">Which Arabic word is it?</span>';
@@ -4272,6 +4363,7 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
     $('#q-opts').classList.remove('done');
     $('#q-opts').classList.toggle('pics',pic);
     $('#q-opts').innerHTML=Q.opts.map(function(w){
+      if(fmMode)return '<button class="qopt" type="button" data-id="'+esc(w.k===Q.form?t.id:t.id+'#'+w.k)+'"><span class="ar" lang="ar" dir="rtl">'+esc(t.fm[w.k])+'</span><span class="mark" aria-hidden="true"></span></button>';
       if(pic)return '<button class="qopt picopt" type="button" data-id="'+esc(w.id)+'" aria-label="'+esc(w.en)+'">'+sketch(w.sk)+'<span class="mark" aria-hidden="true"></span></button>';
       var label=plc?'<span class="ar" lang="ar" dir="rtl">'+esc(w.pl)+'</span>':Q.dir==='en'?'<span class="ar" lang="ar" dir="rtl">'+esc(w.ar)+'</span>':'<span>'+esc(w.en)+'</span>';
       return '<button class="qopt" type="button" data-id="'+esc(w.id)+'">'+label+'<span class="mark" aria-hidden="true"></span></button>';
@@ -4282,7 +4374,7 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
     startTimer(timeUp);
   }
   $('#q-prompt').addEventListener('click',function(e){
-    var b=e.target.closest('#q-listen');if(b&&Q.target)speak(Q.target.ar,b);
+    var b=e.target.closest('#q-listen');if(b&&Q.target)speak(Q.mode==='fm'?Q.target.fm[0]:Q.target.ar,b);
   });
   var R={queue:[],cur:null,stage:'prompt'};
   $('#r-show').innerHTML=ICON.eye+'<span>Show me</span>';
@@ -4373,17 +4465,17 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
       $('#q-opts').classList.add('done');
       tone(true);
       // After a correct answer, show the picture too (unless the choices were pictures already)
-      $('#q-msg').innerHTML=(Q.target.sk&&Q.mode!=='pic'&&Q.mode!=='plc'&&Q.dir!=='en'?sketch(Q.target.sk,'thumb'):'')+
-        (Q.mode==='plc'?'Yes! '+plText(Q.target):'Yes! <span class="ar-s" lang="ar" dir="rtl">'+esc(Q.target.ar)+'</span> means '+esc(Q.target.en)+'.')+esc(extra)+
+      $('#q-msg').innerHTML=(Q.target.sk&&Q.mode!=='pic'&&Q.mode!=='plc'&&Q.mode!=='fm'&&Q.dir!=='en'?sketch(Q.target.sk,'thumb'):'')+
+        (Q.mode==='fm'?'Yes! '+fmText(Q.target,Q.form):Q.mode==='plc'?'Yes! '+plText(Q.target):'Yes! <span class="ar-s" lang="ar" dir="rtl">'+esc(Q.target.ar)+'</span> means '+esc(Q.target.en)+'.')+esc(extra)+
         (Q.mode==='revise'&&Q.firstWrong&&known[Q.target.id]?' <button class="btn small" id="q-back" type="button">Practise this word again</button>':'');
-      (function(t,say){setTimeout(function(){if(Q.target&&Q.target.id===t.id)speak(say,null)},600)})(Q.target,Q.mode==='plc'?Q.target.ar+'، '+Q.target.pl:Q.target.ar);
+      (function(t,say){setTimeout(function(){if(Q.target&&Q.target.id===t.id)speak(say,null)},600)})(Q.target,Q.mode==='fm'?Q.target.fm[0]+'، '+Q.target.fm[Q.form]:Q.mode==='plc'?Q.target.ar+'، '+Q.target.pl:Q.target.ar);
       $('#q-next').hidden=false;$('#q-next').focus();
     }else{
       b.classList.remove('miss');void b.offsetWidth;b.classList.add('miss');
       var x=b.querySelector('.mark');x.className='mark no';x.innerHTML=ICON.cross;
       tone(false);
       // In Pick the plural, a wrong answer gives a hint about the kind of plural
-      $('#q-msg').textContent='Not that one. '+(Q.mode!=='plc'?'Try again.':Q.target.pt==='s'
+      $('#q-msg').textContent='Not that one. '+(Q.mode==='fm'?FMHINT[Q.form]:Q.mode!=='plc'?'Try again.':Q.target.pt==='s'
         ?'Hint: this is a sound plural, so the word stays the same and an ending is added, like ـُونَ, ـِينَ or ـَات.'
         :'Hint: this is a broken plural, so the inside of the word changes shape.');
     }
@@ -4486,7 +4578,7 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
   }
   function refreshAll(){
     Q.right=0;Q.total=0;Q.last=null;R.queue=[];R.cur=null;
-    filter.lv=lsGet(pkey('level'),0);
+    filter.lv=lsGet(pkey('level'),0);filter.set=lsGet(pkey('set'),'every');filter.cat='all';renderChips();
     renderWho();renderWords();renderMine();
     if(!$('#view-known').hidden)renderKnown();
     if(!$('#view-quiz').hidden)newQ();
@@ -4514,7 +4606,7 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
         return;
       }
       var gone=curProfile();
-      ['learned','known','custom','stats','level'].forEach(function(n){try{localStorage.removeItem(pkey(n,gone.id))}catch(err){}});
+      ['learned','known','custom','stats','level','set'].forEach(function(n){try{localStorage.removeItem(pkey(n,gone.id))}catch(err){}});
       profiles.list=profiles.list.filter(function(x){return x.id!==gone.id});
       profiles.cur=profiles.list[0].id;saveProfiles();loadProfile();refreshAll();
       toast('Removed '+gone.name+'.');
