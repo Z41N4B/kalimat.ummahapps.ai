@@ -3969,8 +3969,11 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
     try{var s=window.speechSynthesis;if(s&&(s.speaking||s.pending))s.cancel()}catch(e){}
     document.querySelectorAll('.playing').forEach(function(e){e.classList.remove('playing')});
   }
+  // Speech-only spellings for words some voices say wrongly (the screen still shows the usual spelling)
+  var SAY={'كِتَاب':'كِتَابْ'};
   function speak(text,el){
     if(!('speechSynthesis' in window)){toast('This browser cannot speak. Open the site in Chrome or Safari.',6000);return}
+    text=text.split('، ').map(function(t){return SAY[t]||t}).join('، ');
     stopSpeech();
     var u=new SpeechSynthesisUtterance(text);
     var vs=[];try{vs=speechSynthesis.getVoices()||[]}catch(e){}
