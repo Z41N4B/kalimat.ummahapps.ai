@@ -14,7 +14,16 @@ A free Arabic vocabulary trainer for beginners. Live at https://kalimat.ummahapp
 - Mark the words you are learning, then mark them as known well (or get a word right first time 5 times in a row and it moves there by itself)
 - Spaced checks on Known well words: after 3 days, 1 week, 2 weeks, 1 month and 2 months
 - Add your own words
-- Up to 3 learners on one device, each with their own progress
+- Up to 3 learners on one device, each with their own progress, shared with Takallum Kids, Kalimat Plus and Takallum
+- Words known from the other apps: a note on the Words tab offers to add them to Learning
+- A short note on sound and broken plurals, on the Words tab and in the two plural games
+
+## Shared with the other apps
+Takallum Kids, Kalimat, Kalimat Plus and Takallum share two things on the same device through `ummah.js`, which is copied into each app's folder (keep the four copies identical):
+- **Learners:** name, boy or girl (man or woman), and animal, in the `ua_l` cookie on `.ummahapps.ai`. A learner added in one app appears in the others; a learner still called "Learner 1" stays in its own app until renamed.
+- **Known words:** words learned in Takallum Kids and Known well words in Kalimat and Kalimat Plus go into a per-learner `ua_w_<id>` cookie as short hashes of the bare Arabic. Kalimat and Kalimat Plus offer to add words known from the other apps.
+
+Each page also ends with the same four-app family strip. On localhost, `ummah.js` points the strip's links at the local servers (Kids 8771, Kalimat 8766, Kalimat Plus 8772, Takallum 8770).
 
 ## SEO and GEO
 `index.html` has meta tags, Open Graph and JSON-LD (WebApplication + FAQPage). `robots.txt`, `sitemap.xml` and `llms.txt` sit at the root.

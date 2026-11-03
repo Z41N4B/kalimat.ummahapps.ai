@@ -12,8 +12,8 @@
 <meta name="apple-mobile-web-app-title" content="Kalimat">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="theme-color" content="#EDF0F1" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#16191B" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#1E4FA0" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0D1424" media="(prefers-color-scheme: dark)">
 <link rel="canonical" href="https://kalimat.ummahapps.ai/">
 <link rel="alternate" hreflang="en" href="https://kalimat.ummahapps.ai/">
 <link rel="alternate" hreflang="x-default" href="https://kalimat.ummahapps.ai/">
@@ -107,35 +107,36 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Nunito:wght@400;700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Instrument+Sans:wght@400;500;600;700&display=swap">
 <style>
-/* Layout: same graphite paper as Kalimat; filter chips and search above a dense word grid, quiz and own-words on separate tabs. */
+/* Layout: filter chips and search above a dense word grid, quiz and own-words on separate tabs.
+   Colours and font match the other Ummah Apps Arabic apps (Takallum, Takallum Kids, Kalimat Plus). */
 :root{
-  --paper:#EDF0F1;
-  --card:#FBFCFC;
-  --ink:#2B2F33;
-  --ink-2:#5B646B;
-  --line:#C6CED2;
-  --accent:#2C6E9B;
-  --accent-soft:#DCEAF3;
+  --paper:#EDF1F6;
+  --card:#FFFFFF;
+  --ink:#15233F;
+  --ink-2:#56637D;
+  --line:#D3DBE6;
+  --accent:#1E4FA0;
+  --accent-soft:#DCE6F7;
   --on-accent:#FFFFFF;
-  --ok:#2B7A52;
-  --bad:#A8472F;
+  --ok:#1F6B4A;
+  --bad:#A8382C;
   --h1:#3B66A8;--h2:#B8512A;--h3:#2A7F72;--h4:#8E4A8C;--h5:#94690F;
   --font-ar:'Amiri','Noto Naskh Arabic',serif;
-  --font-ui:'Nunito',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --font-ui:'Instrument Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
   color-scheme:light;
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
-    --paper:#16191B;--card:#1F2326;--ink:#E4E7E4;--ink-2:#9AA3A8;--line:#394044;
-    --accent:#7DB7DC;--accent-soft:#24323B;--on-accent:#0F1C24;--ok:#6CC495;--bad:#E58B73;--h1:#8DB4EB;--h2:#F0A07F;--h3:#6FCBB9;--h4:#D79BD4;--h5:#E0BA6A;
+    --paper:#0D1424;--card:#162035;--ink:#E6EBF4;--ink-2:#9AA6BD;--line:#2A3753;
+    --accent:#8DB0EC;--accent-soft:#1D2D4D;--on-accent:#0D1424;--ok:#5FC498;--bad:#F08A7E;--h1:#8DB4EB;--h2:#F0A07F;--h3:#6FCBB9;--h4:#D79BD4;--h5:#E0BA6A;
     color-scheme:dark;
   }
 }
 :root[data-theme="dark"]{
-  --paper:#16191B;--card:#1F2326;--ink:#E4E7E4;--ink-2:#9AA3A8;--line:#394044;
-  --accent:#7DB7DC;--accent-soft:#24323B;--on-accent:#0F1C24;--ok:#6CC495;--bad:#E58B73;--h1:#8DB4EB;--h2:#F0A07F;--h3:#6FCBB9;--h4:#D79BD4;--h5:#E0BA6A;
+  --paper:#0D1424;--card:#162035;--ink:#E6EBF4;--ink-2:#9AA6BD;--line:#2A3753;
+  --accent:#8DB0EC;--accent-soft:#1D2D4D;--on-accent:#0D1424;--ok:#5FC498;--bad:#F08A7E;--h1:#8DB4EB;--h2:#F0A07F;--h3:#6FCBB9;--h4:#D79BD4;--h5:#E0BA6A;
   color-scheme:dark;
 }
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
@@ -148,7 +149,7 @@ img{max-width:100%}
 
 .top{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:14px}
 .top h1{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin:0;font:inherit}
-.brand-ar{font-family:var(--font-ar);font-size:2.6rem;font-weight:700;line-height:1.2}
+.brand-ar{font-family:var(--font-ar);font-size:2.6rem;font-weight:700;line-height:1.2;color:var(--accent)}
 .brand-en{font-size:.8rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2)}
 .tag{margin:0;color:var(--ink-2);flex-basis:100%}
 .who{display:flex;flex-wrap:wrap;align-items:center;gap:8px;flex-basis:100%;margin-top:4px}
@@ -217,6 +218,26 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
 .lvseg{margin:0 0 14px}
 .lvseg button{padding:4px 8px}
 .qnote{font-size:.9rem;color:var(--ink-2);margin:-6px 0 14px}
+.plnote{border:1.5px solid var(--line);background:var(--card);border-radius:12px;padding:8px 14px;margin:0 0 14px;max-width:70ch;font-size:.93rem}
+.plnote summary{font-weight:800;cursor:pointer;min-height:32px;display:flex;align-items:center}
+.plnote p{margin:6px 0 8px;color:var(--ink-2)}
+.plnote b{color:var(--ink)}
+.plnote [lang="ar"]{font-family:var(--font-ar);font-size:1.15em;color:var(--ink)}
+/* Ummah Apps family strip: the same in all four apps */
+.ua-fam{--f-card:#FFFFFF;--f-ink:#15233F;--f-muted:#56637D;--f-line:#D3DBE6;--f-lapis:#1E4FA0;--f-soft:#DCE6F7;margin:24px 0 0;padding-top:20px;border-top:1px solid var(--f-line)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .ua-fam{--f-card:#162035;--f-ink:#E6EBF4;--f-muted:#9AA6BD;--f-line:#2A3753;--f-lapis:#8DB0EC;--f-soft:#1D2D4D}}
+:root[data-theme="dark"] .ua-fam{--f-card:#162035;--f-ink:#E6EBF4;--f-muted:#9AA6BD;--f-line:#2A3753;--f-lapis:#8DB0EC;--f-soft:#1D2D4D}
+.ua-fam h2{font-size:1.05rem;margin:0 0 10px;padding:0;border:0;color:var(--f-ink)}
+.ua-fam ul{list-style:none;margin:0 0 10px;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+.ua-fam li{margin:0}
+.ua-app{display:grid;grid-template-columns:auto 1fr;gap:0 12px;align-items:center;height:100%;padding:10px 14px;border:1px solid var(--f-line);border-radius:16px;background:var(--f-card);color:var(--f-ink);text-decoration:none;line-height:1.35}
+a.ua-app:hover{border-color:var(--f-lapis)}
+.ua-app .ua-ar{grid-row:1 / span 2;font-family:"Amiri",serif;font-size:1.6rem;font-weight:700;line-height:1.3;color:var(--f-lapis)}
+.ua-app b{font-weight:700;font-size:.98rem}
+.ua-app small{grid-column:2;color:var(--f-muted);font-size:.84rem}
+.ua-app.here{background:var(--f-soft);border-color:transparent}
+.ua-app.here b::after{content:" · you are here";font-weight:400;color:var(--f-muted)}
+.ua-fam p{margin:0;color:var(--f-muted);font-size:.84rem}
 .qm,.qn{font-size:.78rem;color:var(--ink-2);font-weight:700}
 .fm{display:none;flex-direction:column;gap:2px;width:100%;margin-top:6px;padding-top:6px;border-top:1.5px dashed var(--line)}
 .fm.on,.grid.show-pl .fm{display:flex}
@@ -3832,6 +3853,7 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
       <div id="vg"></div>
 
       <p class="due" id="due-note" hidden><span id="due-text"></span> <button class="btn primary small" id="due-go" type="button">Check them</button></p>
+      <p class="due" id="ua-note" hidden><span id="ua-text"></span> <button class="btn primary small" id="ua-add" type="button">Add them to Learning</button><button class="linkbtn" id="ua-hide" type="button">Not now</button></p>
       <div class="actions" style="margin:0 0 14px"><button class="btn" id="only-learning" type="button" aria-pressed="false">My Learning words</button></div>
       <div class="seg lvseg" id="set-seg" role="group" aria-label="Word list">
         <button type="button" data-set="every" aria-pressed="true">Everyday words</button>
@@ -3863,6 +3885,12 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
         </div>
       </div>
       <label class="check" for="show-pl"><input type="checkbox" id="show-pl"> Show plurals and verb forms on every card</label>
+      <details class="plnote" id="pl-note">
+        <summary>Sound and broken plurals: a short note</summary>
+        <p><b>Sound plural.</b> The word stays whole and gets an ending. Men, or a group with a man in it, take <span lang="ar" dir="rtl">ـُونَ</span> (or <span lang="ar" dir="rtl">ـِينَ</span> after <span lang="ar" dir="rtl">فِي</span>, <span lang="ar" dir="rtl">مِنْ</span> and as the object). Women, and many things, take <span lang="ar" dir="rtl">ـَات</span>: <span lang="ar" dir="rtl">مُعَلِّم ← مُعَلِّمُونَ</span>, <span lang="ar" dir="rtl">مُعَلِّمَة ← مُعَلِّمَات</span>, <span lang="ar" dir="rtl">سَيَّارَة ← سَيَّارَات</span>.</p>
+        <p><b>Broken plural.</b> The inside of the word changes, like man and men in English: <span lang="ar" dir="rtl">كِتَاب ← كُتُب</span>, <span lang="ar" dir="rtl">وَلَد ← أَوْلَاد</span>, <span lang="ar" dir="rtl">بَيْت ← بُيُوت</span>. There are many patterns and no rule tells you which one a word takes, so learn the plural together with the word.</p>
+        <p><b>Good to know.</b> The plural of a thing (not people) is treated like one “her” word: <span lang="ar" dir="rtl">هَذِهِ كُتُبٌ</span> (these are books), <span lang="ar" dir="rtl">الْبُيُوتُ كَبِيرَةٌ</span> (the houses are big).</p>
+      </details>
       <p class="count" id="count"></p>
       <div class="grid" id="grid"><noscript><p class="lead">Kalimat needs JavaScript to show the words, play audio and run the games. Please turn JavaScript on.</p></noscript></div>
     </section>
@@ -3882,6 +3910,7 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
           <button class="chip-btn" type="button" data-mode="revise" aria-pressed="false">Revise known words</button>
         </div>
       </div>
+      <details class="plnote" id="pl-note-q" hidden></details>
       <div id="q-empty" hidden><p class="lead" id="q-empty-text"></p><button class="btn primary" id="q-go" type="button">Go to Words</button></div>
       <div id="q-play">
         <div class="prompt" id="q-prompt"></div>
@@ -3954,10 +3983,21 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
     <details><summary>Where is my progress saved?</summary><p>Your Learning and Known well lists and your own words are saved in your browser on your device. Nothing is sent to a server. Up to three learners can share one device, each with their own progress.</p></details>
     <details><summary>Who is Kalimat for?</summary><p>Beginners of any age learning Modern Standard Arabic, including children, home-schoolers and adults studying for Quranic or Madinah-style Arabic classes.</p></details>
     <p class="small">Kalimat is part of <a href="https://ummahapps.ai/">Ummah Apps</a>.</p>
+    <nav class="ua-fam" aria-labelledby="ua-fam-h">
+      <h2 id="ua-fam-h">Four free Arabic apps that work together</h2>
+      <ul>
+        <li><a class="ua-app" href="https://takallum-kids.ummahapps.ai/"><span class="ua-ar" lang="ar" dir="rtl">تَكَلُّم</span><b>Takallum Kids</b><small>Ages 4 to 11: first words and short sentences to say out loud</small></a></li>
+        <li><span class="ua-app here" aria-current="page"><span class="ua-ar" lang="ar" dir="rtl">كَلِمَات</span><b>Kalimat</b><small>Beginners: over 400 everyday words and Qur’an words, with pictures and games</small></span></li>
+        <li><a class="ua-app" href="https://kalimat-plus.ummahapps.ai/"><span class="ua-ar" lang="ar" dir="rtl">كَلِمَات</span><b>Kalimat Plus</b><small>Next step: words for worship, tarbiyyah, character and the environment</small></a></li>
+        <li><a class="ua-app" href="https://takallum.ummahapps.ai/"><span class="ua-ar" lang="ar" dir="rtl">تَكَلُّم</span><b>Takallum</b><small>Speaking drills, sentence chains and role-plays for older learners</small></a></li>
+      </ul>
+      <p>On the same device, the four apps share their learners and the words each learner knows.</p>
+    </nav>
   </footer>
 </div>
 <div id="toast" role="status" aria-live="polite"></div>
 
+<script src="ummah.js"></script>
 <script>
 (function(){
   var CATS=[['basics','Basics'],['people','People'],['places','Places'],['home','Home and school'],['food','Food and drink'],['nature','Nature and animals'],['body','Body'],['colours','Colours'],['describe','Describing'],['actions','Actions'],['numbers','Numbers'],['time','Time'],['greet','Greetings'],['clothes','Clothes'],['toys','Toys and play'],['feelings','Feelings']];
@@ -4059,6 +4099,19 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
   var MAXP=3;
   var profiles=lsGet('kp-profiles',null);
   if(!profiles||!profiles.list||!profiles.list.length)profiles={list:[{id:'p1',name:'Learner 1'}],cur:'p1'};
+  // Learners are shared with the other Ummah Apps on this device (ummah.js). One added there shows here too while there is room.
+  if(window.UA){
+    var shared=UA.sync(profiles.list);
+    shared.extra.forEach(function(x){
+      if(profiles.list.length>=MAXP)return;
+      // A learner from another app takes over the first, untouched Learner 1 instead of sitting beside it
+      var blank=profiles.list.length===1&&profiles.list[0].id==='p1'&&!profiles.list[0].ua&&!lsGet('kp-learned',null);
+      if(blank)profiles.list=[];
+      profiles.list.push({id:blank?'p1':'p'+Date.now().toString(36)+profiles.list.length,ua:x.ua,name:x.name,g:x.g,avatar:x.avatar});
+    });
+    profiles.list.forEach(function(p){if(p.ua&&p.ua===shared.cur)profiles.cur=p.id});
+    lsSet('kp-profiles',profiles);
+  }
   if(!profiles.list.some(function(p){return p.id===profiles.cur}))profiles.cur=profiles.list[0].id;
   function pkey(n,id){id=id||profiles.cur;return id==='p1'?'kp-'+n:'kp-'+id+'-'+n}
   var learned,known,custom,stats;
@@ -4083,7 +4136,7 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
   function saveStats(){lsSet(pkey('stats'),stats)}
   function setKnown(id,on){
     var s=st(id);s.s=0;
-    if(on){known[id]=1;s.v=0;s.d=Date.now()+GAPS[0]*DAY}else{delete known[id];delete s.v;delete s.d}
+    if(on){known[id]=1;s.v=0;s.d=Date.now()+GAPS[0]*DAY;shareKnown([id])}else{delete known[id];delete s.v;delete s.d}
     lsSet(pkey('known'),known);saveStats();Q.last=null;
   }
   // Words marked Known well before checks existed have no date, so they are due straight away
@@ -4112,6 +4165,22 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
     $('#due-text').textContent=n+(n===1?' Known well word is':' Known well words are')+' due for a check.';
   }
   function byId(id){return allWords().filter(function(w){return w.id===id})[0]}
+  // Known well words go into the shared word bank (ummah.js), so the other apps can show them as known
+  function shareKnown(ids){
+    var p=curProfile();if(!window.UA||!p||!p.ua)return;
+    UA.addKnown(p.ua,(ids||Object.keys(known)).map(byId).filter(Boolean).map(function(w){return w.ar}));
+  }
+  // Words this learner knows from the other apps but has not started here
+  function fromApps(){
+    var p=curProfile();if(!window.UA||!p||!p.ua)return [];
+    var knows=UA.knows(p.ua),seen={};
+    return BUILTIN.concat(QWORDS).filter(function(w){if(seen[w.id]||learned[w.id]||!knows(w.ar))return false;seen[w.id]=1;return true});
+  }
+  function renderFromApps(){
+    var n=fromApps().length;
+    $('#ua-note').hidden=!n||n<=lsGet(pkey('ua-hide'),0);
+    $('#ua-text').textContent='You already know '+(n===1?'1 word':n+' words')+' here from the other Ummah Apps.';
+  }
   function inCat(w,c){return c==='all'||(c==='mine'?!!w.custom:c.indexOf('q-')===0?w.qcat===c:w.cat===c)}
   function inSet(w){return filter.set==='quran'?!!w.qcat:w.cat.indexOf('q-')!==0}
   function lvOf(w){return filter.set==='quran'&&w.qcat?w.qlv:(w.lv||w.qlv||0)}
@@ -4248,8 +4317,14 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
         (learned[w.id]?'<button class="learn kw'+(known[w.id]?' on':'')+'" type="button" data-known="'+esc(w.id)+'" aria-pressed="'+(known[w.id]?'true':'false')+'" aria-label="'+esc(w.en)+': known well">'+(known[w.id]?ICON.check+'Known well':'Known well')+'</button>':'')+
       '</div>';
     }).join(''):'<p class="lead">'+(filter.show==='learned'&&filter.cat==='all'&&!filter.q?'You have no Learning words yet. Tap Show all words, then tap Learning on the words you want to practise.':'No words match. Try another group or clear the search.')+'</p>';
-    renderCount();
+    renderCount();renderFromApps();
   }
+  $('#ua-add').addEventListener('click',function(){
+    var list=fromApps();list.forEach(function(w){learned[w.id]=1});
+    lsSet(pkey('learned'),learned);Q.last=null;renderWords();
+    toast('Added '+list.length+(list.length===1?' word':' words')+' to Learning.');
+  });
+  $('#ua-hide').addEventListener('click',function(){lsSet(pkey('ua-hide'),fromApps().length);renderFromApps()});
 
   $('#chips').addEventListener('click',function(e){
     var b=e.target.closest('.chip-btn');if(!b)return;
@@ -4561,7 +4636,9 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
   function setMode(mode){
     Q.mode=mode;
     document.querySelectorAll('#q-mode button').forEach(function(x){x.setAttribute('aria-pressed',String(x.dataset.mode===mode))});
+    $('#pl-note-q').hidden=!(mode==='plc'||mode==='pl');
   }
+  $('#pl-note-q').innerHTML=$('#pl-note').innerHTML;
   $('#q-go').addEventListener('click',function(){show('words')});
   $('#q-mode').addEventListener('click',function(e){
     var b=e.target.closest('button[data-mode]');if(!b)return;
@@ -4692,7 +4769,7 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
   function saveProfiles(){lsSet('kp-profiles',profiles)}
   function renderWho(){
     var html='<span class="label">Learner</span>'+profiles.list.map(function(p){
-      return '<button class="chip-btn" type="button" data-pid="'+esc(p.id)+'" aria-pressed="'+(p.id===profiles.cur)+'">'+esc(p.name)+'</button>';
+      return '<button class="chip-btn" type="button" data-pid="'+esc(p.id)+'" aria-pressed="'+(p.id===profiles.cur)+'">'+(p.avatar?'<span aria-hidden="true">'+esc(p.avatar)+'</span> ':'')+esc(p.name)+'</button>';
     }).join('');
     if(profiles.list.length<MAXP)html+='<button class="chip-btn" type="button" data-who="add">+ Add learner</button>';
     html+='<button class="linkbtn" type="button" data-who="rename">Rename</button>';
@@ -4701,6 +4778,7 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
   }
   function refreshAll(){
     Q.right=0;Q.total=0;Q.last=null;R.queue=[];R.cur=null;
+    if(window.UA){UA.setCurrent(curProfile().ua);shareKnown()}
     filter.lv=lsGet(pkey('level'),0);filter.set=lsGet(pkey('set'),'every');filter.cat='all';renderChips();
     renderWho();renderWords();renderMine();
     if(!$('#view-known').hidden)renderKnown();
@@ -4729,6 +4807,7 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
         return;
       }
       var gone=curProfile();
+      if(window.UA)UA.remove(gone.ua);
       ['learned','known','custom','stats','level','set'].forEach(function(n){try{localStorage.removeItem(pkey(n,gone.id))}catch(err){}});
       profiles.list=profiles.list.filter(function(x){return x.id!==gone.id});
       profiles.cur=profiles.list[0].id;saveProfiles();loadProfile();refreshAll();
@@ -4742,11 +4821,13 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
     if(whoMode==='add'){
       if(profiles.list.length>=MAXP)return;
       var id='p'+Date.now().toString(36);
-      profiles.list.push({id:id,name:name});profiles.cur=id;
+      var np={id:id,name:name};if(window.UA)np.ua=UA.save(np);
+      profiles.list.push(np);profiles.cur=id;
       saveProfiles();loadProfile();refreshAll();
       toast('Added '+name+'.');
     }else{
-      curProfile().name=name;saveProfiles();renderWho();
+      curProfile().name=name;if(window.UA){curProfile().ua=UA.save(curProfile());UA.setCurrent(curProfile().ua)}
+      saveProfiles();renderWho();renderFromApps();
     }
     $('#who-form').hidden=true;
   });
@@ -4762,6 +4843,7 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
   }
   tabs.forEach(function(t){t.addEventListener('click',function(){show(t.dataset.tab)})});
 
+  if(window.UA){UA.setCurrent(curProfile().ua);shareKnown()}
   renderWho();renderChips();renderWords();renderAddCats();renderMine();paintRate();
   // In-app browsers (WhatsApp, Instagram, Facebook and similar) often have no speech at all
   var inApp=/FBAN|FBAV|Instagram|WhatsApp|Snapchat|TikTok|Line\/|; wv\)/i.test(navigator.userAgent||'');

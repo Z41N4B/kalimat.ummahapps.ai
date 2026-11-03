@@ -16,6 +16,8 @@
 - A "My Learning words" button shows only the words being practised.
 - Progress tracking: mark the words you are learning, then mark them as known well. A word moves to Known well by itself after 5 right-first-time answers in a row in the games. Known well words come back for spaced checks (after 3 days, 1 week, 2 weeks, 1 month, then 2 months; a wrong answer brings the word back the next day).
 - Learners can add their own words, with plurals and groups.
+- A short plain-English note explains sound plurals (ـُونَ / ـِينَ and ـَات) and broken plurals (كِتَاب ← كُتُب).
+- Learners are shared with the sister apps Takallum Kids, Kalimat Plus and Takallum on the same device, and words already known in those apps can be added to Learning in one tap.
 - Up to three learners can share one device, each with their own progress.
 - Free, no account, no ads. Progress is stored only in the learner's browser.
 
