@@ -183,6 +183,9 @@ h2{font-size:1.25rem;margin:0 0 4px;font-weight:800}
 .btn[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
 .qopt.picopt{min-height:104px;padding:6px 48px 6px 6px}
 .qopt.picopt .sk{max-width:84px}
+.qopt.picopt{flex-direction:column;justify-content:center;gap:4px;text-align:center}
+.qopt.picopt .pic-en{font-size:.95rem;font-weight:700;line-height:1.25}
+#only-learning{width:100%;min-height:68px;font-size:1.3rem}
 .msg .sk.thumb{margin:0 0 4px}
 .gb-right{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
 .tbar{height:4px;max-width:320px;margin:-8px auto 14px;background:var(--line);border-radius:4px;overflow:hidden}
@@ -3855,7 +3858,7 @@ a.ua-app:hover{border-color:var(--f-lapis)}
 
       <p class="due" id="due-note" hidden><span id="due-text"></span> <button class="btn primary small" id="due-go" type="button">Check them</button></p>
       <p class="due" id="ua-note" hidden><span id="ua-text"></span> <button class="btn primary small" id="ua-add" type="button">Add them to Learning</button><button class="linkbtn" id="ua-hide" type="button">Not now</button></p>
-      <div class="actions" style="margin:0 0 14px"><button class="btn" id="only-learning" type="button" aria-pressed="false">My Learning words</button></div>
+      <div class="actions" style="margin:0 0 14px"><button class="btn primary big" id="only-learning" type="button" aria-pressed="false">My Learning words</button></div>
       <div class="seg lvseg" id="set-seg" role="group" aria-label="Word list">
         <button type="button" data-set="every" aria-pressed="true">Everyday words</button>
         <button type="button" data-set="quran" aria-pressed="false">Qur'an words</button>
@@ -4563,7 +4566,7 @@ a.ua-app:hover{border-color:var(--f-lapis)}
     $('#q-opts').classList.toggle('pics',pic);
     $('#q-opts').innerHTML=Q.opts.map(function(w){
       if(fmMode)return '<button class="qopt" type="button" data-id="'+esc(w.k===Q.form?t.id:t.id+'#'+w.k)+'"><span class="ar" lang="ar" dir="rtl">'+esc(t.fm[w.k])+'</span><span class="mark" aria-hidden="true"></span></button>';
-      if(pic)return '<button class="qopt picopt" type="button" data-id="'+esc(w.id)+'" aria-label="'+esc(w.en)+'">'+sketch(w.sk)+'<span class="mark" aria-hidden="true"></span></button>';
+      if(pic)return '<button class="qopt picopt" type="button" data-id="'+esc(w.id)+'" aria-label="'+esc(w.en)+'">'+sketch(w.sk)+'<span class="pic-en">'+esc(w.en)+'</span><span class="mark" aria-hidden="true"></span></button>';
       var label=plc?'<span class="ar" lang="ar" dir="rtl">'+esc(w.pl)+'</span>':Q.dir==='en'?'<span class="ar" lang="ar" dir="rtl">'+esc(w.ar)+'</span>':'<span>'+esc(w.en)+'</span>';
       return '<button class="qopt" type="button" data-id="'+esc(w.id)+'">'+label+'<span class="mark" aria-hidden="true"></span></button>';
     }).join('');
