@@ -10,8 +10,9 @@ A free Arabic vocabulary trainer for beginners. Live at https://kalimat.ummahapp
 - Words sorted from Beginner to Advanced, with a level filter
 - Qur'an words list (from "80% of Qur'anic Words"), with both meanings on shared words
 - Verb forms: past, present, command, doer and action noun
+- Stories: 10 short, fully vowelled stories made mostly from words in Kalimat. Listen first with pictures, read along and tap any word for its meaning, answer questions in Arabic, then tell the story yourself. Each story shows how many of its words you already know, suggests a good next story and offers to add its new words to Learning.
 - Games: pick the picture, pick the plural, pick the form, say it from memory, say the plural from memory, revise known words, with an optional 10 or 20 second timer
-- Mark the words you are learning, then mark them as known well (or get a word right first time 5 times in a row and it moves there by itself)
+- Mark the words you are learning, then mark them as known well (or get a word right first time 5 times in a row, in the games or story questions, and it moves there by itself)
 - Spaced checks on Known well words: after 3 days, 1 week, 2 weeks, 1 month and 2 months
 - Add your own words
 - Up to 3 learners on one device, each with their own progress, shared with Takallum Kids, Kalimat Plus and Takallum

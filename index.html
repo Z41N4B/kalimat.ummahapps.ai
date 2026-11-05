@@ -63,7 +63,7 @@
       "@id": "https://kalimat.ummahapps.ai/#app",
       "name": "Kalimat",
       "url": "https://kalimat.ummahapps.ai/",
-      "description": "A free Arabic vocabulary trainer with over 400 everyday words written with full harakat (vowel marks), spoken aloud by the device's Arabic voice, with sound and broken plurals, a quiz game, a recall game and a personal word list.",
+      "description": "A free Arabic vocabulary trainer with over 400 everyday words written with full harakat (vowel marks), spoken aloud by the device's Arabic voice, with sound and broken plurals, short stories, a quiz game, a recall game and a personal word list.",
       "applicationCategory": "EducationalApplication",
       "operatingSystem": "Any (web browser)",
       "browserRequirements": "Requires JavaScript. Audio uses the browser's speech synthesis; an Arabic voice gives the best results.",
@@ -98,6 +98,7 @@
         {"@type": "Question", "name": "Is Kalimat free?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Kalimat is free, needs no account and runs in your web browser."}},
         {"@type": "Question", "name": "How does Kalimat pronounce the Arabic words?", "acceptedAnswer": {"@type": "Answer", "text": "It uses your device's built-in text-to-speech voice. For the best pronunciation, add an Arabic voice in your phone or computer's speech or language settings, then choose it in the Voice menu."}},
         {"@type": "Question", "name": "Does Kalimat teach Arabic plurals?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Most nouns and describing words show their plural and say whether it is a sound plural or a broken plural, and there is a game for saying the plural from memory."}},
+        {"@type": "Question", "name": "Does Kalimat have Arabic stories?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. The Stories tab has 10 short, fully vowelled stories made mostly from words in Kalimat. You listen first with pictures, read along and tap any word for its meaning, answer questions in Arabic, then tell the story yourself."}},
         {"@type": "Question", "name": "Where is my progress saved?", "acceptedAnswer": {"@type": "Answer", "text": "Your Learning and Known well lists and your own words are saved in your browser on your device. Nothing is sent to a server. Up to three learners can share one device, each with their own progress."}},
         {"@type": "Question", "name": "Who is Kalimat for?", "acceptedAnswer": {"@type": "Answer", "text": "Beginners of any age learning Modern Standard Arabic, including children, home-schoolers and adults studying for Quranic or Madinah-style Arabic classes."}}
       ]
@@ -159,7 +160,7 @@ img{max-width:100%}
 .who-form input{flex:1 1 160px;width:auto}
 .linkbtn{font:inherit;font-size:.85rem;font-weight:700;min-height:38px;padding:4px 6px;border:0;background:none;color:var(--accent);text-decoration:underline;cursor:pointer}
 
-.tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin-bottom:20px}
+.tabs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;margin-bottom:20px}
 .tab{font-size:.9rem;line-height:1.2}
 .tab{font:inherit;font-weight:800;min-height:44px;padding:8px 6px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);border-radius:12px;cursor:pointer}
 .tab[aria-current="page"]{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
@@ -332,6 +333,49 @@ a.ua-app:hover{border-color:var(--f-lapis)}
 @media (max-width:640px){.row2{grid-template-columns:1fr 1fr}.row2 input{grid-column:1/-1}}
 #toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);width:max-content;max-width:min(92vw,420px);background:var(--ink);color:var(--paper);padding:10px 18px;border-radius:22px;font-weight:700;font-size:.95rem;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:20;text-align:center}
 #toast.show{opacity:1;transform:translate(-50%,0)}
+.st-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.st-card{display:flex;flex-direction:column;align-items:center;gap:4px;padding:12px 8px;background:var(--card);border:1.5px solid var(--line);border-radius:16px;font:inherit;color:inherit;text-align:center;cursor:pointer}
+.st-card:hover{border-color:var(--accent)}
+.st-card .ar{font-size:1.45rem;line-height:1.5}
+.st-en{font-weight:800}
+.st-tag{display:inline-flex;align-items:center;gap:4px;font-size:.8rem;font-weight:800;color:var(--accent);background:var(--accent-soft);border-radius:999px;padding:2px 10px}
+.st-tag.done{color:var(--ok);background:none}
+.st-tag svg{width:14px;height:14px}
+.st-title{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px;margin-bottom:10px}
+.st-title .ar{font-size:1.9rem}
+.st-pics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-bottom:14px}
+.st-pic{position:relative;display:flex;justify-content:center;padding:8px;background:var(--card);border:1.5px solid var(--line);border-radius:14px;cursor:pointer;color:inherit}
+.st-pic.playing,.st-line.playing{border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-soft)}
+.st-num{position:absolute;top:4px;right:8px;font-size:.8rem;font-weight:800;color:var(--ink-2)}
+.st-lines{list-style:none;margin:0 0 14px;padding:0;display:grid;gap:8px}
+.st-line{display:flex;gap:10px;align-items:flex-start;padding:10px;background:var(--card);border:1.5px solid var(--line);border-radius:14px}
+.st-thumb{flex:0 0 56px}
+.st-body{flex:1;min-width:0}
+.st-ar{font-size:1.6rem;line-height:1.9;margin:0}
+.st-w{font:inherit;color:inherit;background:none;border:0;padding:0 1px;cursor:pointer;border-radius:6px}
+.st-w:hover,.st-w.on{background:var(--accent-soft)}
+.st-tools{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px}
+.st-tools svg{width:18px;height:18px}
+.st-trans{margin:4px 0 0}
+.st-gloss{position:sticky;bottom:8px;z-index:2;padding:10px 12px;background:var(--card);border:1.5px solid var(--accent);border-radius:14px;margin-bottom:14px}
+.st-gloss-in{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px}
+.st-gloss .ar{font-size:1.5rem;line-height:1.4}
+.st-gloss .btn .ar,.st-gloss .btn span{font-size:inherit}
+.st-mean{font-weight:800}
+.st-hint{margin:0}
+.st-nav{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 0}
+.st-prompt{min-height:0}
+.st-prompt .ar{font-size:2rem;line-height:1.7}
+.st-opts .sk{max-width:72px}
+.st-opt{flex-direction:column;gap:4px;min-height:0;padding:10px 8px}
+.st-opt .ar{font-size:1.35rem;line-height:1.5}
+.st-opts.done .st-opt.hit{border-color:var(--ok)}
+.st-opt.miss{opacity:.4;border-color:var(--bad)}
+.st-new{list-style:none;margin:0 0 12px;padding:0;display:flex;flex-wrap:wrap;gap:6px 16px}
+.st-new .ar{font-size:1.35rem}
+.st-done h3{margin:0 0 8px;font-size:1.4rem}
+@media (max-width:420px){.st-opts.qopts{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:420px){.tab{font-size:.8rem;padding:8px 2px}}
 @media (max-width:420px){.qopts{grid-template-columns:1fr}.qopts.pics{grid-template-columns:repeat(2,minmax(0,1fr))}.row2{grid-template-columns:1fr}}
 @media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
 </style>
@@ -3835,6 +3879,7 @@ a.ua-app:hover{border-color:var(--f-lapis)}
 
   <nav class="tabs" aria-label="Sections">
     <button class="tab" data-tab="words" aria-current="page">Words</button>
+    <button class="tab" data-tab="stories">Stories</button>
     <button class="tab" data-tab="quiz">Game</button>
     <button class="tab" data-tab="known">Known well</button>
     <button class="tab" data-tab="mine">My words</button>
@@ -3843,7 +3888,7 @@ a.ua-app:hover{border-color:var(--f-lapis)}
   <main>
     <section id="view-words" aria-labelledby="h-words">
       <h2 id="h-words">Tap a word to hear it</h2>
-      <p class="lead">Tap Learning on the words you are working on. The game only uses words marked Learning. Tap Plural on a card to see and hear its plural. When you know a word really well, tap Known well: it leaves the game and moves to the Known well tab. A word also moves there by itself when you get it right first time 5 times in a row in the games. Tap My Learning words to see only the words you are practising. Use the groups, search and filter to focus on what you are working on.</p>
+      <p class="lead">Tap Learning on the words you are working on. The game only uses words marked Learning. Tap Plural on a card to see and hear its plural. When you know a word really well, tap Known well: it leaves the game and moves to the Known well tab. A word also moves there by itself when you get it right first time 5 times in a row in the games or in story questions. Tap My Learning words to see only the words you are practising. Use the groups, search and filter to focus on what you are working on.</p>
 
       <div class="voice-row">
         <label for="voice-sel">Voice</label>
@@ -3897,6 +3942,26 @@ a.ua-app:hover{border-color:var(--f-lapis)}
       </details>
       <p class="count" id="count"></p>
       <div class="grid" id="grid"><noscript><p class="lead">Kalimat needs JavaScript to show the words, play audio and run the games. Please turn JavaScript on.</p></noscript></div>
+    </section>
+
+    <section id="view-stories" hidden aria-labelledby="h-stories">
+      <div id="st-list">
+        <h2 id="h-stories">Little stories</h2>
+        <p class="lead">Short stories made from words in Kalimat, so you meet them again in real sentences. Listen first, then read, answer in Arabic and tell the story yourself.</p>
+        <div class="st-grid" id="st-grid"></div>
+      </div>
+      <div id="st-play" hidden>
+        <div class="game-bar">
+          <button class="btn small" id="st-back" type="button">All stories</button>
+          <div class="seg" id="st-rate-seg" role="group" aria-label="Speed" style="flex:0 0 auto">
+            <button type="button" data-rate="0.6" aria-pressed="false">Slow</button>
+            <button type="button" data-rate="0.85" aria-pressed="true">Normal</button>
+          </div>
+        </div>
+        <div class="st-title" id="st-title"></div>
+        <div class="chips" id="st-steps" role="group" aria-label="Steps"></div>
+        <div id="st-stage"></div>
+      </div>
     </section>
 
     <section id="view-quiz" hidden aria-labelledby="h-quiz">
@@ -3979,11 +4044,12 @@ a.ua-app:hover{border-color:var(--f-lapis)}
 
   <footer class="about" aria-labelledby="h-about">
     <h2 id="h-about">About Kalimat</h2>
-    <p>Kalimat (<span lang="ar" dir="rtl">كَلِمَات</span>, "words") is a free Arabic vocabulary trainer for beginners. It has over 400 everyday Modern Standard Arabic words in 16 groups: basics, people, places, home and school, food and drink, nature and animals, the body, colours, describing words, actions, numbers, time, greetings, clothes, toys and play, and feelings.</p>
+    <p>Kalimat (<span lang="ar" dir="rtl">كَلِمَات</span>, "words") is a free Arabic vocabulary trainer for beginners. It has over 400 everyday Modern Standard Arabic words in 16 groups: basics, people, places, home and school, food and drink, nature and animals, the body, colours, describing words, actions, numbers, time, greetings, clothes, toys and play, and feelings. The Stories tab uses these words in 10 short stories, so you meet them again in real sentences.</p>
     <p>Every word is written with full harakat (vowel marks) and can be heard aloud at normal or slow speed. Most nouns and describing words show their plural, marked as a sound plural or a broken plural. Words are sorted from beginner to advanced. Mark the words you are learning, practise them by picking the picture, picking the plural or saying them from memory, and move them to Known well when you have mastered them, then revise them now and then so they stay fresh. You can also add words from your own lessons.</p>
     <details><summary>Is Kalimat free?</summary><p>Yes. Kalimat is free, needs no account and runs in your web browser.</p></details>
     <details><summary>How does Kalimat pronounce the Arabic words?</summary><p>It uses your device's built-in text-to-speech voice. For the best pronunciation, add an Arabic voice in your phone or computer's speech or language settings, then choose it in the Voice menu.</p></details>
     <details><summary>Does Kalimat teach Arabic plurals?</summary><p>Yes. Most nouns and describing words show their plural and say whether it is a sound plural or a broken plural, and there is a game for saying the plural from memory.</p></details>
+    <details><summary>Does Kalimat have Arabic stories?</summary><p>Yes. The Stories tab has 10 short, fully vowelled stories made mostly from words in Kalimat. You listen first with pictures, read along and tap any word for its meaning, answer questions in Arabic, then tell the story yourself.</p></details>
     <details><summary>Where is my progress saved?</summary><p>Your Learning and Known well lists and your own words are saved in your browser on your device. Nothing is sent to a server. Up to three learners can share one device, each with their own progress.</p></details>
     <details><summary>Who is Kalimat for?</summary><p>Beginners of any age learning Modern Standard Arabic, including children, home-schoolers and adults studying for Quranic or Madinah-style Arabic classes.</p></details>
     <p class="small">Kalimat is part of <a href="https://ummahapps.ai/">Ummah Apps</a>.</p>
@@ -4092,6 +4158,142 @@ a.ua-app:hover{border-color:var(--f-lapis)}
     trash:'<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 7h14M10 7V4h4v3M7 7l1 13h8l1-13"/></svg>'
   };
   function $(s,r){return (r||document).querySelector(s)}
+  // Little stories. Each line has a picture, each word a meaning. In the glossary (SG) the second value links a word to its Kalimat entry, so it can count as known and go into Learning; small words without one are only explained.
+  var STORIES=[
+    {id:'cat',sk:'cat',ar:'الْقِطَّةُ الصَّغِيرَةُ',en:'The little cat',lines:[
+      ['هَذِهِ قِطَّةٌ صَغِيرَةٌ.','This is a small cat.','cat'],
+      ['الْقِطَّةُ جَائِعَةٌ.','The cat is hungry.','hungry'],
+      ['ذَهَبَتِ الْقِطَّةُ إِلَى الْمَطْبَخِ.','The cat went to the kitchen.','kitchen'],
+      ['شَرِبَتِ الْقِطَّةُ الْحَلِيبَ.','The cat drank the milk.','milk'],
+      ['ثُمَّ نَامَتْ عَلَى الْأَرِيكَةِ.','Then she slept on the sofa.','sofa']],
+    qs:[
+      ['أَيْنَ ذَهَبَتِ الْقِطَّةُ؟','Where did the cat go?',[['kitchen','إِلَى الْمَطْبَخِ'],['mosque','إِلَى الْمَسْجِدِ'],['school','إِلَى الْمَدْرَسَةِ']]],
+      ['مَاذَا شَرِبَتِ الْقِطَّةُ؟','What did the cat drink?',[['milk','الْحَلِيبَ'],['juice','الْعَصِيرَ'],['water','الْمَاءَ']]],
+      ['أَيْنَ نَامَتِ الْقِطَّةُ؟','Where did the cat sleep?',[['sofa','عَلَى الْأَرِيكَةِ'],['bed','عَلَى السَّرِيرِ'],['table','عَلَى الطَّاوِلَةِ']]]]},
+    {id:'breakfast',sk:'breakfast',ar:'إِفْطَارُ أَحْمَدَ',en:'Ahmad\'s breakfast',lines:[
+      ['اِسْتَيْقَظَ أَحْمَدُ فِي الصَّبَاحِ.','Ahmad woke up in the morning.','wake'],
+      ['غَسَلَ أَحْمَدُ وَجْهَهُ.','Ahmad washed his face.','wash'],
+      ['ذَهَبَ إِلَى الْمَطْبَخِ وَجَلَسَ عَلَى الْكُرْسِيِّ.','He went to the kitchen and sat on the chair.','sit'],
+      ['أَكَلَ خُبْزًا وَجُبْنًا.','He ate bread and cheese.','bread'],
+      ['شَرِبَ حَلِيبًا بَارِدًا.','He drank cold milk.','milk'],
+      ['قَالَ أَحْمَدُ: الْحَمْدُ لِلَّهِ!','Ahmad said: praise be to Allah!','alhamdulillah']],
+    qs:[
+      ['مَاذَا غَسَلَ أَحْمَدُ؟','What did Ahmad wash?',[['face','وَجْهَهُ'],['hand','يَدَهُ'],['hair','شَعْرَهُ']]],
+      ['أَيْنَ جَلَسَ أَحْمَدُ؟','Where did Ahmad sit?',[['chair','عَلَى الْكُرْسِيِّ'],['bed','عَلَى السَّرِيرِ'],['sofa','عَلَى الْأَرِيكَةِ']]],
+      ['مَاذَا أَكَلَ أَحْمَدُ؟','What did Ahmad eat?',[['bread','خُبْزًا وَجُبْنًا'],['rice','أَرُزًّا وَدَجَاجًا'],['apple','تُفَّاحَةً']]]]},
+    {id:'mosque',sk:'mosque',ar:'إِلَى الْمَسْجِدِ',en:'To the mosque',lines:[
+      ['هَذَا يُوسُفُ. هُوَ وَلَدٌ صَغِيرٌ.','This is Yusuf. He is a small boy.','boy'],
+      ['ذَهَبَ يُوسُفُ مَعَ أَبِيهِ إِلَى الْمَسْجِدِ.','Yusuf went with his father to the mosque.','mosque'],
+      ['قَالَ يُوسُفُ: السَّلَامُ عَلَيْكُمْ.','Yusuf said: peace be upon you.','salam'],
+      ['قَالَ الرَّجُلُ: وَعَلَيْكُمُ السَّلَامُ.','The man said: and upon you peace.','wasalam'],
+      ['صَلَّى يُوسُفُ وَأَبُوهُ.','Yusuf and his father prayed.','pray'],
+      ['ثُمَّ قَرَأَ يُوسُفُ الْقُرْآنَ.','Then Yusuf read the Qur\'an.','read']],
+    qs:[
+      ['مَعَ مَنْ ذَهَبَ يُوسُفُ؟','Who did Yusuf go with?',[['father','مَعَ أَبِيهِ'],['mother','مَعَ أُمِّهِ'],['friend','مَعَ صَدِيقِهِ']]],
+      ['أَيْنَ ذَهَبَ يُوسُفُ؟','Where did Yusuf go?',[['mosque','إِلَى الْمَسْجِدِ'],['school','إِلَى الْمَدْرَسَةِ'],['garden','إِلَى الْحَدِيقَةِ']]],
+      ['مَاذَا قَالَ الرَّجُلُ؟','What did the man say?',[['wasalam','وَعَلَيْكُمُ السَّلَامُ'],['thanks','شُكْرًا'],['goodbye','مَعَ السَّلَامَةِ']]]]},
+    {id:'ball',sk:'ball',ar:'الْكُرَةُ الْحَمْرَاءُ',en:'The red ball',lines:[
+      ['عِنْدَ مَرْيَمَ كُرَةٌ حَمْرَاءُ.','Maryam has a red ball.','ball'],
+      ['لَعِبَتْ مَرْيَمُ بِالْكُرَةِ فِي الْحَدِيقَةِ.','Maryam played with the ball in the garden.','garden'],
+      ['رَكَضَ الْكَلْبُ وَأَخَذَ الْكُرَةَ.','The dog ran and took the ball.','dog'],
+      ['بَكَتْ مَرْيَمُ.','Maryam cried.','cry'],
+      ['ثُمَّ جَاءَ الْكَلْبُ بِالْكُرَةِ.','Then the dog came with the ball.','come'],
+      ['ضَحِكَتْ مَرْيَمُ.','Maryam laughed.','laugh']],
+    qs:[
+      ['مَا لَوْنُ الْكُرَةِ؟','What colour is the ball?',[['red','حَمْرَاءُ'],['blue','زَرْقَاءُ'],['green','خَضْرَاءُ']]],
+      ['أَيْنَ لَعِبَتْ مَرْيَمُ؟','Where did Maryam play?',[['garden','فِي الْحَدِيقَةِ'],['house','فِي الْبَيْتِ'],['school','فِي الْمَدْرَسَةِ']]],
+      ['مَنْ أَخَذَ الْكُرَةَ؟','Who took the ball?',[['dog','الْكَلْبُ'],['cat','الْقِطَّةُ'],['boy','الْوَلَدُ']]]]},
+    {id:'cold',sk:'snow',ar:'يَوْمٌ بَارِدٌ',en:'A cold day',lines:[
+      ['الْيَوْمَ الْجَوُّ بَارِدٌ.','Today the weather is cold.','cold'],
+      ['نَظَرَتْ لَيْلَى مِنَ النَّافِذَةِ وَرَأَتِ الثَّلْجَ.','Layla looked out of the window and saw the snow.','window'],
+      ['لَبِسَتْ لَيْلَى مِعْطَفًا وَقُبَّعَةً.','Layla put on a coat and a hat.','coat'],
+      ['خَرَجَتْ لَيْلَى إِلَى الْحَدِيقَةِ وَلَعِبَتْ فِي الثَّلْجِ.','Layla went out to the garden and played in the snow.','snow'],
+      ['ثُمَّ رَجَعَتْ إِلَى الْبَيْتِ وَشَرِبَتْ حَلِيبًا حَارًّا.','Then she went back home and drank hot milk.','milk']],
+    qs:[
+      ['مَاذَا رَأَتْ لَيْلَى؟','What did Layla see?',[['snow','الثَّلْجَ'],['rain','الْمَطَرَ'],['sun','الشَّمْسَ']]],
+      ['مَاذَا لَبِسَتْ لَيْلَى؟','What did Layla put on?',[['coat','مِعْطَفًا وَقُبَّعَةً'],['dress','فُسْتَانًا'],['pyjamas','بِيجَامَا']]],
+      ['مَاذَا شَرِبَتْ لَيْلَى؟','What did Layla drink?',[['milk','حَلِيبًا حَارًّا'],['juice','عَصِيرًا'],['water','مَاءً']]]]},
+    {id:'shop',sk:'shop',ar:'فِي الدُّكَّانِ',en:'At the shop',lines:[
+      ['ذَهَبَ زَيْدٌ إِلَى الدُّكَّانِ مَعَ أُمِّهِ.','Zayd went to the shop with his mother.','shop'],
+      ['اِشْتَرَتِ الْأُمُّ خُبْزًا وَبَيْضًا.','The mother bought bread and eggs.','buy'],
+      ['نَظَرَ زَيْدٌ إِلَى الشُّوكُولَاتَةِ.','Zayd looked at the chocolate.','chocolate'],
+      ['قَالَ زَيْدٌ: مِنْ فَضْلِكِ يَا أُمِّي!','Zayd said: please, Mum!','please'],
+      ['قَالَتِ الْأُمُّ: نَعَمْ، وَاحِدَةٌ فَقَطْ.','The mother said: yes, only one.','one'],
+      ['قَالَ زَيْدٌ: شُكْرًا!','Zayd said: thank you!','thanks']],
+    qs:[
+      ['مَعَ مَنْ ذَهَبَ زَيْدٌ؟','Who did Zayd go with?',[['mother','مَعَ أُمِّهِ'],['father','مَعَ أَبِيهِ'],['friend','مَعَ صَدِيقِهِ']]],
+      ['مَاذَا اشْتَرَتِ الْأُمُّ؟','What did the mother buy?',[['bread','خُبْزًا وَبَيْضًا'],['fish','سَمَكَةً'],['cheese','جُبْنًا']]],
+      ['إِلَى مَاذَا نَظَرَ زَيْدٌ؟','What did Zayd look at?',[['chocolate','إِلَى الشُّوكُولَاتَةِ'],['cake','إِلَى الْكَعْكَةِ'],['apple','إِلَى التُّفَّاحَةِ']]]]},
+    {id:'beach',sk:'beach',ar:'عَلَى الشَّاطِئِ',en:'At the beach',lines:[
+      ['ذَهَبَتِ الْعَائِلَةُ إِلَى الشَّاطِئِ بِالسَّيَّارَةِ.','The family went to the beach by car.','car'],
+      ['السَّمَاءُ زَرْقَاءُ وَالشَّمْسُ حَارَّةٌ.','The sky is blue and the sun is hot.','sun'],
+      ['لَعِبَ الْأَوْلَادُ فِي الْمَاءِ.','The children played in the water.','sea'],
+      ['جَلَسَ الْجَدُّ تَحْتَ الشَّجَرَةِ.','Grandfather sat under the tree.','tree'],
+      ['أَكَلَتِ الْعَائِلَةُ سَمَكًا لَذِيذًا.','The family ate delicious fish.','fish'],
+      ['فِي اللَّيْلِ، نَظَرُوا إِلَى الْقَمَرِ وَالنُّجُومِ.','At night, they looked at the moon and the stars.','moon']],
+    qs:[
+      ['كَيْفَ ذَهَبَتِ الْعَائِلَةُ؟','How did the family go?',[['car','بِالسَّيَّارَةِ'],['train','بِالْقِطَارِ'],['plane','بِالطَّائِرَةِ']]],
+      ['أَيْنَ جَلَسَ الْجَدُّ؟','Where did Grandfather sit?',[['tree','تَحْتَ الشَّجَرَةِ'],['car','فِي السَّيَّارَةِ'],['chair','عَلَى الْكُرْسِيِّ']]],
+      ['مَاذَا أَكَلَتِ الْعَائِلَةُ؟','What did the family eat?',[['fish','سَمَكًا'],['chicken','دَجَاجًا'],['cake','كَعْكَةً']]]]},
+    {id:'ill',sk:'ill',ar:'خَالِدٌ مَرِيضٌ',en:'Khalid is ill',lines:[
+      ['خَالِدٌ مَرِيضٌ الْيَوْمَ.','Khalid is ill today.','ill'],
+      ['ذَهَبَ خَالِدٌ إِلَى الطَّبِيبِ مَعَ أَبِيهِ.','Khalid went to the doctor with his father.','doctor'],
+      ['نَظَرَ الطَّبِيبُ إِلَى فَمِهِ وَأُذُنِهِ.','The doctor looked at his mouth and his ear.','mouth'],
+      ['قَالَ الطَّبِيبُ: اِشْرَبِ الْمَاءَ وَنَمْ كَثِيرًا.','The doctor said: drink water and sleep a lot.','water'],
+      ['رَجَعَ خَالِدٌ إِلَى الْبَيْتِ وَنَامَ عَلَى سَرِيرِهِ.','Khalid went back home and slept on his bed.','bed'],
+      ['فِي الصَّبَاحِ، قَالَ خَالِدٌ: أَنَا بِخَيْرٍ، الْحَمْدُ لِلَّهِ!','In the morning, Khalid said: I am fine, praise be to Allah!','iamfine']],
+    qs:[
+      ['إِلَى مَنْ ذَهَبَ خَالِدٌ؟','Who did Khalid go to?',[['doctor','إِلَى الطَّبِيبِ'],['teacher','إِلَى الْمُدَرِّسِ'],['grandpa','إِلَى جَدِّهِ']]],
+      ['مَعَ مَنْ ذَهَبَ خَالِدٌ؟','Who did Khalid go with?',[['father','مَعَ أَبِيهِ'],['mother','مَعَ أُمِّهِ'],['brother','مَعَ أَخِيهِ']]],
+      ['أَيْنَ نَامَ خَالِدٌ؟','Where did Khalid sleep?',[['bed','عَلَى سَرِيرِهِ'],['sofa','عَلَى الْأَرِيكَةِ'],['chair','عَلَى الْكُرْسِيِّ']]]]},
+    {id:'drawing',sk:'easel',ar:'رَسْمُ هُدَى',en:'Huda\'s drawing',lines:[
+      ['هُدَى بِنْتٌ صَغِيرَةٌ فِي الْمَدْرَسَةِ.','Huda is a small girl at school.','girl'],
+      ['أَخَذَتْ هُدَى وَرَقَةً وَقَلَمًا.','Huda took a sheet of paper and a pen.','paper'],
+      ['رَسَمَتْ بَيْتًا كَبِيرًا وَشَجَرَةً خَضْرَاءَ.','She drew a big house and a green tree.','draw'],
+      ['رَسَمَتْ أَيْضًا شَمْسًا صَفْرَاءَ.','She also drew a yellow sun.','sun'],
+      ['نَظَرَتِ الْمُدَرِّسَةُ إِلَى الرَّسْمِ.','The teacher looked at the drawing.','teacherf'],
+      ['قَالَتِ الْمُدَرِّسَةُ: مَا شَاءَ اللَّهُ! رَسْمٌ جَمِيلٌ!','The teacher said: what Allah has willed! A beautiful drawing!','mashaallah']],
+    qs:[
+      ['مَاذَا أَخَذَتْ هُدَى؟','What did Huda take?',[['paper','وَرَقَةً وَقَلَمًا'],['ball','كُرَةً'],['book','كِتَابًا']]],
+      ['مَا لَوْنُ الشَّمْسِ؟','What colour is the sun?',[['yellow','صَفْرَاءُ'],['red','حَمْرَاءُ'],['blue','زَرْقَاءُ']]],
+      ['مَاذَا قَالَتِ الْمُدَرِّسَةُ؟','What did the teacher say?',[['mashaallah','مَا شَاءَ اللَّهُ'],['goodbye','مَعَ السَّلَامَةِ'],['thanks','شُكْرًا']]]]},
+    {id:'grandma',sk:'grandma',ar:'فِي بَيْتِ الْجَدَّةِ',en:'At Grandmother\'s house',lines:[
+      ['ذَهَبَ عُمَرُ وَسَارَةُ إِلَى بَيْتِ الْجَدَّةِ بِالْحَافِلَةِ.','Umar and Sarah went to Grandmother\'s house by bus.','bus'],
+      ['فَتَحَتِ الْجَدَّةُ الْبَابَ وَضَحِكَتْ.','Grandmother opened the door and laughed.','door'],
+      ['قَالَتِ الْجَدَّةُ: أَهْلًا وَسَهْلًا!','Grandmother said: welcome!','welcome'],
+      ['طَبَخَتِ الْجَدَّةُ دَجَاجًا وَأَرُزًّا.','Grandmother cooked chicken and rice.','cook'],
+      ['سَاعَدَتْ سَارَةُ جَدَّتَهَا، وَغَسَلَ عُمَرُ الصُّحُونَ.','Sarah helped her grandmother, and Umar washed the plates.','wash'],
+      ['فِي اللَّيْلِ، قَرَأَتِ الْجَدَّةُ قِصَّةً، وَنَامَ عُمَرُ وَسَارَةُ.','At night, Grandmother read a story, and Umar and Sarah slept.','story']],
+    qs:[
+      ['كَيْفَ ذَهَبَ عُمَرُ وَسَارَةُ؟','How did Umar and Sarah go?',[['bus','بِالْحَافِلَةِ'],['train','بِالْقِطَارِ'],['car','بِالسَّيَّارَةِ']]],
+      ['مَاذَا طَبَخَتِ الْجَدَّةُ؟','What did Grandmother cook?',[['chicken','دَجَاجًا وَأَرُزًّا'],['fish','سَمَكًا'],['cake','كَعْكَةً']]],
+      ['مَاذَا قَرَأَتِ الْجَدَّةُ؟','What did Grandmother read?',[['story','قِصَّةً'],['paper','وَرَقَةً'],['clock','سَاعَةً']]]]}
+  ];
+  var SG={
+    'أَيْنَ':['where','أَيْنَ'],'مَاذَا':['what','مَاذَا'],'مَنْ':['who','مَنْ'],'كَيْفَ':['how','كَيْفَ'],'لَوْنُ':['the colour of','لَوْن'],'الْكُرَةِ':['the ball','كُرَة'],'الشَّمْسِ':['the sun','شَمْس'],'صَفْرَاءُ':['yellow (f.)','أَصْفَر'],
+    'نَامَتِ':['she slept','نَامَ'],'نَامَ':['he slept','نَامَ'],'أَخَذَ':['he took','أَخَذَ'],'رَأَتْ':['she saw','رَأَى'],'شَرِبَتْ':['she drank','شَرِبَ'],'اشْتَرَتِ':['she bought','اِشْتَرَى'],
+    'هَذِهِ':['this (f.)','هَذِهِ'],'هَذَا':['this (m.)','هَذَا'],'قِطَّةٌ':['a cat','قِطَّة'],'الْقِطَّةُ':['the cat','قِطَّة'],'صَغِيرَةٌ':['small (f.)','صَغِير'],'صَغِيرٌ':['small','صَغِير'],
+    'جَائِعَةٌ':['hungry (f.)','جَائِع'],'إِلَى':['to, towards','إِلَى'],'عَلَى':['on','عَلَى'],'فِي':['in, at','فِي'],'مَعَ':['with','مَعَ'],'مِنَ':['from, out of','مِنْ'],'تَحْتَ':['under','تَحْتَ'],
+    'ثُمَّ':['then','ثُمَّ'],'عِنْدَ':['has, with (عِنْدَ مَرْيَمَ = Maryam has)','عِنْدَ'],'فَقَطْ':['only'],'أَيْضًا':['also, too','أَيْضًا'],'يَا':['O (used when calling someone)'],'الْجَوُّ':['the weather'],
+    'قَالَ':['he said','قَالَ'],'قَالَتِ':['she said','قَالَ'],'وَرَأَتِ':['and she saw','رَأَى'],'رَجَعَ':['he went back','رَجَعَ'],'رَجَعَتْ':['she went back','رَجَعَ'],'الْقُرْآنَ':['the Qur\'an','قُرْآن'],
+    'أَحْمَدُ':['Ahmad (a name)'],'يُوسُفُ':['Yusuf (a name)'],'مَرْيَمَ':['Maryam (a name)'],'مَرْيَمُ':['Maryam (a name)'],'لَيْلَى':['Layla (a name)'],'زَيْدٌ':['Zayd (a name)'],'خَالِدٌ':['Khalid (a name)'],'هُدَى':['Huda (a name)'],'عُمَرُ':['Umar (a name)'],'وَسَارَةُ':['and Sarah (a name)'],'سَارَةُ':['Sarah (a name)'],
+    'ذَهَبَ':['he went','ذَهَبَ'],'ذَهَبَتِ':['she went','ذَهَبَ'],'شَرِبَ':['he drank','شَرِبَ'],'شَرِبَتِ':['she drank','شَرِبَ'],'وَشَرِبَتْ':['and she drank','شَرِبَ'],'نَامَتْ':['she slept','نَامَ'],'وَنَامَ':['and he slept','نَامَ'],'وَنَمْ':['and sleep! (to a man)','نَامَ'],
+    'اِسْتَيْقَظَ':['he woke up','اِسْتَيْقَظَ'],'غَسَلَ':['he washed','غَسَلَ'],'وَغَسَلَ':['and he washed','غَسَلَ'],'وَجَلَسَ':['and he sat','جَلَسَ'],'جَلَسَ':['he sat','جَلَسَ'],'أَكَلَ':['he ate','أَكَلَ'],'أَكَلَتِ':['she ate','أَكَلَ'],
+    'صَلَّى':['he prayed','صَلَّى'],'قَرَأَ':['he read','قَرَأَ'],'قَرَأَتِ':['she read','قَرَأَ'],'لَعِبَتْ':['she played','لَعِبَ'],'وَلَعِبَتْ':['and she played','لَعِبَ'],'لَعِبَ':['he played','لَعِبَ'],
+    'رَكَضَ':['he ran','رَكَضَ'],'وَأَخَذَ':['and he took','أَخَذَ'],'أَخَذَتْ':['she took','أَخَذَ'],'بَكَتْ':['she cried','بَكَى'],'جَاءَ':['he came','جَاءَ'],'ضَحِكَتْ':['she laughed','ضَحِكَ'],'وَضَحِكَتْ':['and she laughed','ضَحِكَ'],
+    'نَظَرَتْ':['she looked','نَظَرَ'],'نَظَرَتِ':['she looked','نَظَرَ'],'نَظَرَ':['he looked','نَظَرَ'],'نَظَرُوا':['they looked','نَظَرَ'],'لَبِسَتْ':['she put on','لَبِسَ'],'خَرَجَتْ':['she went out','خَرَجَ'],
+    'اِشْتَرَتِ':['she bought','اِشْتَرَى'],'اِشْرَبِ':['drink! (to a man)','شَرِبَ'],'رَسَمَتْ':['she drew','رَسَمَ'],'فَتَحَتِ':['she opened','فَتَحَ'],'طَبَخَتِ':['she cooked','طَبَخَ'],'سَاعَدَتْ':['she helped','سَاعَدَ'],
+    'الْمَطْبَخِ':['the kitchen','مَطْبَخ'],'الْحَلِيبَ':['the milk','حَلِيب'],'حَلِيبًا':['milk','حَلِيب'],'الْأَرِيكَةِ':['the sofa','أَرِيكَة'],'الصَّبَاحِ':['the morning','صَبَاح'],'وَجْهَهُ':['his face','وَجْه'],
+    'الْكُرْسِيِّ':['the chair','كُرْسِي'],'خُبْزًا':['bread','خُبْز'],'وَجُبْنًا':['and cheese','جُبْن'],'بَارِدًا':['cold','بَارِد'],'بَارِدٌ':['cold','بَارِد'],'الْحَمْدُ':['praise (الْحَمْدُ لِلَّهِ = praise be to Allah)','الْحَمْدُ لِلَّهِ'],'لِلَّهِ':['to Allah','الْحَمْدُ لِلَّهِ'],
+    'هُوَ':['he','هُوَ'],'وَلَدٌ':['a boy','وَلَد'],'أَبِيهِ':['his father','أَب'],'وَأَبُوهُ':['and his father','أَب'],'الْمَسْجِدِ':['the mosque','مَسْجِد'],'السَّلَامُ':['peace','السَّلَامُ عَلَيْكُمْ'],'عَلَيْكُمْ':['upon you','السَّلَامُ عَلَيْكُمْ'],'وَعَلَيْكُمُ':['and upon you','وَعَلَيْكُمُ السَّلَامُ'],'الرَّجُلُ':['the man','رَجُل'],
+    'كُرَةٌ':['a ball','كُرَة'],'الْكُرَةَ':['the ball','كُرَة'],'بِالْكُرَةِ':['with the ball','كُرَة'],'حَمْرَاءُ':['red (f.)','أَحْمَر'],'الْحَدِيقَةِ':['the garden','حَدِيقَة'],'الْكَلْبُ':['the dog','كَلْب'],
+    'الْيَوْمَ':['today','الْيَوْم'],'النَّافِذَةِ':['the window','نَافِذَة'],'الثَّلْجَ':['the snow','ثَلْج'],'الثَّلْجِ':['the snow','ثَلْج'],'مِعْطَفًا':['a coat','مِعْطَف'],'وَقُبَّعَةً':['and a hat','قُبَّعَة'],'الْبَيْتِ':['the house, home','بَيْت'],'حَارًّا':['hot','حَارّ'],
+    'الدُّكَّانِ':['the shop','دُكَّان'],'أُمِّهِ':['his mother','أُمّ'],'الْأُمُّ':['the mother','أُمّ'],'وَبَيْضًا':['and eggs','بَيْض'],'الشُّوكُولَاتَةِ':['the chocolate','شُوكُولَاتَة'],'مِنْ':['part of مِنْ فَضْلِكِ, please','مِنْ فَضْلِكَ'],'فَضْلِكِ':['part of مِنْ فَضْلِكِ, please (to a woman)','مِنْ فَضْلِكَ'],'أُمِّي':['my mother, Mum','أُمّ'],'نَعَمْ':['yes','نَعَمْ'],'وَاحِدَةٌ':['one (f.)','وَاحِد'],'شُكْرًا':['thank you','شُكْرًا'],
+    'الْعَائِلَةُ':['the family','عَائِلَة'],'الشَّاطِئِ':['the beach','شَاطِئ'],'بِالسَّيَّارَةِ':['by car','سَيَّارَة'],'السَّمَاءُ':['the sky','سَمَاء'],'زَرْقَاءُ':['blue (f.)','أَزْرَق'],'وَالشَّمْسُ':['and the sun','شَمْس'],'حَارَّةٌ':['hot (f.)','حَارّ'],'الْأَوْلَادُ':['the children, the boys','وَلَد'],'الْمَاءِ':['the water','مَاء'],'الْجَدُّ':['the grandfather','جَدّ'],'الشَّجَرَةِ':['the tree','شَجَرَة'],'سَمَكًا':['fish','سَمَكَة'],'لَذِيذًا':['delicious','لَذِيذ'],'اللَّيْلِ':['the night','لَيْل'],'الْقَمَرِ':['the moon','قَمَر'],'وَالنُّجُومِ':['and the stars','نَجْم'],
+    'مَرِيضٌ':['ill','مَرِيض'],'الطَّبِيبِ':['the doctor','طَبِيب'],'الطَّبِيبُ':['the doctor','طَبِيب'],'فَمِهِ':['his mouth','فَم'],'وَأُذُنِهِ':['and his ear','أُذُن'],'الْمَاءَ':['the water','مَاء'],'كَثِيرًا':['a lot','كَثِير'],'سَرِيرِهِ':['his bed','سَرِير'],'أَنَا':['I','أَنَا'],'بِخَيْرٍ':['fine, well','أَنَا بِخَيْرٍ'],
+    'بِنْتٌ':['a girl','بِنْت'],'الْمَدْرَسَةِ':['the school','مَدْرَسَة'],'وَرَقَةً':['a sheet of paper','وَرَقَة'],'وَقَلَمًا':['and a pen','قَلَم'],'بَيْتًا':['a house','بَيْت'],'كَبِيرًا':['big','كَبِير'],'وَشَجَرَةً':['and a tree','شَجَرَة'],'خَضْرَاءَ':['green (f.)','أَخْضَر'],'شَمْسًا':['a sun','شَمْس'],'صَفْرَاءَ':['yellow (f.)','أَصْفَر'],'الْمُدَرِّسَةُ':['the teacher (f.)','مُدَرِّسَة'],'الرَّسْمِ':['the drawing','رَسْم'],'رَسْمٌ':['a drawing','رَسْم'],'جَمِيلٌ':['beautiful','جَمِيل'],'مَا':['part of مَا شَاءَ اللَّهُ','مَا شَاءَ اللَّهُ'],'شَاءَ':['he willed','مَا شَاءَ اللَّهُ'],'اللَّهُ':['Allah','مَا شَاءَ اللَّهُ'],
+    'بَيْتِ':['the house of','بَيْت'],'الْجَدَّةِ':['the grandmother','جَدَّة'],'الْجَدَّةُ':['the grandmother','جَدَّة'],'جَدَّتَهَا':['her grandmother','جَدَّة'],'بِالْحَافِلَةِ':['by bus','حَافِلَة'],'الْبَابَ':['the door','بَاب'],'أَهْلًا':['part of أَهْلًا وَسَهْلًا, welcome','أَهْلًا وَسَهْلًا'],'وَسَهْلًا':['part of أَهْلًا وَسَهْلًا, welcome','أَهْلًا وَسَهْلًا'],'دَجَاجًا':['chicken','دَجَاج'],'وَأَرُزًّا':['and rice','أَرُزّ'],'الصُّحُونَ':['the plates','صَحْن'],'قِصَّةً':['a story','قِصَّة']
+  };
   function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
   function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
   function norm(s){return String(s).replace(/[ً-ٰٟـ]/g,'').replace(/[أإآ]/g,'ا').toLowerCase()}
@@ -4118,11 +4320,12 @@ a.ua-app:hover{border-color:var(--f-lapis)}
   }
   if(!profiles.list.some(function(p){return p.id===profiles.cur}))profiles.cur=profiles.list[0].id;
   function pkey(n,id){id=id||profiles.cur;return id==='p1'?'kp-'+n:'kp-'+id+'-'+n}
-  var learned,known,custom,stats;
+  var learned,known,custom,stats,storiesDone;
   function loadProfile(){
     learned=lsGet(pkey('learned'),{});
     known=lsGet(pkey('known'),{});
     stats=lsGet(pkey('stats'),{});
+    storiesDone=lsGet(pkey('stories'),{});
     custom=lsGet(pkey('custom'),[]).filter(function(w){return w&&w.id&&w.ar&&w.en});
     custom.forEach(function(w){w.custom=true;w.sk='';w.pl=w.pl||'';w.pt=w.pt||''});
   }
@@ -4432,12 +4635,12 @@ a.ua-app:hover{border-color:var(--f-lapis)}
     else{vg.hidden=a==='hide';lsSet('kp-vg-hidden',vg.hidden);renderVG();$(vg.hidden?'#vg .vg-show':'#vg [data-vg="hide"]').focus()}
   });
   renderVG();
-  $('#rate-seg').addEventListener('click',function(e){
+  ['#rate-seg','#st-rate-seg'].forEach(function(sel){$(sel).addEventListener('click',function(e){
     var b=e.target.closest('button[data-rate]');if(!b)return;
     voice.rate=parseFloat(b.dataset.rate);lsSet('kp-voice',voice);paintRate();
-  });
+  })});
   function paintRate(){
-    document.querySelectorAll('#rate-seg button').forEach(function(b){b.setAttribute('aria-pressed',String(parseFloat(b.dataset.rate)===voice.rate))});
+    document.querySelectorAll('#rate-seg button,#st-rate-seg button').forEach(function(b){b.setAttribute('aria-pressed',String(parseFloat(b.dataset.rate)===voice.rate))});
   }
 
   var Q={mode:'pic',target:null,opts:[],last:null,locked:false,answered:false,right:0,total:0};
@@ -4785,7 +4988,9 @@ a.ua-app:hover{border-color:var(--f-lapis)}
     if(window.UA){UA.setCurrent(curProfile().ua);shareKnown()}
     filter.lv=lsGet(pkey('level'),0);filter.set=lsGet(pkey('set'),'every');filter.cat='all';renderChips();
     renderWho();renderWords();renderMine();
+    S.story=null;
     if(!$('#view-known').hidden)renderKnown();
+    if(!$('#view-stories').hidden)renderStories();
     if(!$('#view-quiz').hidden)newQ();
   }
   function openWhoForm(mode){
@@ -4812,7 +5017,7 @@ a.ua-app:hover{border-color:var(--f-lapis)}
       }
       var gone=curProfile();
       if(window.UA)UA.remove(gone.ua);
-      ['learned','known','custom','stats','level','set'].forEach(function(n){try{localStorage.removeItem(pkey(n,gone.id))}catch(err){}});
+      ['learned','known','custom','stats','level','set','stories'].forEach(function(n){try{localStorage.removeItem(pkey(n,gone.id))}catch(err){}});
       profiles.list=profiles.list.filter(function(x){return x.id!==gone.id});
       profiles.cur=profiles.list[0].id;saveProfiles();loadProfile();refreshAll();
       toast('Removed '+gone.name+'.');
@@ -4837,12 +5042,219 @@ a.ua-app:hover{border-color:var(--f-lapis)}
   });
   $('#who-cancel').addEventListener('click',function(){$('#who-form').hidden=true});
 
+  // ---------- Little stories: hear, read, answer, say it back
+  var STEPS=[['listen','Listen'],['read','Read'],['answer','Answer'],['say','Say it']];
+  var S={story:null,step:'listen',q:0,qopts:[],qdone:false,qfirst:false,qnote:'',counted:{},qen:false,say:0,shown:false,gloss:null,en:{},finished:false};
+  function stClean(t){return t.replace(/[.،؟!:]/g,'')}
+  function stWord(ar){return BUILTIN.concat(QWORDS).filter(function(w){return w.ar===ar})[0]||null}
+  // The Kalimat words a story uses, each once
+  function stWords(st){
+    var seen={},out=[];
+    st.lines.forEach(function(l){l[0].split(' ').forEach(function(t){
+      var g=SG[stClean(t)],w=g&&g[1]?stWord(g[1]):null;
+      if(w&&!seen[w.id]){seen[w.id]=1;out.push(w)}
+    })});
+    return out;
+  }
+  // A word counts as known once it is in Learning or Known well, or known from the other apps
+  function stKnower(){
+    var p=curProfile(),k=window.UA&&p&&p.ua?UA.knows(p.ua):null;
+    return function(w){return !!(learned[w.id]||known[w.id]||(k&&k(w.ar)))};
+  }
+  function stNext(){
+    var kn=stKnower(),best=null,top=-1;
+    STORIES.forEach(function(st){
+      if(storiesDone[st.id])return;
+      var ws=stWords(st),share=ws.filter(kn).length/ws.length;
+      if(share>top){top=share;best=st}
+    });
+    return best;
+  }
+  function renderStories(){
+    if(S.story){renderStory();return}
+    $('#st-list').hidden=false;$('#st-play').hidden=true;
+    var kn=stKnower(),next=stNext();
+    $('#st-grid').innerHTML=STORIES.map(function(st){
+      var ws=stWords(st),n=ws.filter(kn).length,done=storiesDone[st.id];
+      return '<button class="st-card" type="button" data-story="'+st.id+'">'+sketch(st.sk)+
+        '<span class="ar" lang="ar" dir="rtl">'+esc(st.ar)+'</span><span class="st-en">'+esc(st.en)+'</span>'+
+        '<span class="meta">You know '+n+' of '+ws.length+' words</span>'+
+        (done?'<span class="st-tag done">'+ICON.check+'Finished</span>':st===next?'<span class="st-tag">Good next story</span>':'')+'</button>';
+    }).join('');
+  }
+  function openStory(id){
+    S.story=STORIES.filter(function(st){return st.id===id})[0];
+    S.finished=false;S.counted={};goStep('listen');
+  }
+  function goStep(step){
+    stopSpeech();
+    S.step=step;S.q=0;S.say=0;S.shown=false;S.gloss=null;S.en={};S.qen=false;S.finished=false;
+    if(step==='answer')stNewQ();
+    renderStory();
+    $('#view-stories').scrollIntoView({block:'start'});
+  }
+  function stNewQ(){S.qdone=false;S.qfirst=false;S.qnote='';S.qen=false;S.qopts=shuffle(S.story.qs[S.q][2].map(function(o,i){return {sk:o[0],ar:o[1],right:i===0}}))}
+  // The Kalimat words in a question and its right answer. A phrase counts only when all of it is there.
+  function stQWords(q){
+    var text=q[0]+' '+q[2][0][1],seen={},out=[];
+    text.split(' ').forEach(function(t){
+      var g=SG[stClean(t)],w=g&&g[1]?stWord(g[1]):null;
+      if(w&&!seen[w.id]&&(w.ar.indexOf(' ')<0||text.indexOf(w.ar)>=0)){seen[w.id]=1;out.push(w)}
+    });
+    return out;
+  }
+  // A first answer counts like one in the games, for each Learning word, once each time through a story
+  function stCount(ok){
+    var moved=[],prog=[];
+    stQWords(S.story.qs[S.q]).forEach(function(w){
+      if(S.counted[w.id]||!learned[w.id]||known[w.id])return;
+      S.counted[w.id]=1;
+      if(countRight(w.id,ok))moved.push(w);
+      else if(ok)prog.push('<span class="ar-s" lang="ar" dir="rtl">'+esc(w.ar)+'</span> '+stats[w.id].s+' of '+STREAK);
+    });
+    if(moved.length)toast('Masha Allah! '+moved.map(function(w){return w.en}).join(', ')+(moved.length===1?' was':' were')+' right 5 times in a row, so '+(moved.length===1?'it has':'they have')+' moved to Known well.');
+    if(prog.length)S.qnote=' Right first time: '+prog.join(', ')+'.';
+  }
+  function stLineHtml(l,i){
+    var words=l[0].split(' ').map(function(t){
+      return '<button class="st-w" type="button" data-w="'+esc(stClean(t))+'">'+esc(t)+'</button>';
+    }).join(' ');
+    return '<li class="st-line" data-line="'+i+'">'+
+      '<div class="st-thumb">'+sketch(l[2])+'</div>'+
+      '<div class="st-body"><p class="ar st-ar" lang="ar" dir="rtl">'+words+'</p>'+
+      '<div class="st-tools"><button class="btn small" type="button" data-play="'+i+'" aria-label="Hear this line">'+ICON.speaker+'</button>'+
+      '<button class="linkbtn" type="button" data-en="'+i+'">'+(S.en[i]?'Hide English':'Show English')+'</button></div>'+
+      (S.en[i]?'<p class="meta st-trans">'+esc(l[1])+'</p>':'')+'</div></li>';
+  }
+  function stGlossHtml(){
+    var g=S.gloss;if(!g)return '<p class="meta st-hint">Tap any word to see what it means.</p>';
+    var e=SG[g]||['?'],w=e[1]?stWord(e[1]):null;
+    return '<div class="st-gloss-in"><button class="btn small" type="button" data-say="'+esc(g)+'" aria-label="Hear this word">'+ICON.speaker+'</button>'+
+      '<span class="ar" lang="ar" dir="rtl">'+esc(g)+'</span><span class="st-mean">'+esc(e[0])+'</span>'+
+      (w?(learned[w.id]||known[w.id]?'<span class="meta">'+(known[w.id]?'Known well':'In Learning')+'</span>':'<button class="btn small" type="button" data-add="'+esc(w.id)+'">Add '+'<span lang="ar" dir="rtl">'+esc(w.ar)+'</span> to Learning</button>'):'')+'</div>';
+  }
+  function renderStory(){
+    var st=S.story;if(!st)return;
+    $('#st-list').hidden=true;$('#st-play').hidden=false;
+    $('#st-title').innerHTML='<span class="ar" lang="ar" dir="rtl">'+esc(st.ar)+'</span><span class="st-en">'+esc(st.en)+'</span>';
+    $('#st-steps').innerHTML=STEPS.map(function(s,i){
+      return '<button class="chip-btn" type="button" data-step="'+s[0]+'" aria-pressed="'+(S.step===s[0])+'">'+(i+1)+'. '+s[1]+'</button>';
+    }).join('');
+    var h='';
+    if(S.finished)h=stDoneHtml();
+    else if(S.step==='listen'){
+      h='<p class="lead">Listen with no words first. The pictures show what is happening. Tap a picture to hear its line again.</p>'+
+        '<p><button class="btn primary big" id="st-playall" type="button">'+ICON.speaker+'<span>Play the story</span></button></p>'+
+        '<div class="st-pics" dir="rtl">'+st.lines.map(function(l,i){return '<button class="st-pic" type="button" data-play="'+i+'" data-line="'+i+'" aria-label="Hear line '+(i+1)+'">'+sketch(l[2])+'<span class="st-num">'+(i+1)+'</span></button>'}).join('')+'</div>'+
+        '<p class="st-nav"><button class="btn primary" type="button" data-step="read">Next: read it</button></p>';
+    }else if(S.step==='read'){
+      h='<p class="lead">Now read along. Tap a word only when you need its meaning.</p>'+
+        '<p><button class="btn" id="st-playall" type="button">'+ICON.speaker+'<span>Play the story</span></button></p>'+
+        '<ol class="st-lines">'+st.lines.map(stLineHtml).join('')+'</ol>'+
+        '<div class="st-gloss" id="st-gloss" aria-live="polite">'+stGlossHtml()+'</div>'+
+        '<p class="st-nav"><button class="btn primary" type="button" data-step="answer">Next: answer</button></p>';
+    }else if(S.step==='answer'){
+      var q=st.qs[S.q];
+      h='<p class="meta">Question '+(S.q+1)+' of '+st.qs.length+'. Words in your Learning list move towards Known well when you are right first time.</p>'+
+        '<div class="prompt st-prompt"><span class="ar" lang="ar" dir="rtl">'+esc(q[0])+'</span>'+
+        '<span class="st-tools"><button class="btn small" type="button" data-sayq="1">'+ICON.speaker+'<span>Hear it</span></button>'+
+        '<button class="linkbtn" type="button" id="st-qen">'+(S.qen?'Hide English':'Show English')+'</button></span>'+
+        (S.qen?'<span class="meta">'+esc(q[1])+'</span>':'')+'</div>'+
+        '<div class="qopts st-opts'+(S.qdone?' done':'')+'" dir="rtl">'+S.qopts.map(function(o,i){
+          return '<button class="qopt st-opt'+(S.qdone&&o.right?' hit':'')+'" type="button" data-opt="'+i+'"'+(S.qdone?' disabled':'')+'>'+sketch(o.sk)+'<span class="ar" lang="ar" dir="rtl">'+esc(o.ar)+'</span></button>';
+        }).join('')+'</div>'+
+        '<p class="msg" id="st-msg" aria-live="polite">'+(S.qdone?'Right.'+S.qnote:'')+'</p>'+
+        (S.qdone?'<p class="st-nav"><button class="btn primary" type="button" id="st-qnext">'+(S.q+1<st.qs.length?'Next question':'Next: say it')+'</button></p>':'');
+    }else{
+      var l=st.lines[S.say];
+      h='<p class="lead">Tell the story yourself. Say the line out loud for this picture, then check.</p>'+
+        '<p class="meta">Picture '+(S.say+1)+' of '+st.lines.length+'</p>'+
+        '<div class="prompt st-prompt">'+sketch(l[2])+
+        (S.shown?'<span class="ar st-ar" lang="ar" dir="rtl">'+esc(l[0])+'</span><span class="meta">'+esc(l[1])+'</span><button class="btn small" type="button" data-play="'+S.say+'">'+ICON.speaker+'<span>Hear it again</span></button>':'')+'</div>'+
+        '<p class="st-nav">'+(S.shown?'<button class="btn primary" type="button" id="st-saynext">'+(S.say+1<st.lines.length?'Next picture':'Finish the story')+'</button>':'<button class="btn primary big" type="button" id="st-show">'+ICON.eye+'<span>Show the line</span></button>')+'</p>';
+    }
+    $('#st-stage').innerHTML=h;
+  }
+  function stDoneHtml(){
+    var kn=stKnower(),fresh=stWords(S.story).filter(function(w){return !kn(w)});
+    var i=STORIES.indexOf(S.story),nx=STORIES[(i+1)%STORIES.length];
+    return '<div class="st-done"><h3>Story finished</h3>'+
+      (fresh.length?'<p class="lead">New words from this story, ready to practise in the games:</p><ul class="st-new">'+fresh.map(function(w){return '<li><span class="ar" lang="ar" dir="rtl">'+esc(w.ar)+'</span> <span class="meta">'+esc(w.en)+'</span></li>'}).join('')+'</ul>'+
+        '<p><button class="btn primary" type="button" id="st-addall">Add '+(fresh.length===1?'this word':'all '+fresh.length+' words')+' to Learning</button></p>':'<p class="lead">You already have every word from this story in your lists.</p>')+
+      '<p class="st-nav"><button class="btn" type="button" data-story="'+nx.id+'">Next story: '+esc(nx.en)+'</button> <button class="btn" type="button" id="st-back2">All stories</button></p></div>';
+  }
+  // All the lines go into the speech queue inside the tap, because some phones block speech started later
+  function stPlay(idx,btn){
+    if(!('speechSynthesis' in window)){toast('This browser cannot speak. Open the site in Chrome or Safari.',6000);return}
+    stopSpeech();
+    var vs=[];try{vs=speechSynthesis.getVoices()||[]}catch(e){}
+    var v=vs.filter(function(x){return x.name===voice.name})[0],started=false;
+    if(btn)btn.classList.add('playing');
+    function mark(i){document.querySelectorAll('#st-stage [data-line].playing').forEach(function(e){e.classList.remove('playing')});if(i>=0){var el=document.querySelector('#st-stage [data-line="'+i+'"]');if(el)el.classList.add('playing')}}
+    idx.forEach(function(i,n){
+      var u=new SpeechSynthesisUtterance(S.story.lines[i][0]);
+      if(v){u.voice=v;u.lang=v.lang}else{u.lang='ar-SA'}
+      u.rate=voice.rate;
+      u.onstart=function(){started=true;mark(i)};
+      if(n===idx.length-1)u.onend=function(){mark(-1);if(btn)btn.classList.remove('playing')};
+      u.onerror=function(e){mark(-1);if(btn)btn.classList.remove('playing');if(!e||(e.error!=='interrupted'&&e.error!=='canceled'))soundHelp()};
+      try{speechSynthesis.resume();speechSynthesis.speak(u)}catch(e){soundHelp()}
+    });
+    setTimeout(function(){if(!started&&!speechSynthesis.speaking)soundHelp()},2500);
+  }
+  function stAddLearning(ws){
+    ws.forEach(function(w){learned[w.id]=1});
+    lsSet(pkey('learned'),learned);Q.last=null;renderWords();
+  }
+  $('#st-grid').addEventListener('click',function(e){var b=e.target.closest('[data-story]');if(b)openStory(b.dataset.story)});
+  $('#st-back').addEventListener('click',function(){stopSpeech();S.story=null;renderStories()});
+  $('#st-steps').addEventListener('click',function(e){var b=e.target.closest('[data-step]');if(b)goStep(b.dataset.step)});
+  $('#st-stage').addEventListener('click',function(e){
+    var t=e.target,b;
+    if(t.closest('#st-playall')){var pb=t.closest('#st-playall');stPlay(S.story.lines.map(function(l,i){return i}),pb);return}
+    if((b=t.closest('[data-step]'))){goStep(b.dataset.step);return}
+    if((b=t.closest('[data-story]'))){openStory(b.dataset.story);return}
+    if((b=t.closest('.st-w'))){S.gloss=b.dataset.w;$('#st-gloss').innerHTML=stGlossHtml();document.querySelectorAll('.st-w.on').forEach(function(x){x.classList.remove('on')});b.classList.add('on');return}
+    if((b=t.closest('[data-say]'))){speak(b.dataset.say,b);return}
+    if((b=t.closest('[data-add]'))){stAddLearning([byId(b.dataset.add)]);$('#st-gloss').innerHTML=stGlossHtml();return}
+    if((b=t.closest('[data-play]'))){stPlay([+b.dataset.play],b.classList.contains('st-pic')?null:b);return}
+    if((b=t.closest('[data-en]'))){var n=b.dataset.en;S.en[n]=!S.en[n];renderStory();return}
+    if(t.closest('[data-sayq]')){speak(S.story.qs[S.q][0],t.closest('[data-sayq]'));return}
+    if(t.closest('#st-qen')){S.qen=!S.qen;renderStory();return}
+    if((b=t.closest('[data-opt]'))){
+      var o=S.qopts[+b.dataset.opt];
+      if(!S.qfirst){S.qfirst=true;stCount(o.right)}
+      if(o.right){tone(true);S.qdone=true;renderStory()}
+      else{tone(false);b.disabled=true;b.classList.add('miss');$('#st-msg').textContent='Not that one. Try again, or hear the question again.'}
+      return;
+    }
+    if(t.closest('#st-qnext')){
+      if(S.q+1<S.story.qs.length){S.q++;stNewQ();renderStory()}else goStep('say');
+      return;
+    }
+    if(t.closest('#st-show')){S.shown=true;renderStory();stPlay([S.say]);return}
+    if(t.closest('#st-saynext')){
+      stopSpeech();
+      if(S.say+1<S.story.lines.length){S.say++;S.shown=false;renderStory()}
+      else{storiesDone[S.story.id]=1;lsSet(pkey('stories'),storiesDone);S.finished=true;tone(true);renderStory()}
+      $('#view-stories').scrollIntoView({block:'start'});
+      return;
+    }
+    if(t.closest('#st-addall')){
+      var kn=stKnower(),fresh=stWords(S.story).filter(function(w){return !kn(w)});
+      stAddLearning(fresh);toast((fresh.length===1?'1 word':fresh.length+' words')+' added to Learning.');renderStory();
+      return;
+    }
+    if(t.closest('#st-back2')){S.story=null;renderStories();return}
+  });
+
   var tabs=document.querySelectorAll('.tab');
   function show(name){
     stopSpeech();stopTimer();
     tabs.forEach(function(t){if(t.dataset.tab===name)t.setAttribute('aria-current','page');else t.removeAttribute('aria-current')});
-    ['words','quiz','known','mine'].forEach(function(n){$('#view-'+n).hidden=(n!==name)});
+    ['words','stories','quiz','known','mine'].forEach(function(n){$('#view-'+n).hidden=(n!==name)});
     if(name==='known')renderKnown();
+    if(name==='stories')renderStories();
     if(name==='quiz')newQ();
   }
   tabs.forEach(function(t){t.addEventListener('click',function(){show(t.dataset.tab)})});
