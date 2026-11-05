@@ -3886,6 +3886,9 @@ a.ua-app:hover{border-color:var(--f-lapis)}
     <g id="s-cowhome">
       <g transform="translate(40 76) scale(0.86)"><circle cx="0" cy="14" r="14"/><path d="M0 28V78M0 42L-16 64M0 42L28 56M0 78L-18 122M0 78L16 122"/></g><use href="#s-cow" transform="translate(72 42) scale(0.68)"/><path d="M64 124C76 136 92 138 134 142"/><path class="h" d="M12 172H22M170 172H180"/><path d="M14 182H186"/>
     </g>
+    <g id="s-catbread">
+      <use href="#s-cat" transform="translate(34 -10) scale(0.66)"/><use href="#s-bread" transform="translate(50 92) scale(0.5)"/><path d="M34 150V152M46 136V138M158 142V144M168 156V158M150 128V130"/>
+    </g>
     <g id="s-easel">
       <path d="M60 186L84 40M140 186L116 40M100 150V186"/>
       <path d="M50 50H150V136H50Z"/>
@@ -4228,7 +4231,7 @@ a.ua-app:hover{border-color:var(--f-lapis)}
       ['اِسْتَيْقَظَ أَحْمَدُ فِي الصَّبَاحِ.','Ahmad woke up in the morning.','wake'],
       ['غَسَلَ أَحْمَدُ الْخُبْزَ.','Ahmad washed the bread.','washbread'],
       ['ذَهَبَ إِلَى الْمَطْبَخِ وَجَلَسَ عَلَى الطَّاوِلَةِ.','He went to the kitchen and sat on the table.','sittable'],
-      ['شَرِبَ خُبْزًا وَأَكَلَ حَلِيبًا.','He drank bread and ate milk.','milk'],
+      ['أَكَلَتِ الْقِطَّةُ الْخُبْزَ.','The cat ate the bread.','catbread'],
       ['قَالَ أَحْمَدُ: أَنَا جَائِعٌ!','Ahmad said: I am hungry!','hungry']],
     qs:[
       ['مَاذَا غَسَلَ أَحْمَدُ؟','What did Ahmad wash?',[['bread','الْخُبْزَ'],['face','وَجْهَهُ'],['hand','يَدَهُ']]],
@@ -4356,7 +4359,7 @@ a.ua-app:hover{border-color:var(--f-lapis)}
   ];
   var SG={
     'أَيْنَ':['where','أَيْنَ'],'مَاذَا':['what','مَاذَا'],'مَنْ':['who','مَنْ'],'كَيْفَ':['how','كَيْفَ'],'لَوْنُ':['the colour of','لَوْن'],'الْكُرَةِ':['the ball','كُرَة'],'الشَّمْسِ':['the sun','شَمْس'],'صَفْرَاءُ':['yellow (f.)','أَصْفَر'],
-    'الْخُبْزَ':['the bread','خُبْز'],'الطَّاوِلَةِ':['the table','طَاوِلَة'],'وَأَكَلَ':['and he ate','أَكَلَ'],'جَائِعٌ':['hungry','جَائِع'],'الْقِطَّةِ':['the cat','قِطَّة'],'الْقِطَّةَ':['the cat','قِطَّة'],'لَبِسَتِ':['she put on','لَبِسَ'],'خَرَجَتِ':['she went out','خَرَجَ'],'لَعِبَتِ':['she played','لَعِبَ'],'الْبَقَرَةِ':['the cow','بَقَرَة'],
+    'الْخُبْزَ':['the bread','خُبْز'],'الطَّاوِلَةِ':['the table','طَاوِلَة'],'جَائِعٌ':['hungry','جَائِع'],'الْقِطَّةِ':['the cat','قِطَّة'],'الْقِطَّةَ':['the cat','قِطَّة'],'لَبِسَتِ':['she put on','لَبِسَ'],'خَرَجَتِ':['she went out','خَرَجَ'],'لَعِبَتِ':['she played','لَعِبَ'],'الْبَقَرَةِ':['the cow','بَقَرَة'],
     'الْكِتَابَ':['the book','كِتَاب'],'الْمُدَرِّسِ':['the teacher (m.)','مُدَرِّس'],
     'نَامَتِ':['she slept','نَامَ'],'نَامَ':['he slept','نَامَ'],'أَخَذَ':['he took','أَخَذَ'],'رَأَتْ':['she saw','رَأَى'],'شَرِبَتْ':['she drank','شَرِبَ'],'اشْتَرَتِ':['she bought','اِشْتَرَى'],
     'هَذِهِ':['this (f.)','هَذِهِ'],'هَذَا':['this (m.)','هَذَا'],'قِطَّةٌ':['a cat','قِطَّة'],'الْقِطَّةُ':['the cat','قِطَّة'],'صَغِيرَةٌ':['small (f.)','صَغِير'],'صَغِيرٌ':['small','صَغِير'],
