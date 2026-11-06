@@ -79,6 +79,7 @@
         "Full harakat on every word",
         "Text-to-speech audio at normal or slow speed",
         "Sound and broken plurals for nouns",
+        "Build the word game: tap the letters in order and earn stars",
         "Pick the plural game",
         "Words sorted from beginner to advanced",
         "Say-it-from-memory and say-the-plural games",
@@ -347,6 +348,25 @@ a.ua-app:hover{border-color:var(--f-lapis)}
 @media (max-width:640px){.row2{grid-template-columns:1fr 1fr}.row2 input{grid-column:1/-1}}
 #toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);width:max-content;max-width:min(92vw,420px);background:var(--ink);color:var(--paper);padding:10px 18px;border-radius:22px;font-weight:700;font-size:.95rem;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:20;text-align:center}
 #toast.show{opacity:1;transform:translate(-50%,0)}
+.jump{position:fixed;right:max(16px,env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:19;display:flex;align-items:center;justify-content:center;width:52px;height:52px;padding:0;background:var(--accent);color:var(--on-accent);border:0;border-radius:50%;box-shadow:0 2px 10px rgba(0,0,0,.3);cursor:pointer}
+.jump[hidden]{display:none}
+.jump svg{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.jump.up svg{transform:rotate(180deg)}
+.bw-line{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:6px;min-height:3.4rem;direction:rtl}
+.bw-line .bw-done{font-family:var(--font-ar);font-size:2.4rem;line-height:1.5}
+.bw-line .bw-gap{display:inline-block;width:2rem;height:2.2rem;border-bottom:3px dashed var(--line)}
+.qopts.bw{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;direction:rtl}
+.bw-tile{min-width:64px;min-height:64px;padding:2px 12px;font-family:var(--font-ar);font-size:2.1rem;line-height:1.4;background:var(--accent-soft);color:var(--ink);border:2px solid var(--accent);border-radius:16px;cursor:pointer}
+.bw-tile.used{visibility:hidden}
+.bw-tile.bad{animation:bwwig .4s ease;border-color:var(--bad)}
+.bw-tile.hint{border-color:var(--ok);box-shadow:0 0 0 3px var(--ok)}
+@keyframes bwwig{20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
+.bw-win{display:block;text-align:center}
+.bw-stars{display:block;font-size:2.6rem;line-height:1.3;letter-spacing:.08em;animation:bwpop .45s ease}
+.bw-stars .off{opacity:.25}
+.bw-praise{display:block;font-family:var(--font-ar);font-size:2.6rem;line-height:1.5;color:var(--ok)}
+.bw-note{display:block;font-weight:400;color:var(--ink-2)}
+@keyframes bwpop{from{transform:scale(.6);opacity:0}to{transform:scale(1);opacity:1}}
 .st-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
 .st-card{display:flex;flex-direction:column;align-items:center;gap:4px;padding:12px 8px;background:var(--card);border:1.5px solid var(--line);border-radius:16px;font:inherit;color:inherit;text-align:center;cursor:pointer}
 .st-card:hover{border-color:var(--accent)}
@@ -4029,6 +4049,7 @@ a.ua-app:hover{border-color:var(--f-lapis)}
       <div class="toolbar">
         <div class="chips" id="q-mode" role="group" aria-label="Game type" style="margin-bottom:0">
           <button class="chip-btn" type="button" data-mode="pic" aria-pressed="true">Pick the picture</button>
+          <button class="chip-btn" type="button" data-mode="build" aria-pressed="false">Build the word</button>
           <button class="chip-btn" type="button" data-mode="plc" aria-pressed="false">Pick the plural</button>
           <button class="chip-btn" type="button" data-mode="fm" aria-pressed="false">Pick the form</button>
           <button class="chip-btn" type="button" data-mode="recall" aria-pressed="false">Say it from memory</button>
@@ -4102,7 +4123,7 @@ a.ua-app:hover{border-color:var(--f-lapis)}
   <footer class="about" aria-labelledby="h-about">
     <h2 id="h-about">About Kalimat</h2>
     <p>Kalimat (<span lang="ar" dir="rtl">كَلِمَات</span>, "words") is a free Arabic vocabulary trainer for beginners. It has over 400 everyday Modern Standard Arabic words in 16 groups: basics, people, places, home and school, food and drink, nature and animals, the body, colours, describing words, actions, numbers, time, greetings, clothes, toys and play, and feelings. The Stories tab uses these words in 15 short stories, so you meet them again in real sentences.</p>
-    <p>Every word is written with full harakat (vowel marks) and can be heard aloud at normal or slow speed. Most nouns and describing words show their plural, marked as a sound plural or a broken plural. Words are sorted from beginner to advanced. Mark the words you are learning, practise them by picking the picture, picking the plural or saying them from memory, and move them to Known well when you have mastered them, then revise them now and then so they stay fresh. You can also add words from your own lessons.</p>
+    <p>Every word is written with full harakat (vowel marks) and can be heard aloud at normal or slow speed. Most nouns and describing words show their plural, marked as a sound plural or a broken plural. Words are sorted from beginner to advanced. Mark the words you are learning, practise them by picking the picture, building the word from its letters, picking the plural or saying them from memory, and move them to Known well when you have mastered them, then revise them now and then so they stay fresh. You can also add words from your own lessons.</p>
     <details><summary>Is Kalimat free?</summary><p>Yes. Kalimat is free, needs no account and runs in your web browser.</p></details>
     <details><summary>How does Kalimat pronounce the Arabic words?</summary><p>It uses your device's built-in text-to-speech voice. For the best pronunciation, add an Arabic voice in your phone or computer's speech or language settings, then choose it in the Voice menu.</p></details>
     <details><summary>Does Kalimat teach Arabic plurals?</summary><p>Yes. Most nouns and describing words show their plural and say whether it is a sound plural or a broken plural, and there is a game for saying the plural from memory.</p></details>
@@ -4122,6 +4143,7 @@ a.ua-app:hover{border-color:var(--f-lapis)}
     </nav>
   </footer>
 </div>
+<button class="jump" id="jump" type="button" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v16M5 13l7 7 7-7"/></svg></button>
 <div id="toast" role="status" aria-live="polite"></div>
 
 <script src="ummah.js"></script>
@@ -4431,12 +4453,13 @@ a.ua-app:hover{border-color:var(--f-lapis)}
   }
   if(!profiles.list.some(function(p){return p.id===profiles.cur}))profiles.cur=profiles.list[0].id;
   function pkey(n,id){id=id||profiles.cur;return id==='p1'?'kp-'+n:'kp-'+id+'-'+n}
-  var learned,known,custom,stats,storiesDone;
+  var learned,known,custom,stats,storiesDone,wordStars;
   function loadProfile(){
     learned=lsGet(pkey('learned'),{});
     known=lsGet(pkey('known'),{});
     stats=lsGet(pkey('stats'),{});
     storiesDone=lsGet(pkey('stories'),{});
+    wordStars=lsGet(pkey('stars'),0);
     custom=lsGet(pkey('custom'),[]).filter(function(w){return w&&w.id&&w.ar&&w.en});
     custom.forEach(function(w){w.custom=true;w.sk='';w.pl=w.pl||'';w.pt=w.pt||''});
   }
@@ -4635,7 +4658,7 @@ a.ua-app:hover{border-color:var(--f-lapis)}
         (learned[w.id]?'<button class="learn kw'+(known[w.id]?' on':'')+'" type="button" data-known="'+esc(w.id)+'" aria-pressed="'+(known[w.id]?'true':'false')+'" aria-label="'+esc(w.en)+': known well">'+(known[w.id]?ICON.check+'Known well':'Known well')+'</button>':'')+
       '</div>';
     }).join(''):'<p class="lead">'+(filter.show==='learned'&&filter.cat==='all'&&!filter.q?'You have no Learning words yet. Tap Show all words, then tap Learning on the words you want to practise.':'No words match. Try another group or clear the search.')+'</p>';
-    renderCount();renderFromApps();renderProgress();
+    renderCount();renderFromApps();renderProgress();paintJump();
   }
   // How far this learner has come. A word counts as learned once it is Known well. My words are mentioned but not in the totals.
   var MILESTONES=[5,10,25,50,75,100,150,200,250,300,400,500,600,700,800,900];
@@ -4791,7 +4814,7 @@ a.ua-app:hover{border-color:var(--f-lapis)}
 
   var Q={mode:'pic',target:null,opts:[],last:null,locked:false,answered:false,right:0,total:0};
   function quizPool(){return allWords().filter(function(w){return learned[w.id]&&!known[w.id]})}
-  function renderScore(){$('#q-score').textContent='Right first time: '+Q.right+' of '+Q.total}
+  function renderScore(){$('#q-score').textContent='Right first time: '+Q.right+' of '+Q.total+(Q.mode==='build'?' · ⭐ '+wordStars:'')}
 
   // Optional timer: a thin bar that empties quietly; when it runs out the answer is shown
   var TIMES=[0,10,20];
@@ -4852,6 +4875,7 @@ a.ua-app:hover{border-color:var(--f-lapis)}
     var pic=(Q.mode==='pic');
     var plc=(Q.mode==='plc');
     var fmMode=(Q.mode==='fm');
+    var build=(Q.mode==='build');
     // Revise asks the words due for a check first, then any Known well word
     var due=revise?dueWords():[];
     var pool=revise?(due.length?due:allWords().filter(function(w){return known[w.id]})):quizPool();
@@ -4859,6 +4883,7 @@ a.ua-app:hover{border-color:var(--f-lapis)}
     if(plMode||plc)pool=pool.filter(function(w){return w.pl});
     if(fmMode)pool=pool.filter(function(w){return w.fm});
     if(pic)pool=pool.filter(function(w){return w.sk});
+    if(build)pool=pool.filter(bwOk);
     var recall=(Q.mode==='recall'||Q.mode==='pl');
     var ok=pool.length>=1;
     $('#q-play').hidden=!ok;$('#q-empty').hidden=ok;
@@ -4867,6 +4892,8 @@ a.ua-app:hover{border-color:var(--f-lapis)}
       var n=pool.length;
       $('#q-empty-text').textContent=revise
         ?'Revise uses the words in your Known well list, and you have none yet. On the Words tab, tap Known well on a word you know really well.'
+        :build
+        ?'Build the word uses single words you are still practising. You have '+n+'. Mark at least 1 word as Learning on the Words tab to start.'
         :pic
         ?'Pick the picture uses words you are still practising. You have '+n+'. Mark at least 1 word as Learning on the Words tab to start.'
         :fmMode
@@ -4881,6 +4908,7 @@ a.ua-app:hover{border-color:var(--f-lapis)}
     $('#r-box').hidden=!recall;
     $('#q-opts').hidden=recall;$('#q-msg').hidden=recall;
     if(recall){newRecall(pool);return}
+    if(build){newBuild(pool);return}
     var cands=pool.filter(function(w){return w.id!==Q.last});
     if(!cands.length)cands=pool;
     var t=cands[Math.floor(Math.random()*cands.length)];
@@ -4911,7 +4939,7 @@ a.ua-app:hover{border-color:var(--f-lapis)}
     }else{
       p.innerHTML='<span class="ar" lang="ar" dir="rtl">'+esc(t.ar)+'</span>'+hearBtn+'<span class="meta">'+(pic?'Which picture is it?':'What does it mean?')+'</span>';
     }
-    $('#q-opts').classList.remove('done');
+    $('#q-opts').classList.remove('done','bw');
     $('#q-opts').classList.toggle('pics',pic);
     $('#q-opts').innerHTML=Q.opts.map(function(w){
       if(fmMode)return '<button class="qopt" type="button" data-id="'+esc(w.k===Q.form?t.id:t.id+'#'+w.k)+'"><span class="ar" lang="ar" dir="rtl">'+esc(t.fm[w.k])+'</span><span class="mark" aria-hidden="true"></span></button>';
@@ -4926,6 +4954,70 @@ a.ua-app:hover{border-color:var(--f-lapis)}
   }
   $('#q-prompt').addEventListener('click',function(e){
     var b=e.target.closest('#q-listen');if(b&&Q.target)speak(Q.mode==='fm'?Q.target.fm[0]:Q.target.ar,b);
+  });
+  // Build the word: tap the letters in order. Each tile is one letter with its vowel marks, so the finished word matches its card.
+  function bwLetters(ar){return ar.match(/[^\u064B-\u065F\u0670][\u064B-\u065F\u0670]*/g)||[]}
+  function bwOk(w){return /^[\u0621-\u065F\u0670]+$/.test(w.ar)&&bwLetters(w.ar).length>=2}
+  // A name's gender is only known for learners from the other apps. With no ending, the word suits a boy or a girl.
+  function bwPraise(){var p=curProfile(),g=p&&p.g;return g==='f'?'أَحْسَنْتِ':g==='m'?'أَحْسَنْتَ':'أَحْسَنْت'}
+  function bwLine(){
+    var s=Q.bw,gaps='';
+    for(var i=s.placed;i<s.letters.length;i++)gaps+='<span class="bw-gap" aria-hidden="true"></span>';
+    $('#bw-line').innerHTML=(s.placed?'<span class="bw-done" lang="ar" dir="rtl">'+esc(s.letters.slice(0,s.placed).join(''))+'</span>':'')+gaps;
+  }
+  function newBuild(pool){
+    stopTimer();
+    var c=pool.filter(function(w){return w.id!==Q.last});if(!c.length)c=pool;
+    var t=c[Math.floor(Math.random()*c.length)],L=bwLetters(t.ar),tiles=shuffle(L.slice());
+    // Mix again if the letters came out already in order
+    for(var i=0;i<8&&tiles.join('')===t.ar;i++)tiles=shuffle(L.slice());
+    Q.target=t;Q.last=t.id;Q.locked=false;Q.answered=false;Q.firstWrong=false;
+    Q.bw={letters:L,placed:0,slips:0};
+    $('#q-prompt').innerHTML=(t.sk?sketch(t.sk):'')+'<span class="en-big">'+esc(t.en)+'</span>'+
+      '<button class="btn small" id="q-listen" type="button">'+ICON.speaker+'<span>Hear it</span></button>'+
+      '<span class="meta">Tap the letters in the right order.</span><div class="bw-line" id="bw-line"></div>';
+    bwLine();
+    var o=$('#q-opts');
+    o.classList.remove('done','pics');o.classList.add('bw');
+    o.innerHTML=tiles.map(function(l){return '<button class="bw-tile" type="button" lang="ar" dir="rtl">'+esc(l)+'</button>'}).join('');
+    $('#q-msg').textContent='';$('#q-next').hidden=true;
+    renderScore();
+    speak(t.ar,null);
+  }
+  function bwWin(){
+    var s=Q.bw,t=Q.target,first=!Q.answered,promoted=false;
+    Q.locked=true;
+    if(first){Q.answered=true;Q.total++;Q.right++;promoted=countRight(t.id,true)}
+    // Stars for each word: 3 with no slips, 2 with one or two, 1 for getting there in the end
+    var n=s.slips===0?3:s.slips<=2?2:1;
+    wordStars+=n;lsSet(pkey('stars'),wordStars);
+    renderScore();tone(true);
+    var w=stats[t.id],extra=promoted?'Masha Allah! That is 5 times in a row, so it has moved to Known well.':first&&w&&w.s?'Right first time '+w.s+' of '+STREAK+' in a row.':'';
+    var praise=bwPraise();
+    $('#q-msg').innerHTML='<span class="bw-win"><span class="bw-stars" role="img" aria-label="'+n+(n===1?' star':' stars')+'">'+'⭐'.repeat(n)+'<span class="off">'+'⭐'.repeat(3-n)+'</span></span>'+
+      '<span class="bw-praise" lang="ar" dir="rtl">'+esc(praise)+'</span>'+
+      '<span class="bw-note"><span class="ar-s" lang="ar" dir="rtl">'+esc(t.ar)+'</span> means '+esc(t.en)+'.'+(extra?' '+esc(extra):'')+'</span></span>';
+    setTimeout(function(){if(Q.target&&Q.target.id===t.id&&Q.locked)speak(t.ar+'، '+praise,null)},500);
+    $('#q-next').hidden=false;$('#q-next').focus();
+  }
+  $('#q-opts').addEventListener('click',function(e){
+    var b=e.target.closest('.bw-tile'),s=Q.bw;
+    if(!b||Q.locked||Q.mode!=='build'||!s)return;
+    var want=s.letters[s.placed],all=[].slice.call(this.querySelectorAll('.bw-tile'));
+    if(b.textContent===want){
+      b.classList.add('used');b.tabIndex=-1;b.setAttribute('aria-hidden','true');
+      all.forEach(function(x){x.classList.remove('hint','bad')});
+      s.placed++;bwLine();$('#q-msg').textContent='';
+      if(s.placed===s.letters.length)bwWin();else speak(want,null);
+    }else{
+      s.slips++;tone(false);
+      b.classList.remove('bad');void b.offsetWidth;b.classList.add('bad');
+      // The first slip counts like a wrong first answer in the other games
+      if(!Q.answered){Q.answered=true;Q.firstWrong=true;Q.total++;countRight(Q.target.id,false);renderScore()}
+      $('#q-msg').textContent='Not that one yet. Try another letter.';
+      // After two slips, show the letter that comes next
+      if(s.slips>=2){var h=all.filter(function(x){return !x.classList.contains('used')&&x.textContent===want})[0];if(h)h.classList.add('hint')}
+    }
   });
   var R={queue:[],cur:null,stage:'prompt'};
   $('#r-show').innerHTML=ICON.eye+'<span>Show me</span>';
@@ -4990,6 +5082,8 @@ a.ua-app:hover{border-color:var(--f-lapis)}
     Q.mode=mode;
     document.querySelectorAll('#q-mode button').forEach(function(x){x.setAttribute('aria-pressed',String(x.dataset.mode===mode))});
     $('#pl-note-q').hidden=!(mode==='plc'||mode==='pl');
+    // No timer here: this game is for the youngest learners
+    $('#q-timer').hidden=mode==='build';
   }
   $('#pl-note-q').innerHTML=$('#pl-note').innerHTML;
   $('#q-go').addEventListener('click',function(){show('words')});
@@ -5163,7 +5257,7 @@ a.ua-app:hover{border-color:var(--f-lapis)}
       }
       var gone=curProfile();
       if(window.UA)UA.remove(gone.ua);
-      ['learned','known','custom','stats','level','set','stories'].forEach(function(n){try{localStorage.removeItem(pkey(n,gone.id))}catch(err){}});
+      ['learned','known','custom','stats','level','set','stories','stars'].forEach(function(n){try{localStorage.removeItem(pkey(n,gone.id))}catch(err){}});
       profiles.list=profiles.list.filter(function(x){return x.id!==gone.id});
       profiles.cur=profiles.list[0].id;saveProfiles();loadProfile();refreshAll();
       toast('Removed '+gone.name+'.');
@@ -5394,6 +5488,20 @@ a.ua-app:hover{border-color:var(--f-lapis)}
     if(t.closest('#st-back2')){S.story=null;renderStories();return}
   });
 
+  function paintJump(){
+    var b=$('#jump'),max=document.documentElement.scrollHeight-window.innerHeight,up=window.scrollY>max-200;
+    b.hidden=max<window.innerHeight;
+    b.classList.toggle('up',up);
+    b.setAttribute('aria-label',up?'Go to the top of the page':'Go to the bottom of the page');
+    b.title=b.getAttribute('aria-label');
+  }
+  $('#jump').addEventListener('click',function(){
+    window.scrollTo({top:this.classList.contains('up')?0:document.documentElement.scrollHeight,behavior:'auto'});
+    paintJump();
+  });
+  window.addEventListener('scroll',paintJump,{passive:true});
+  window.addEventListener('resize',paintJump);
+
   var tabs=document.querySelectorAll('.tab');
   function show(name){
     stopSpeech();stopTimer();
@@ -5402,6 +5510,7 @@ a.ua-app:hover{border-color:var(--f-lapis)}
     if(name==='known')renderKnown();
     if(name==='stories')renderStories();
     if(name==='quiz')newQ();
+    paintJump();
   }
   tabs.forEach(function(t){t.addEventListener('click',function(){show(t.dataset.tab)})});
 
