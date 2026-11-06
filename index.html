@@ -167,6 +167,20 @@ img{max-width:100%}
 
 h2{font-size:1.25rem;margin:0 0 4px;font-weight:800}
 .lead{margin:0 0 16px;color:var(--ink-2);max-width:62ch}
+.prog{margin:0 0 18px;padding:12px 14px;background:var(--card);border:1.5px solid var(--line);border-radius:16px}
+.prog p{margin:0}
+.prog-top{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 8px}
+.prog-big{font-size:1.6rem;font-weight:800;line-height:1.2;color:var(--ok)}
+.prog-bar{display:flex;height:10px;margin:8px 0;overflow:hidden;background:color-mix(in srgb,var(--line) 60%,transparent);border-radius:999px}
+.prog-bar.thin{height:6px;margin:4px 0 0}
+.prog-bar span{display:block;min-width:0}
+.prog-bar .k{background:var(--ok)}
+.prog-bar .l{background:color-mix(in srgb,var(--ok) 35%,transparent)}
+.prog details{margin-top:6px}
+.prog summary{cursor:pointer;font-weight:700;color:var(--accent);padding:4px 0}
+.prog-rows{display:grid;gap:10px;margin-top:6px}
+.prog-row{display:flex;flex-wrap:wrap;justify-content:space-between;gap:0 10px}
+.prog-row .prog-bar{flex-basis:100%}
 
 .sk{display:block;width:100%;max-width:96px;height:auto;aspect-ratio:1/1;fill:none;stroke:var(--ink);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;filter:url(#pencil)}
 .sk .ghost{opacity:.45;stroke-width:1.3}
@@ -3922,6 +3936,13 @@ a.ua-app:hover{border-color:var(--f-lapis)}
   </nav>
 
   <main>
+    <section class="prog" aria-label="Your progress">
+      <p class="prog-top" id="prog-top"></p>
+      <div class="prog-bar" id="prog-bar" role="img"></div>
+      <p class="meta" id="prog-msg"></p>
+      <details><summary>See more</summary><div class="prog-rows" id="prog-rows"></div></details>
+    </section>
+
     <section id="view-words" aria-labelledby="h-words">
       <h2 id="h-words">Tap a word to hear it</h2>
       <p class="lead">Tap Learning on the words you are working on. The game only uses words marked Learning. Tap Plural on a card to see and hear its plural. When you know a word really well, tap Known well: it leaves the game and moves to the Known well tab. A word also moves there by itself when you get it right first time 5 times in a row in the games or in story questions. Tap My Learning words to see only the words you are practising. Use the groups, search and filter to focus on what you are working on.</p>
@@ -3944,7 +3965,7 @@ a.ua-app:hover{border-color:var(--f-lapis)}
         <button type="button" data-set="every" aria-pressed="true">Everyday words</button>
         <button type="button" data-set="quran" aria-pressed="false">Qur'an words</button>
       </div>
-      <p class="qnote" id="q-note" hidden>The most common words in the Qur'an, from the booklet <i>80% of Qur'anic Words</i> by Dr Abdulazeez Abdulraheem. More words are being added. Levels follow how often a word appears.</p>
+      <p class="qnote" id="q-note" hidden>The most common words in the Qur'an, from the booklet <i>80% of Qur'anic Words</i> by Dr Abdulazeez Abdulraheem. Levels follow how often a word appears.</p>
       <div class="seg lvseg" id="lv-seg" role="group" aria-label="Level">
         <button type="button" data-lv="0" aria-pressed="true">All</button>
         <button type="button" data-lv="1" aria-pressed="false">Beginner</button>
@@ -4614,7 +4635,42 @@ a.ua-app:hover{border-color:var(--f-lapis)}
         (learned[w.id]?'<button class="learn kw'+(known[w.id]?' on':'')+'" type="button" data-known="'+esc(w.id)+'" aria-pressed="'+(known[w.id]?'true':'false')+'" aria-label="'+esc(w.en)+': known well">'+(known[w.id]?ICON.check+'Known well':'Known well')+'</button>':'')+
       '</div>';
     }).join(''):'<p class="lead">'+(filter.show==='learned'&&filter.cat==='all'&&!filter.q?'You have no Learning words yet. Tap Show all words, then tap Learning on the words you want to practise.':'No words match. Try another group or clear the search.')+'</p>';
-    renderCount();renderFromApps();
+    renderCount();renderFromApps();renderProgress();
+  }
+  // How far this learner has come. A word counts as learned once it is Known well. My words are mentioned but not in the totals.
+  var MILESTONES=[5,10,25,50,75,100,150,200,250,300,400,500,600,700,800,900];
+  function progPct(n,total){var p=n/total*100;return n&&p<1?'under 1%':Math.floor(p)+'%'}
+  // The bar always shows a sliver once there is progress, because 1 word in hundreds would otherwise be invisible
+  function progBar(k,l,total,cls){
+    function w(n){return n?'width:max(4px,'+(n/total*100)+'%)':'width:0'}
+    return '<div class="prog-bar '+(cls||'')+'"><span class="k" style="'+w(k)+'"></span>'+(l?'<span class="l" style="'+w(l)+'"></span>':'')+'</div>';
+  }
+  function renderProgress(){
+    var all=BUILTIN.concat(QWORDS),total=all.length;
+    function isK(w){return !!known[w.id]}
+    var k=all.filter(isK),l=all.filter(function(w){return learned[w.id]&&!known[w.id]}).length,n=k.length;
+    $('#prog-top').innerHTML='<span class="prog-big">'+n+'</span><span>of '+total+' words known well ('+progPct(n,total)+')</span>'+(l?'<span class="meta">Learning '+l+'</span>':'');
+    var bar=$('#prog-bar');
+    bar.setAttribute('aria-label',n+(n===1?' word':' words')+' known well and '+l+' learning, out of '+total);
+    bar.innerHTML=progBar(n,l,total).replace(/^<div[^>]*>|<\/div>$/g,'');
+    var next=MILESTONES.filter(function(m){return m>n&&m<total})[0]||total,left=next-n;
+    $('#prog-msg').textContent=n>=total?'Masha Allah! You know every word here.':
+      MILESTONES.indexOf(n)>=0?'Masha Allah! You have reached '+n+' words. Next goal: '+next+'.':
+      n?(left===1?'Just 1 more word':'Just '+left+' more words')+' to reach '+next+'.':
+      l?'Get a Learning word right first time 5 times in a row and it counts as known well.':
+      'Tap Learning on a word to begin. Every word counts.';
+    var ev=BUILTIN,qu=all.filter(function(w){return w.qcat});
+    function row(name,list){
+      var a=list.filter(isK).length,b=list.filter(function(w){return learned[w.id]&&!known[w.id]}).length;
+      return '<div class="prog-row"><span>'+name+'</span><span class="meta">'+a+' of '+list.length+' ('+progPct(a,list.length)+')</span>'+progBar(a,b,list.length,'thin')+'</div>';
+    }
+    var times=k.reduce(function(sum,w){return sum+(w.qn||0)},0);
+    var done=STORIES.filter(function(st){return storiesDone[st.id]}).length;
+    var own=custom.filter(isK).length;
+    $('#prog-rows').innerHTML=row('Everyday words',ev)+row('Qur\'an words',qu)+
+      '<div class="prog-row"><span>Stories finished</span><span class="meta">'+done+' of '+STORIES.length+'</span></div>'+
+      (times?'<p class="meta">The words you know well appear at least '+times.toLocaleString('en')+' times in the Qur\'an.</p>':'')+
+      (own?'<p class="meta">You also know '+own+' of your own words well.</p>':'');
   }
   $('#ua-add').addEventListener('click',function(){
     var list=fromApps();list.forEach(function(w){learned[w.id]=1});
@@ -5326,7 +5382,7 @@ a.ua-app:hover{border-color:var(--f-lapis)}
     if(t.closest('#st-saynext')){
       stopSpeech();
       if(S.say+1<S.story.lines.length){S.say++;S.shown=false;renderStory()}
-      else{storiesDone[S.story.id]=1;lsSet(pkey('stories'),storiesDone);S.finished=true;tone(true);renderStory()}
+      else{storiesDone[S.story.id]=1;lsSet(pkey('stories'),storiesDone);S.finished=true;tone(true);renderProgress();renderStory()}
       $('#view-stories').scrollIntoView({block:'start'});
       return;
     }
