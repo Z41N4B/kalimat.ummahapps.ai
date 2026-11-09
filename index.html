@@ -3973,6 +3973,7 @@ a.ua-app:hover{border-color:var(--f-lapis)}
         <div class="seg" id="rate-seg" role="group" aria-label="Speed" style="flex:0 0 auto">
           <button type="button" data-rate="0.6" aria-pressed="false">Slow</button>
           <button type="button" data-rate="0.85" aria-pressed="true">Normal</button>
+          <button type="button" data-rate="1" aria-pressed="false">Natural</button>
         </div>
       </div>
       <p class="note" id="voice-note" hidden><span id="voice-note-text">If the words do not sound like Arabic, add an Arabic voice in your device's text-to-speech settings, then restart the device.</span> <button class="linkbtn" id="voice-note-hide" type="button">Hide</button></p>
@@ -4033,6 +4034,7 @@ a.ua-app:hover{border-color:var(--f-lapis)}
           <div class="seg" id="st-rate-seg" role="group" aria-label="Speed" style="flex:0 0 auto">
             <button type="button" data-rate="0.6" aria-pressed="false">Slow</button>
             <button type="button" data-rate="0.85" aria-pressed="true">Normal</button>
+            <button type="button" data-rate="1" aria-pressed="false">Natural</button>
           </div>
         </div>
         <div class="st-title" id="st-title"></div>
@@ -4801,15 +4803,33 @@ a.ua-app:hover{border-color:var(--f-lapis)}
     var a=b.dataset.vg;
     if(a==='dev'){vg.dev=b.dataset.dev;renderVG();$('#vg [data-dev="'+vg.dev+'"]').focus()}
     else if(a==='test')speak('مَرْحَبًا، كَيْفَ حَالُكَ؟',b);
-    else{vg.hidden=a==='hide';lsSet('kp-vg-hidden',vg.hidden);renderVG();$(vg.hidden?'#vg .vg-show':'#vg [data-vg="hide"]').focus()}
+    else{vg.hidden=a==='hide';lsSet('kp-vg-hidden',vg.hidden);shareSet('voiceHelp',!vg.hidden);renderVG();$(vg.hidden?'#vg .vg-show':'#vg [data-vg="hide"]').focus()}
   });
   renderVG();
   ['#rate-seg','#st-rate-seg'].forEach(function(sel){$(sel).addEventListener('click',function(e){
     var b=e.target.closest('button[data-rate]');if(!b)return;
-    voice.rate=parseFloat(b.dataset.rate);lsSet('kp-voice',voice);paintRate();
+    voice.rate=parseFloat(b.dataset.rate);lsSet('kp-voice',voice);paintRate();shareSet('speed',speedOf(voice.rate));
   })});
   function paintRate(){
     document.querySelectorAll('#rate-seg button,#st-rate-seg button').forEach(function(b){b.setAttribute('aria-pressed',String(parseFloat(b.dataset.rate)===voice.rate))});
+  }
+
+  // Speed and voice help go with each learner in all four Ummah Apps Arabic apps (ummah.js), set here or in the shared Settings
+  var RATES={slow:0.6,normal:0.85,natural:1};
+  function speedOf(r){return r<=0.7?'slow':r>=0.95?'natural':'normal'}
+  function shareSet(k,v){var p=curProfile();if(window.UA)UA.setSetting(p&&p.ua,k,v)}
+  function applySettings(s){
+    voice.rate=RATES[s.speed]||0.85;lsSet('kp-voice',voice);paintRate();
+    if(vg.hidden!==!s.voiceHelp){vg.hidden=!s.voiceHelp;lsSet('kp-vg-hidden',vg.hidden);renderVG()}
+  }
+  // The first time, what was chosen here before settings were shared fills in each learner's shared settings; new learners start from the defaults
+  function loadSettings(){
+    if(!window.UA)return;
+    if(!lsGet('kp-shared',false)){
+      var mine={};if(lsGet('kp-voice',null))mine.speed=speedOf(voice.rate);if(lsGet('kp-vg-hidden',null)!==null)mine.voiceHelp=!vg.hidden;
+      UA.settings(null,mine);profiles.list.forEach(function(p){UA.settings(p.ua,mine)});lsSet('kp-shared',true);
+    }
+    applySettings(UA.settings(curProfile().ua));
   }
 
   var Q={mode:'pic',target:null,opts:[],last:null,locked:false,answered:false,right:0,total:0};
@@ -5221,11 +5241,12 @@ a.ua-app:hover{border-color:var(--f-lapis)}
     if(profiles.list.length<MAXP)html+='<button class="chip-btn" type="button" data-who="add">+ Add learner</button>';
     html+='<button class="linkbtn" type="button" data-who="rename">Rename</button>';
     if(profiles.list.length>1)html+='<button class="linkbtn" type="button" data-who="remove">Remove</button>';
+    if(window.UA)html+='<button class="linkbtn" type="button" data-who="settings">Settings</button>';
     $('#who').innerHTML=html;
   }
   function refreshAll(){
     Q.right=0;Q.total=0;Q.last=null;R.queue=[];R.cur=null;
-    if(window.UA){UA.setCurrent(curProfile().ua);shareKnown()}
+    if(window.UA){UA.setCurrent(curProfile().ua);shareKnown();loadSettings()}
     filter.lv=lsGet(pkey('level'),0);filter.set=lsGet(pkey('set'),'every');filter.cat='all';renderChips();
     renderWho();renderWords();renderMine();
     S.story=null;
@@ -5248,6 +5269,7 @@ a.ua-app:hover{border-color:var(--f-lapis)}
     }
     var b=e.target.closest('[data-who]');if(!b)return;
     var act=b.dataset.who;
+    if(act==='settings'){UA.openSettings({ua:curProfile().ua,name:curProfile().name,app:'kalimat',onChange:applySettings});return}
     if(act==='add'||act==='rename'){openWhoForm(act);return}
     if(act==='remove'){
       if(b.dataset.arm!=='1'){
@@ -5516,6 +5538,7 @@ a.ua-app:hover{border-color:var(--f-lapis)}
 
   if(window.UA){UA.setCurrent(curProfile().ua);shareKnown()}
   renderWho();renderChips();renderWords();renderAddCats();renderMine();paintRate();
+  loadSettings();if(window.UA)UA.watch(function(){return curProfile().ua},applySettings);
   // In-app browsers (WhatsApp, Instagram, Facebook and similar) often have no speech at all
   var inApp=/FBAN|FBAV|Instagram|WhatsApp|Snapchat|TikTok|Line\/|; wv\)/i.test(navigator.userAgent||'');
   if('speechSynthesis' in window){
