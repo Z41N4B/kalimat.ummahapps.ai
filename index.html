@@ -3946,6 +3946,7 @@ a.ua-app:hover{border-color:var(--f-lapis)}
       <button class="btn small" type="button" id="who-cancel">Cancel</button>
     </form>
   </header>
+  <section id="ua-today" aria-label="Today's practice" hidden></section>
 
   <nav class="tabs" aria-label="Sections">
     <button class="tab" data-tab="words" aria-current="page">Words</button>
@@ -4489,6 +4490,7 @@ a.ua-app:hover{border-color:var(--f-lapis)}
   // A first answer in a practice game; returns true when the word has just moved to Known well
   function countRight(id,ok){
     if(!learned[id]||known[id])return false;
+    addPractice({c:1});
     var s=st(id);s.s=ok?(s.s||0)+1:0;
     if(s.s>=STREAK){setKnown(id,true);renderWords();return true}
     saveStats();return false;
@@ -4496,6 +4498,7 @@ a.ua-app:hover{border-color:var(--f-lapis)}
   // A first answer in Revise: right pushes the next check further away, wrong brings it back tomorrow
   function checked(id,ok){
     if(!known[id])return;
+    addPractice({v:1});
     var wasDue=dueWords().length,s=st(id);
     s.v=ok?Math.min((s.v||0)+1,GAPS.length-1):0;
     s.d=Date.now()+(ok?GAPS[s.v]:1)*DAY;
@@ -4638,6 +4641,7 @@ a.ua-app:hover{border-color:var(--f-lapis)}
     $('#only-learning').setAttribute('aria-pressed',String(only));
   }
   function renderWords(){
+    if(window.UA)UA.refreshToday();
     var list=visible(),qset=filter.set==='quran';
     $('#grid').innerHTML=list.length?list.map(function(w){
       var long=w.ar.length>12?' long':'';
@@ -4743,7 +4747,7 @@ a.ua-app:hover{border-color:var(--f-lapis)}
     var l=e.target.closest('[data-learn]');
     if(l){
       var id=l.dataset.learn;
-      if(learned[id]){delete learned[id];delete known[id];delete stats[id];lsSet(pkey('known'),known);saveStats()}else learned[id]=1;
+      if(learned[id]){delete learned[id];delete known[id];delete stats[id];lsSet(pkey('known'),known);saveStats()}else{learned[id]=1;addPractice({n:1})}
       lsSet(pkey('learned'),learned);Q.last=null;
       renderWords();
       return;
@@ -5235,6 +5239,7 @@ a.ua-app:hover{border-color:var(--f-lapis)}
   function curProfile(){return profiles.list.filter(function(p){return p.id===profiles.cur})[0]}
   function saveProfiles(){lsSet('kp-profiles',profiles)}
   function renderWho(){
+    if(window.UA)UA.refreshToday();
     var html='<span class="label">Learner</span>'+profiles.list.map(function(p){
       return '<button class="chip-btn" type="button" data-pid="'+esc(p.id)+'" aria-pressed="'+(p.id===profiles.cur)+'">'+(p.avatar?'<span aria-hidden="true">'+esc(p.avatar)+'</span> ':'')+esc(p.name)+'</button>';
     }).join('');
@@ -5539,6 +5544,27 @@ a.ua-app:hover{border-color:var(--f-lapis)}
   if(window.UA){UA.setCurrent(curProfile().ua);shareKnown()}
   renderWho();renderChips();renderWords();renderAddCats();renderMine();paintRate();
   loadSettings();if(window.UA)UA.watch(function(){return curProfile().ua},applySettings);
+  // Today's practice across the four apps (ummah.js): Known well checks due, Learning words to strengthen, new words started
+  function addPractice(x){if(window.UA)UA.practiceAdd(curProfile().ua,'kalimat',x)}
+  function practiceState(){
+    var t=UA.dayNo(),o=[dueWords().length,0,0,0,0,0,0],r=0;
+    allWords().forEach(function(w){
+      if(known[w.id]){
+        var s=stats[w.id],d=s&&s.d?new Date(s.d):null,day=d?Math.floor(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())/864e5):0;
+        for(var i=1;i<7;i++)if(day<=t+i)o[i]++;
+      }else if(learned[w.id])r++;
+    });
+    for(var i=1;i<7;i++)o[i]=Math.max(o[i],o[i-1]);
+    return {o:o,r:r};
+  }
+  function startStep(step){
+    if(step==='old')setMode('revise');
+    else if(Q.mode==='revise')setMode('pic');
+    show(step==='new'?'words':'quiz');
+    if(step==='new')toast('Tap Learning on a few new words to start them.');
+    $('.tabs').scrollIntoView({behavior:'smooth',block:'start'});
+  }
+  if(window.UA)UA.mountToday($('#ua-today'),{app:'kalimat',ua:function(){return curProfile().ua},name:function(){return curProfile().name},state:practiceState,start:startStep,onSettings:applySettings});
   // In-app browsers (WhatsApp, Instagram, Facebook and similar) often have no speech at all
   var inApp=/FBAN|FBAV|Instagram|WhatsApp|Snapchat|TikTok|Line\/|; wv\)/i.test(navigator.userAgent||'');
   if('speechSynthesis' in window){
