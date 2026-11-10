@@ -202,6 +202,9 @@ h2{font-size:1.25rem;margin:0 0 4px;font-weight:800}
 .qopt.picopt{flex-direction:column;justify-content:center;gap:4px;text-align:center}
 .qopt.picopt .pic-en{font-size:.95rem;font-weight:700;line-height:1.25}
 #only-learning{width:100%;min-height:68px;font-size:1.3rem}
+.w-more{display:contents}
+#view-words.compact .w-more{display:none}
+.w-more-row{margin:-4px 0 14px;text-align:center}
 .msg .sk.thumb{margin:0 0 4px}
 .gb-right{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
 .tbar{height:4px;max-width:320px;margin:-8px auto 14px;background:var(--line);border-radius:4px;overflow:hidden}
@@ -3967,6 +3970,7 @@ a.ua-app:hover{border-color:var(--f-lapis)}
 
     <section id="view-words" aria-labelledby="h-words">
       <h2 id="h-words">Tap a word to hear it</h2>
+      <div class="w-more">
       <p class="lead">Tap Learning on the words you are working on. The game only uses words marked Learning. Tap Plural on a card to see and hear its plural. When you know a word really well, tap Known well: it leaves the game and moves to the Known well tab. A word also moves there by itself when you get it right first time 5 times in a row in the games or in story questions. Tap My Learning words to see only the words you are practising. Use the groups, search and filter to focus on what you are working on.</p>
 
       <div class="voice-row">
@@ -3980,10 +3984,13 @@ a.ua-app:hover{border-color:var(--f-lapis)}
       </div>
       <p class="note" id="voice-note" hidden><span id="voice-note-text">If the words do not sound like Arabic, add an Arabic voice in your device's text-to-speech settings, then restart the device.</span> <button class="linkbtn" id="voice-note-hide" type="button">Hide</button></p>
       <div id="vg"></div>
+      </div>
 
       <p class="due" id="due-note" hidden><span id="due-text"></span> <button class="btn primary small" id="due-go" type="button">Check them</button></p>
       <p class="due" id="ua-note" hidden><span id="ua-text"></span> <button class="btn primary small" id="ua-add" type="button">Add them to Learning</button><button class="linkbtn" id="ua-hide" type="button">Not now</button></p>
       <div class="actions" style="margin:0 0 14px"><button class="btn primary big" id="only-learning" type="button" aria-pressed="false">My Learning words</button></div>
+      <p class="w-more-row" id="w-more-row" hidden><button class="linkbtn" id="w-more-btn" type="button" aria-expanded="false" aria-controls="view-words">Show filters and settings</button></p>
+      <div class="w-more">
       <div class="seg lvseg" id="set-seg" role="group" aria-label="Word list">
         <button type="button" data-set="every" aria-pressed="true">Everyday words</button>
         <button type="button" data-set="quran" aria-pressed="false">Qur'an words</button>
@@ -4020,6 +4027,7 @@ a.ua-app:hover{border-color:var(--f-lapis)}
         <p><b>Broken plural.</b> The inside of the word changes, like man and men in English: <span lang="ar" dir="rtl">كِتَاب ← كُتُب</span>, <span lang="ar" dir="rtl">وَلَد ← أَوْلَاد</span>, <span lang="ar" dir="rtl">بَيْت ← بُيُوت</span>. There are many patterns and no rule tells you which one a word takes, so learn the plural together with the word.</p>
         <p><b>Good to know.</b> The plural of a thing (not people) is treated like one “her” word: <span lang="ar" dir="rtl">هَذِهِ كُتُبٌ</span> (these are books), <span lang="ar" dir="rtl">الْبُيُوتُ كَبِيرَةٌ</span> (the houses are big).</p>
       </details>
+      </div>
       <p class="count" id="count"></p>
       <p class="know-all" id="know-all" hidden></p>
       <div class="grid" id="grid"><noscript><p class="lead">Kalimat needs JavaScript to show the words, play audio and run the games. Please turn JavaScript on.</p></noscript></div>
@@ -4647,7 +4655,15 @@ a.ua-app:hover{border-color:var(--f-lapis)}
     var only=filter.show==='learned';
     $('#only-learning').textContent=only?'Show all words':'My Learning words ('+n+')';
     $('#only-learning').setAttribute('aria-pressed',String(only));
+    // My Learning words keeps the instructions, voice and filters out of the way until asked for
+    if(!only)wMore=false;
+    $('#view-words').classList.toggle('compact',only&&!wMore);
+    $('#w-more-row').hidden=!only;
+    $('#w-more-btn').textContent=wMore?'Hide filters and settings':'Show filters and settings';
+    $('#w-more-btn').setAttribute('aria-expanded',String(wMore));
   }
+  var wMore=false;
+  $('#w-more-btn').addEventListener('click',function(){wMore=!wMore;renderCount()});
   function renderWords(){
     if(window.UA)UA.refreshToday();
     var list=visible(),qset=filter.set==='quran';
@@ -4758,7 +4774,7 @@ a.ua-app:hover{border-color:var(--f-lapis)}
     filter.show=on?'learned':'all';$('#show').value=filter.show;
     if(on){filter.cat='all';filter.q='';$('#search').value='';renderChips()}
     renderWords();
-    if(on)$('#count').scrollIntoView({block:'start',behavior:'smooth'});
+    if(on)$('#only-learning').scrollIntoView({block:'start',behavior:'smooth'});
   });
   $('#plsel').addEventListener('change',function(){filter.pl=this.value;renderWords()});
   $('#show-pl').addEventListener('change',function(){$('#grid').classList.toggle('show-pl',this.checked)});
