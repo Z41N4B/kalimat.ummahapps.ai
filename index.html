@@ -235,6 +235,7 @@ label{font-weight:800;font-size:.9rem;color:var(--ink-2)}
 .chip-btn[data-cat][aria-pressed="true"]::before{background:var(--on-accent)}
 .note{padding:10px 14px;border:1.5px solid var(--bad);border-radius:12px;color:var(--bad);margin:0 0 14px;font-weight:700}
 .count{font-weight:800;margin:0 0 12px}
+.know-all{margin:-6px 0 14px;font-size:.92rem;color:var(--ink-2)}
 .lvseg{margin:0 0 14px}
 .lvseg button{padding:4px 8px}
 .qnote{font-size:.9rem;color:var(--ink-2);margin:-6px 0 14px}
@@ -4020,6 +4021,7 @@ a.ua-app:hover{border-color:var(--f-lapis)}
         <p><b>Good to know.</b> The plural of a thing (not people) is treated like one “her” word: <span lang="ar" dir="rtl">هَذِهِ كُتُبٌ</span> (these are books), <span lang="ar" dir="rtl">الْبُيُوتُ كَبِيرَةٌ</span> (the houses are big).</p>
       </details>
       <p class="count" id="count"></p>
+      <p class="know-all" id="know-all" hidden></p>
       <div class="grid" id="grid"><noscript><p class="lead">Kalimat needs JavaScript to show the words, play audio and run the games. Please turn JavaScript on.</p></noscript></div>
     </section>
 
@@ -4444,6 +4446,11 @@ a.ua-app:hover{border-color:var(--f-lapis)}
   // Learners are shared with the other Ummah Apps on this device (ummah.js). One added there shows here too while there is room.
   if(window.UA){
     var shared=UA.sync(profiles.list);
+    // A learner removed in another of the apps is removed here too, with their progress
+    var goneIds=shared.removed.map(function(i){return profiles.list[i].id});
+    goneIds.forEach(dropData);
+    profiles.list=profiles.list.filter(function(p){return goneIds.indexOf(p.id)<0});
+    if(!profiles.list.length)profiles={list:[{id:'p1',name:'Learner 1'}],cur:'p1'};
     shared.extra.forEach(function(x){
       if(profiles.list.length>=MAXP)return;
       // A learner from another app takes over the first, untouched Learner 1 instead of sitting beside it
@@ -4456,6 +4463,7 @@ a.ua-app:hover{border-color:var(--f-lapis)}
   }
   if(!profiles.list.some(function(p){return p.id===profiles.cur}))profiles.cur=profiles.list[0].id;
   function pkey(n,id){id=id||profiles.cur;return id==='p1'?'kp-'+n:'kp-'+id+'-'+n}
+  function dropData(id){['learned','known','custom','stats','level','set','stories','stars','ua-hide'].forEach(function(n){try{localStorage.removeItem(pkey(n,id))}catch(err){}})}
   var learned,known,custom,stats,storiesDone,wordStars;
   function loadProfile(){
     learned=lsGet(pkey('learned'),{});
@@ -4664,8 +4672,26 @@ a.ua-app:hover{border-color:var(--f-lapis)}
         (learned[w.id]?'<button class="learn kw'+(known[w.id]?' on':'')+'" type="button" data-known="'+esc(w.id)+'" aria-pressed="'+(known[w.id]?'true':'false')+'" aria-label="'+esc(w.en)+': known well">'+(known[w.id]?ICON.check+'Known well':'Known well')+'</button>':'')+
       '</div>';
     }).join(''):'<p class="lead">'+(filter.show==='learned'&&filter.cat==='all'&&!filter.q?'You have no Learning words yet. Tap Show all words, then tap Learning on the words you want to practise.':'No words match. Try another group or clear the search.')+'</p>';
-    renderCount();renderFromApps();renderProgress();paintJump();
+    renderCount();renderFromApps();renderProgress();paintJump();renderKnowAll();
   }
+  // Words a learner already knows can be marked Known well together, skipping the Learning stage. Their first checks
+  // are spread over the next month, so marking many at once does not bring a pile of checks on one day.
+  function knowAllList(){return visible().filter(function(w){return !known[w.id]})}
+  function renderKnowAll(){
+    var n=knowAllList().length,el=$('#know-all');
+    el.hidden=!n;
+    if(n)el.innerHTML='Already know '+(n===1?'this word':'these words')+'? <button class="linkbtn" type="button" id="know-all-btn">Mark '+(n===1?'it':'all '+n+' shown')+' as Known well</button>';
+  }
+  $('#know-all').addEventListener('click',function(e){
+    if(!e.target.closest('#know-all-btn'))return;
+    var list=knowAllList(),n=list.length;if(!n)return;
+    if(!confirm('Mark '+(n===1?'this word':n+' words')+' as Known well?\n\nThey skip the Learning stage and leave the games. Each one comes back now and then for a quick check, spread over the next month. To undo a word, tap Known well on its card.'))return;
+    list.forEach(function(w,i){learned[w.id]=1;known[w.id]=1;var s=st(w.id);s.s=0;s.v=1;s.d=Date.now()+(7+i%24)*DAY});
+    lsSet(pkey('learned'),learned);lsSet(pkey('known'),known);saveStats();Q.last=null;
+    shareKnown(list.map(function(w){return w.id}));
+    renderWords();
+    toast('Masha Allah! '+(n===1?'1 word':n+' words')+' marked as Known well.');
+  });
   // How far this learner has come. A word counts as learned once it is Known well. My words are mentioned but not in the totals.
   var MILESTONES=[5,10,25,50,75,100,150,200,250,300,400,500,600,700,800,900];
   function progPct(n,total){var p=n/total*100;return n&&p<1?'under 1%':Math.floor(p)+'%'}
@@ -5277,14 +5303,10 @@ a.ua-app:hover{border-color:var(--f-lapis)}
     if(act==='settings'){UA.openSettings({ua:curProfile().ua,name:curProfile().name,app:'kalimat',onChange:applySettings});return}
     if(act==='add'||act==='rename'){openWhoForm(act);return}
     if(act==='remove'){
-      if(b.dataset.arm!=='1'){
-        b.dataset.arm='1';b.textContent='Tap again to remove '+curProfile().name;
-        setTimeout(function(){if(b.isConnected){b.dataset.arm='';b.textContent='Remove'}},3000);
-        return;
-      }
       var gone=curProfile();
+      if(!(window.UA?UA.confirmRemove(gone.name,gone.ua):confirm('Remove '+gone.name+' and all their progress on this device? It cannot be undone.')))return;
       if(window.UA)UA.remove(gone.ua);
-      ['learned','known','custom','stats','level','set','stories','stars'].forEach(function(n){try{localStorage.removeItem(pkey(n,gone.id))}catch(err){}});
+      dropData(gone.id);
       profiles.list=profiles.list.filter(function(x){return x.id!==gone.id});
       profiles.cur=profiles.list[0].id;saveProfiles();loadProfile();refreshAll();
       toast('Removed '+gone.name+'.');
