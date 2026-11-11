@@ -4988,7 +4988,11 @@ a.ua-app:hover{border-color:var(--f-lapis)}
   function plText(w){
     return 'The plural of <span class="ar-s" lang="ar" dir="rtl">'+esc(w.ar)+'</span> is <span class="ar-s" lang="ar" dir="rtl">'+esc(w.pl)+'</span> ('+(w.pt==='s'?'sound plural: an ending is added':'broken plural: the word changes shape')+').';
   }
+  // After a right answer the next question comes by itself, 2 seconds later, unless the learner has moved on
+  var autoT=0;
+  function autoNext(t){clearTimeout(autoT);autoT=setTimeout(function(){if(!$('#view-quiz').hidden&&Q.target===t&&Q.locked&&!$('#q-back'))newQ()},2000)}
   function newQ(){
+    clearTimeout(autoT);
     if(Q.goNext){var gn=Q.goNext;Q.goNext=null;setMode(gn)}
     renderGoal();
     // Revise quizzes Known well words; wrong answers are drawn from every word so one known word is enough
@@ -5119,7 +5123,7 @@ a.ua-app:hover{border-color:var(--f-lapis)}
       '<span class="bw-praise" lang="ar" dir="rtl">'+esc(praise)+'</span>'+
       '<span class="bw-note"><span class="ar-s" lang="ar" dir="rtl">'+esc(t.ar)+'</span> means '+esc(t.en)+'.'+(extra?' '+esc(extra):'')+'</span></span>';
     setTimeout(function(){if(Q.target&&Q.target.id===t.id&&Q.locked)speak(t.ar+'، '+praise,null)},500);
-    $('#q-next').hidden=false;$('#q-next').focus();
+    $('#q-next').hidden=false;$('#q-next').focus();autoNext(t);
   }
   $('#q-opts').addEventListener('click',function(e){
     var b=e.target.closest('.bw-tile'),s=Q.bw;
@@ -5237,7 +5241,7 @@ a.ua-app:hover{border-color:var(--f-lapis)}
         (Q.mode==='fm'?'Yes! '+fmText(Q.target,Q.form):Q.mode==='plc'?'Yes! '+plText(Q.target):'Yes! <span class="ar-s" lang="ar" dir="rtl">'+esc(Q.target.ar)+'</span> means '+esc(Q.target.en)+'.')+esc(extra)+
         (Q.mode==='revise'&&Q.firstWrong&&known[Q.target.id]?' <button class="btn small" id="q-back" type="button">Practise this word again</button>':'');
       (function(t,say){setTimeout(function(){if(Q.target&&Q.target.id===t.id)speak(say,null)},600)})(Q.target,Q.mode==='fm'?Q.target.fm[0]+'، '+Q.target.fm[Q.form]:Q.mode==='plc'?Q.target.ar+'، '+Q.target.pl:Q.target.ar);
-      $('#q-next').hidden=false;$('#q-next').focus();
+      $('#q-next').hidden=false;$('#q-next').focus();autoNext(Q.target);
     }else{
       b.classList.remove('miss');void b.offsetWidth;b.classList.add('miss');
       var x=b.querySelector('.mark');x.className='mark no';x.innerHTML=ICON.cross;
