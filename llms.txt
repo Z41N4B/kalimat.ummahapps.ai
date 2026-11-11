@@ -4,7 +4,7 @@
 
 ## What it does
 
-- Over 800 everyday Modern Standard Arabic words in 27 groups: basics, people, places, home and school, food and drink, nature and animals, body, colours, describing words, actions (past-tense verbs), numbers, time and days, greetings, clothes, toys and play, feelings, study and ideas, work and jobs, travel, shopping and money, health, weather, linking words, opinions and ideas, news and politics, society and money, science and technology.
+- Over 900 everyday Modern Standard Arabic words in 27 groups: basics, people, places, home and school, food and drink, nature and animals, body, colours, describing words, actions (past-tense verbs), numbers, time and days, greetings, clothes, toys and play, feelings, study and ideas, work and jobs, travel, shopping and money, health, weather, linking words, opinions and ideas, news and politics, society and money, science and technology.
 - Every word is written with full harakat (vowel marks) and has an English meaning.
 - Words are spoken aloud using the device's text-to-speech voice, at normal or slow speed.
 - Most nouns and describing words show their plural, labelled as a sound plural or broken plural.
