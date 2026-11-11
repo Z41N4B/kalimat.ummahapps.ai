@@ -42,3 +42,8 @@ Then open http://localhost:8765
 
 ## Already learnt
 Above the word cards, Mark all shown as Known well marks every word in the group, level or search on screen as Known well after a warning. They skip the Learning stage, and their first checks are spread over the next month.
+
+## Learn and the game goal
+The Learn tab (the first tab) gives the learner their next words instead of asking them to choose. They tick any number of groups (Everyday or Qur’an words) and how many words at a time (5, 10 or 15), then tap Give me new words: the next words, easiest level first and then in group order, skipping words already started, known or swapped out. Before starting they can Swap a word or say I know it (it goes to Known well, first check 7 to 30 days away). The words are then met one by one like flashcards, with picture, sound and plural, followed by a quick check (pick the meaning; a miss comes back once), and go into Learning. Add all puts every word in the ticked groups into Learning at once and shows them as flashcards. My Learning words has Go through them one by one, a flashcard run with the meaning hidden until tapped. The choices are kept per learner in `kp-path`.
+
+The Game tab starts with Today’s goal: Revise known words when some are due, then Pick the picture, Build the word and Say it from memory, 10 answers each. The step to do next has a Play button, and finishing a step moves the game on to the next one. Counts are kept per learner per day in `kp-goal`.
