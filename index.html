@@ -4007,7 +4007,7 @@ a.ua-app:hover{border-color:var(--f-lapis)}
         <div class="row2">
           <input type="text" id="search" placeholder="Search in Arabic or English" aria-label="Search words">
           <select id="show" aria-label="Show">
-            <option value="all">All words</option>
+            <option value="all">Words to learn</option>
             <option value="todo">Not started</option>
             <option value="learned">Learning</option>
             <option value="known">Known well</option>
@@ -4634,6 +4634,8 @@ a.ua-app:hover{border-color:var(--f-lapis)}
       if(filter.show==='learned'&&(!learned[w.id]||known[w.id]))return false;
       if(filter.show==='todo'&&learned[w.id])return false;
       if(filter.show==='known'&&!known[w.id])return false;
+      // Known well words live on their own tab, so the main list shows what is left to learn; a search still finds them
+      if(filter.show==='all'&&known[w.id]&&!q)return false;
       if(filter.pl==='has'&&!w.pl)return false;
       if(filter.pl==='s'&&!(w.pl&&w.pt==='s'))return false;
       if(filter.pl==='b'&&!(w.pl&&w.pt==='b'))return false;
@@ -4782,8 +4784,10 @@ a.ua-app:hover{border-color:var(--f-lapis)}
     var kb=e.target.closest('[data-known]');
     if(kb){
       var kid=kb.dataset.known;
-      setKnown(kid,!known[kid]);
+      var nowKnown=!known[kid];
+      setKnown(kid,nowKnown);
       renderWords();
+      if(nowKnown&&filter.show==='all'&&!filter.q)toast('Moved to the Known well tab.');
       return;
     }
     var l=e.target.closest('[data-learn]');

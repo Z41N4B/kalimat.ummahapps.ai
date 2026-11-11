@@ -14,6 +14,7 @@ A free Arabic vocabulary trainer for beginners. Live at https://kalimat.ummahapp
 - Games: pick the picture, build the word (tap its letters in order, with أحسنت and stars for each word), pick the plural, pick the form, say it from memory, say the plural from memory, revise known words, with an optional 10 or 20 second timer
 - A button that jumps to the bottom of the long pages and back to the top
 - A progress card on every tab: words known well out of the total, the percentage, the next goal, and more detail for each word list and the stories
+- Known well words leave the main word list, so it shows only what is left to learn (they stay on the Known well tab and still come up in a search)
 - Mark the words you are learning, then mark them as known well (or get a word right first time 5 times in a row, in the games or story questions, and it moves there by itself)
 - Spaced checks on Known well words: after 3 days, 1 week, 2 weeks, 1 month and 2 months
 - Add your own words
