@@ -2,7 +2,7 @@
 
 A free Arabic vocabulary trainer for beginners. Live at https://kalimat.ummahapps.ai/
 
-**Words:** over 400 everyday words with full harakat, in 16 groups (basics, people, places, home and school, food, nature and animals, body, colours, describing, actions, numbers, time, greetings, clothes, toys, feelings).
+**Words:** nearly 600 everyday words with full harakat, in 22 groups (basics, people, places, home and school, food, nature and animals, body, colours, describing, actions, numbers, time, greetings, clothes, toys, feelings, study and ideas, work and jobs, travel, shopping and money, health, weather). The first 419 are in `DATA`; later batches go in `MORE`, always added to the end of a list so word ids never change. A word in `MORE` that is also a Qur’an word carries that Qur’an word’s id, so it is one word with one set of progress.
 
 ## Features
 - Tap any word to hear it, at normal or slow speed (uses the device's Arabic text-to-speech voice)
