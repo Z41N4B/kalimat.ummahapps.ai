@@ -88,7 +88,7 @@
         "Optional gentle timer for the games",
         "Learning and known-well progress tracking",
         "Add your own words",
-        "Up to 3 learners on one device"
+        "Up to 6 learners on one device"
       ],
       "image": "https://kalimat.ummahapps.ai/og-image.png",
       "publisher": {"@id": "https://ummahapps.ai/#org"}
@@ -100,7 +100,7 @@
         {"@type": "Question", "name": "How does Kalimat pronounce the Arabic words?", "acceptedAnswer": {"@type": "Answer", "text": "It uses your device's built-in text-to-speech voice. For the best pronunciation, add an Arabic voice in your phone or computer's speech or language settings, then choose it in the Voice menu."}},
         {"@type": "Question", "name": "Does Kalimat teach Arabic plurals?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Most nouns and describing words show their plural and say whether it is a sound plural or a broken plural, and there is a game for saying the plural from memory."}},
         {"@type": "Question", "name": "Does Kalimat have Arabic stories?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. The Stories tab has 15 short, fully vowelled stories made mostly from words in Kalimat. You listen first with pictures, read along and tap any word for its meaning, answer questions in Arabic, then tell the story yourself."}},
-        {"@type": "Question", "name": "Where is my progress saved?", "acceptedAnswer": {"@type": "Answer", "text": "Your Learning and Known well lists and your own words are saved in your browser on your device. Nothing is sent to a server. Up to three learners can share one device, each with their own progress."}},
+        {"@type": "Question", "name": "Where is my progress saved?", "acceptedAnswer": {"@type": "Answer", "text": "Your Learning and Known well lists and your own words are saved in your browser on your device. Nothing is sent to a server. Up to six learners can share one device, each with their own progress."}},
         {"@type": "Question", "name": "Who is Kalimat for?", "acceptedAnswer": {"@type": "Answer", "text": "Beginners of any age learning Modern Standard Arabic, including children, home-schoolers and adults studying for Quranic or Madinah-style Arabic classes."}}
       ]
     }
@@ -161,8 +161,8 @@ img{max-width:100%}
 .who-form input{flex:1 1 160px;width:auto}
 .linkbtn{font:inherit;font-size:.85rem;font-weight:700;min-height:38px;padding:4px 6px;border:0;background:none;color:var(--accent);text-decoration:underline;cursor:pointer}
 
-.tabs{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px;margin-bottom:20px}
-@media (max-width:600px){.tabs{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.tabs{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;margin-bottom:20px}
+@media (max-width:600px){.tabs{grid-template-columns:repeat(4,minmax(0,1fr))}}
 .tab{font-size:.9rem;line-height:1.2}
 .tab{font:inherit;font-weight:800;min-height:44px;padding:8px 6px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);border-radius:12px;cursor:pointer}
 .tab[aria-current="page"]{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
@@ -387,6 +387,7 @@ a.ua-app:hover{border-color:var(--f-lapis)}
 .about summary{font-weight:800;color:var(--ink);cursor:pointer}
 .about details p{margin:8px 0 0}
 .about .small{font-size:.85rem;margin-top:20px}
+#view-about{margin-top:0;padding-top:0;border-top:0}
 .about a{color:var(--accent)}
 
 @media (max-width:640px){.row2{grid-template-columns:1fr 1fr}.row2 input{grid-column:1/-1}}
@@ -3999,6 +4000,7 @@ a.ua-app:hover{border-color:var(--f-lapis)}
     <button class="tab" data-tab="quiz">Game</button>
     <button class="tab" data-tab="known">Known well</button>
     <button class="tab" data-tab="mine">My words</button>
+    <button class="tab" data-tab="about">About</button>
   </nav>
 
   <main>
@@ -4179,18 +4181,21 @@ a.ua-app:hover{border-color:var(--f-lapis)}
       </form>
       <ul class="rows" id="mine-list"></ul>
     </section>
+
+    <section class="about" id="view-about" aria-labelledby="h-about" hidden>
+      <h2 id="h-about">About Kalimat</h2>
+      <p>Kalimat (<span lang="ar" dir="rtl">كَلِمَات</span>, "words") is a free Arabic vocabulary trainer for beginners. It has over 900 everyday Modern Standard Arabic words in 27 groups: basics, people, places, home and school, food and drink, nature and animals, the body, colours, describing words, actions, numbers, time, greetings, clothes, toys and play, feelings, study and ideas, work and jobs, travel, shopping and money, health, weather, linking words, opinions and ideas, news and politics, society and money, and science and technology. The Stories tab uses these words in 15 short stories, so you meet them again in real sentences.</p>
+      <p>Every word is written with full harakat (vowel marks) and can be heard aloud at normal or slow speed. Most nouns and describing words show their plural, marked as a sound plural or a broken plural. Words are sorted from beginner to advanced. Mark the words you are learning, practise them by picking the picture, building the word from its letters, picking the plural or saying them from memory, and move them to Known well when you have mastered them, then revise them now and then so they stay fresh. You can also add words from your own lessons.</p>
+      <details><summary>Is Kalimat free?</summary><p>Yes. Kalimat is free, needs no account and runs in your web browser.</p></details>
+      <details><summary>How does Kalimat pronounce the Arabic words?</summary><p>It uses your device's built-in text-to-speech voice. For the best pronunciation, add an Arabic voice in your phone or computer's speech or language settings, then choose it in the Voice menu.</p></details>
+      <details><summary>Does Kalimat teach Arabic plurals?</summary><p>Yes. Most nouns and describing words show their plural and say whether it is a sound plural or a broken plural, and there is a game for saying the plural from memory.</p></details>
+      <details><summary>Does Kalimat have Arabic stories?</summary><p>Yes. The Stories tab has 15 short, fully vowelled stories made mostly from words in Kalimat. You listen first with pictures, read along and tap any word for its meaning, answer questions in Arabic, then tell the story yourself.</p></details>
+      <details><summary>Where is my progress saved?</summary><p>Your Learning and Known well lists and your own words are saved in your browser on your device. Nothing is sent to a server. Up to six learners can share one device, each with their own progress.</p></details>
+      <details><summary>Who is Kalimat for?</summary><p>Beginners of any age learning Modern Standard Arabic, including children, home-schoolers and adults studying for Quranic or Madinah-style Arabic classes.</p></details>
+    </section>
   </main>
 
-  <footer class="about" aria-labelledby="h-about">
-    <h2 id="h-about">About Kalimat</h2>
-    <p>Kalimat (<span lang="ar" dir="rtl">كَلِمَات</span>, "words") is a free Arabic vocabulary trainer for beginners. It has over 900 everyday Modern Standard Arabic words in 27 groups: basics, people, places, home and school, food and drink, nature and animals, the body, colours, describing words, actions, numbers, time, greetings, clothes, toys and play, feelings, study and ideas, work and jobs, travel, shopping and money, health, weather, linking words, opinions and ideas, news and politics, society and money, and science and technology. The Stories tab uses these words in 15 short stories, so you meet them again in real sentences.</p>
-    <p>Every word is written with full harakat (vowel marks) and can be heard aloud at normal or slow speed. Most nouns and describing words show their plural, marked as a sound plural or a broken plural. Words are sorted from beginner to advanced. Mark the words you are learning, practise them by picking the picture, building the word from its letters, picking the plural or saying them from memory, and move them to Known well when you have mastered them, then revise them now and then so they stay fresh. You can also add words from your own lessons.</p>
-    <details><summary>Is Kalimat free?</summary><p>Yes. Kalimat is free, needs no account and runs in your web browser.</p></details>
-    <details><summary>How does Kalimat pronounce the Arabic words?</summary><p>It uses your device's built-in text-to-speech voice. For the best pronunciation, add an Arabic voice in your phone or computer's speech or language settings, then choose it in the Voice menu.</p></details>
-    <details><summary>Does Kalimat teach Arabic plurals?</summary><p>Yes. Most nouns and describing words show their plural and say whether it is a sound plural or a broken plural, and there is a game for saying the plural from memory.</p></details>
-    <details><summary>Does Kalimat have Arabic stories?</summary><p>Yes. The Stories tab has 15 short, fully vowelled stories made mostly from words in Kalimat. You listen first with pictures, read along and tap any word for its meaning, answer questions in Arabic, then tell the story yourself.</p></details>
-    <details><summary>Where is my progress saved?</summary><p>Your Learning and Known well lists and your own words are saved in your browser on your device. Nothing is sent to a server. Up to three learners can share one device, each with their own progress.</p></details>
-    <details><summary>Who is Kalimat for?</summary><p>Beginners of any age learning Modern Standard Arabic, including children, home-schoolers and adults studying for Quranic or Madinah-style Arabic classes.</p></details>
+  <footer class="about">
     <p class="small">Kalimat is part of <a href="https://ummahapps.ai/">Ummah Apps</a>.</p>
     <nav class="ua-fam" aria-labelledby="ua-fam-h">
       <h2 id="ua-fam-h">Four free Arabic apps that work together</h2>
@@ -4522,8 +4527,8 @@ a.ua-app:hover{border-color:var(--f-lapis)}
   function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
   function sketch(id,cls){return '<svg class="sk '+(cls||'')+'" viewBox="0 0 200 200" aria-hidden="true"><use href="#s-'+id+'"/><use href="#s-'+id+'" class="ghost" transform="translate(1.6 -1.2)"/></svg>'}
 
-  // Up to 3 learners share a device. Learner p1 keeps the original storage keys so earlier progress carries over.
-  var MAXP=3;
+  // Up to 6 learners share a device. Learner p1 keeps the original storage keys so earlier progress carries over.
+  var MAXP=6;
   var profiles=lsGet('kp-profiles',null);
   if(!profiles||!profiles.list||!profiles.list.length)profiles={list:[{id:'p1',name:'Learner 1'}],cur:'p1'};
   // Learners are shared with the other Ummah Apps on this device (ummah.js). One added there shows here too while there is room.
@@ -5015,9 +5020,9 @@ a.ua-app:hover{border-color:var(--f-lapis)}
   function plText(w){
     return 'The plural of <span class="ar-s" lang="ar" dir="rtl">'+esc(w.ar)+'</span> is <span class="ar-s" lang="ar" dir="rtl">'+esc(w.pl)+'</span> ('+(w.pt==='s'?'sound plural: an ending is added':'broken plural: the word changes shape')+').';
   }
-  // After a right answer the next question comes by itself, 2 seconds later, unless the learner has moved on
+  // After a right answer the next question comes by itself, 3 seconds later, unless the learner has moved on
   var autoT=0;
-  function autoNext(t){clearTimeout(autoT);autoT=setTimeout(function(){if(!$('#view-quiz').hidden&&Q.target===t&&Q.locked&&!$('#q-back'))newQ()},2000)}
+  function autoNext(t){clearTimeout(autoT);autoT=setTimeout(function(){if(!$('#view-quiz').hidden&&Q.target===t&&Q.locked&&!$('#q-back'))newQ()},3000)}
   function newQ(){
     clearTimeout(autoT);
     if(Q.goNext){var gn=Q.goNext;Q.goNext=null;setMode(gn)}
@@ -5617,8 +5622,8 @@ a.ua-app:hover{border-color:var(--f-lapis)}
       var o=S.qopts[+b.dataset.opt];
       if(!S.qfirst){S.qfirst=true;stCount(o.right)}
       if(o.right){tone(true);S.qdone=true;renderStory();
-        // The next story question comes by itself 2 seconds later
-        (function(st,qn){setTimeout(function(){if(S.story===st&&S.q===qn&&S.qdone&&S.q+1<st.qs.length&&!$('#view-stories').hidden){var nb=$('#st-qnext');if(nb)nb.click()}},2000)})(S.story,S.q)}
+        // The next story question comes by itself 3 seconds later
+        (function(st,qn){setTimeout(function(){if(S.story===st&&S.q===qn&&S.qdone&&S.q+1<st.qs.length&&!$('#view-stories').hidden){var nb=$('#st-qnext');if(nb)nb.click()}},3000)})(S.story,S.q)}
       else{tone(false);b.disabled=true;b.classList.add('miss');$('#st-msg').textContent='Not that one. Try again, or hear the question again.'}
       return;
     }
@@ -5660,7 +5665,7 @@ a.ua-app:hover{border-color:var(--f-lapis)}
   function show(name){
     stopSpeech();stopTimer();
     tabs.forEach(function(t){if(t.dataset.tab===name)t.setAttribute('aria-current','page');else t.removeAttribute('aria-current')});
-    ['learn','words','stories','quiz','known','mine'].forEach(function(n){$('#view-'+n).hidden=(n!==name)});
+    ['learn','words','stories','quiz','known','mine','about'].forEach(function(n){$('#view-'+n).hidden=(n!==name)});
     if(name==='learn')renderLearn();
     if(name==='known')renderKnown();
     if(name==='stories')renderStories();
@@ -5789,8 +5794,8 @@ a.ua-app:hover{border-color:var(--f-lapis)}
       q.picked=b.dataset.opt;var ok=q.picked===q.cur;
       tone(ok);if(ok)q.done++;else if(!q.miss[q.cur]){q.miss[q.cur]=1;q.queue.push(q.cur)}else q.done++;
       renderLearn();
-      // After a right answer the next check word comes by itself 2 seconds later
-      if(ok&&q.queue.length)(function(id){setTimeout(function(){if(L.stage==='check'&&L.q===q&&q.cur===id&&q.picked!=null&&!$('#view-learn').hidden)newCheck()},2000)})(q.cur);
+      // After a right answer the next check word comes by itself 3 seconds later
+      if(ok&&q.queue.length)(function(id){setTimeout(function(){if(L.stage==='check'&&L.q===q&&q.cur===id&&q.picked!=null&&!$('#view-learn').hidden)newCheck()},3000)})(q.cur);
       return;
     }
     b=e.target.closest('[data-l]');if(!b)return;

@@ -18,9 +18,10 @@ A free Arabic vocabulary trainer for beginners. Live at https://kalimat.ummahapp
 - Mark the words you are learning, then mark them as known well (or get a word right first time 5 times in a row, in the games or story questions, and it moves there by itself)
 - Spaced checks on Known well words: after 3 days, 1 week, 2 weeks, 1 month and 2 months
 - Add your own words
-- Up to 3 learners on one device, each with their own progress, shared with Takallum Kids, Kalimat Plus and Takallum
+- Up to 6 learners on one device, each with their own progress, shared with Takallum Kids, Kalimat Plus and Takallum
 - Words known from the other apps: a note on the Words tab offers to add them to Learning
 - A short note on sound and broken plurals, on the Words tab and in the two plural games
+- About tab: what Kalimat is and common questions. The text stays in the page so search engines can read it.
 
 ## Shared with the other apps
 Takallum Kids, Kalimat, Kalimat Plus and Takallum share four things on the same device through `ummah.js`, which is copied into each app's folder (keep the four copies identical):
